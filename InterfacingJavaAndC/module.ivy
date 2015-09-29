@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Ivy Buildfile
+ 
+  Copyright 2015 IS2T. All rights reserved.
+  IS2T PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
+-->
+<ivy-module version="2.0" xmlns:ea="http://www.easyant.org" xmlns:m="http://www.easyant.org/ivy/maven"> 
+	<info organisation="com.is2t.examples.xxx" module="[template]" status="integration" revision="1.0.0">
+		<ea:build organisation="com.is2t.easyant.buildtypes" module="build-microej-javalib" revision="1.+">
+        </ea:build>
+	</info>
+
+	<configurations>
+		<conf name="default" visibility="public" description="runtime dependencies artifact can be used with this conf"/>
+		<conf name="test" visibility="private" description="this scope indicates that the dependency is not required for normal use of the application, and is only available for the test compilation and execution phases."/>
+		<conf name="provided" visibility="public" description="this is much like compile, but indicates you expect the JDK or a container to provide it. It is only available on the compilation classpath, and is not transitive."/>
+	</configurations>
+	
+	<publications>
+	</publications>
+	
+	<dependencies>
+		<dependency transitive="false" org="com.is2t.edc" name="edc-1.2-api" rev="+" />
+		<dependency transitive="false" org="com.is2t.libraries" name="ej.components-api" rev="2.+" />
+		<dependency transitive="false" org="com.is2t.libraries" name="logging-lightweight-api" rev="2.+" />
+	</dependencies>
+</ivy-module>
