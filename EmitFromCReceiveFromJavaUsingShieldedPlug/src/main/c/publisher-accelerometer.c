@@ -38,6 +38,7 @@ void print(const PUBLISHER_t* pPublisher, const PUBLISHER_accelerometer_t* data)
 		{
 			printf("%s : {x : %d, y : %d, z : %d}\n",pPublisher->name, data->x,data->y,data->z);
 		}
+		else
 		{
 			printf("%s error : pointer to data is NULL !\n",__PRETTY_FUNCTION__);
 		}
