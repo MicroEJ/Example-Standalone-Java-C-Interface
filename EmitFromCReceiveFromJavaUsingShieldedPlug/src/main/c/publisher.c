@@ -9,14 +9,13 @@
 /* Includes ------------------------------------------------------------------*/
 
 #include "publisher.h"
-#include <stdint.h>
+
 #include "FreeRTOS.h"
 #include "task.h"
 #include "queue.h"
 #include <stdio.h>
+#include <stdint.h>
 #include <stdlib.h>
-
-#include <stdio.h>
 #include <string.h>
 
 /* Defines -------------------------------------------------------------------*/
@@ -33,8 +32,11 @@ void PUBLISHER_init(const PUBLISHER_t* pPublisher)
 	if ( NULL != pPublisher )
 	{
 		// create the PUBLISHER task
-		printf("%s\n",__PRETTY_FUNCTION__);
 		xTaskCreate(PUBLISHER_taskBody, NULL, PUBLISHER_TASK_STACK_SIZE, (void*) pPublisher, PUBLISHER_TASK_PRIORITY, NULL);
+	}
+	else
+	{
+		printf("%s error : pointer to publicationFunction is NULL !\n",__PRETTY_FUNCTION__);
 	}
 }
 
@@ -45,12 +47,22 @@ void PUBLISHER_taskBody(void* arg)
 		const PUBLISHER_t* pPublisher = (const PUBLISHER_t*) arg;	
 		const portTickType xDelay = pPublisher->publicationPeriodInMS / portTICK_RATE_MS;
 
-		for(;;)
+		if ( NULL != pPublisher->publicationFunction )
 		{
-			pPublisher->publicationFunction(pPublisher);
-			vTaskDelay(xDelay);
+			for(;;)
+			{
+				pPublisher->publicationFunction(pPublisher);
+				vTaskDelay(xDelay);
+			}
+		}
+		else
+		{
+			printf("%s error : pointer to publicationFunction is NULL !\n",__PRETTY_FUNCTION__);
 		}
 	}
+	else
+	{
+		printf("%s error : pointer to publisher is NULL !\n",__PRETTY_FUNCTION__);
+	}
 }
-
 
