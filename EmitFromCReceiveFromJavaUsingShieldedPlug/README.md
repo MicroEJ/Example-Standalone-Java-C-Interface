@@ -156,3 +156,70 @@ Here, we will create a MicroEJ "Run Configuration" that will compile the Java co
 	-- main alive --
 	-- main alive --
 	...
+
+# Publishing data from tasks written in C
+
+In this section, we shall create a task type that will allow us to publish some data at a fixed period.
+
+The task body will roughly look like this in pseudocode :
+
+	while (true)
+	{
+		wait(publication_period)
+		publish_data()
+	}
+	
+## Defining a publisher C struct
+
+For each publishing task, we will need to define :
+* A task ID of some sort
+* A publication period
+* A task body
+
+As shown in the **src/main/c/publisher.h** source file
+
+------------
+
+# Emitting data from a task written in C
+## Spawning a task using FreeRTOS
+* Select **File > New > Source Folder** menu item
+	* Set the **Folder Name** field to "src/main/c"
+* Right-Click on the folder that you just created
+	* Select **New > File** context menu item
+	* Set the **File Name** field to "DataTransmitter.c"
+	* Copy and paste the following code inside the generated **DataTransmitter.c**
+
+			void taskBody() {
+				printf("hello");
+			}
+
+## Emitting data during task processing
+* Right-Click on the folder that you just created
+	* Select **New > File** context menu item
+	* Set the **File Name** field to "SensorData.c"
+	* Copy and paste the following code inside the generated **SensorData.c**
+
+			#include <sni.h>
+			struct position {
+				jfloat x;
+				jfloat y;
+				jfloat z;
+			}
+			
+# Converting data to a Shielded-Plug compatible format
+
+In this section, we will modify the published data so as to be able to **store** it in a memory location accessible from both C and Java runtime environments using the Shielded Plug API.
+
+## Database description file creation
+* Select **File > New > Source Folder** menu item
+	* Set the **Folder name** field to /src/main/resources
+* Right-Click on the folder that you just created
+	* Select **New > File** context menu item
+	* Set the **File Name** field to "shieldedPlugDBDefinition.xml"
+	* Copy and paste the following code inside the **shieldedPlugDBDefinition.xml** file 
+
+		&lt;shieldedPlug&gt;<br/>
+			&lt;database name="TODO" id="0" immutable="true" version="1.0.0"&gt;<br/>
+				&lt;block id="0" name="MyBLOCK" length="1" maxTasks="1"/&gt;<br/>
+			&lt;/database&gt;<br/>
+		&lt;/shieldedPlug&gt;<br/>

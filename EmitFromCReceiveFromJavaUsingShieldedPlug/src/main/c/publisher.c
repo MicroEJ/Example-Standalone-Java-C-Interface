@@ -27,7 +27,7 @@
 
 /* API -----------------------------------------------------------------------*/
 
-void PUBLISHER_init(const PUBLISHER_t* pPublisher)
+void PUBLISHER_init(PUBLISHER_t* pPublisher)
 {
 	if ( NULL != pPublisher )
 	{
@@ -44,15 +44,28 @@ void PUBLISHER_taskBody(void* arg)
 {
 	if ( NULL != arg )
 	{
-		const PUBLISHER_t* pPublisher = (const PUBLISHER_t*) arg;	
+		PUBLISHER_t* pPublisher = (PUBLISHER_t*) arg;	
 		const portTickType xDelay = pPublisher->publicationPeriodInMS / portTICK_RATE_MS;
 
 		if ( NULL != pPublisher->publicationFunction )
 		{
+			ShieldedPlug database = SP_getDatabase(pPublisher->shieldedPlugDatabaseId);
+
+			pPublisher->pDatabase = &database;
+			
+			int32_t SPS_size = SP_getSize(database);
+
+			printf("%s SPS_size %d\n",__PRETTY_FUNCTION__,SPS_size);
+
+			int32_t SPS_length_block_0 = SP_getLength(database,0);
+
+			printf("%s SPS_length_block_0 %d\n",__PRETTY_FUNCTION__,SPS_length_block_0);
+			vTaskDelay(xDelay);
+			
 			for(;;)
 			{
 				pPublisher->publicationFunction(pPublisher);
-				vTaskDelay(xDelay);
+				vTaskDelay(xDelay);			
 			}
 		}
 		else

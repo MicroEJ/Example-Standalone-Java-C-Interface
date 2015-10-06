@@ -1,0 +1,12 @@
+<!--
+	Ant
+	
+	Copyright 2015 IS2T. All rights reserved.	
+ 	For demonstration purpose only
+	IS2T PROPRIETARY / Use is subject to license terms.
+-->
+<shieldedPlug>
+	<database name="AccelerometerDataDB" id="0" immutable="true" version="1.0.0">
+		<block id="0" name="AccelerometerData" length="4" maxTasks="2"/>
+	</database>
+</shieldedPlug>

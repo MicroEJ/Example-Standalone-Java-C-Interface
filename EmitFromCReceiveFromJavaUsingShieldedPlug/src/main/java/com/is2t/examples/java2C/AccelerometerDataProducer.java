@@ -1,0 +1,38 @@
+package com.is2t.examples.java2C;
+
+import com.is2t.sp.ShieldedPlug;
+
+public class AccelerometerDataProducer implements Runnable{
+
+
+	private byte sensorID;
+	private int productionPeriodInMilliseconds;
+	
+	
+	public AccelerometerDataProducer(int sensorID,int productionPeriodInMilliseconds) {
+		super();
+		this.sensorID = (byte)sensorID;
+		this.productionPeriodInMilliseconds = productionPeriodInMilliseconds;
+	}
+
+	@Override
+	public void run() {
+		
+		ShieldedPlug database = ShieldedPlug.getDatabase(AccelerometerData.DATABASE_ID);
+
+		while (true) {
+			try {
+				AccelerometerData data = AccelerometerData.generatedRandomData(sensorID);
+				database.write(AccelerometerData.DATABASE_FIELD_ID_ACCELEROMETER, data.toByteArray());				
+			} catch (RuntimeException e) {
+				e.printStackTrace();
+			}
+			try {
+				Thread.sleep(productionPeriodInMilliseconds);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}		
+	}
+
+}

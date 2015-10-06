@@ -1,4 +1,13 @@
+/**
+ *
+ * Java
+ *
+ * Copyright 2015 IS2T. All rights reserved.
+ * IS2T PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
+ *
+ */
 package com.is2t.examples.java2C;
+
 
 public class DataConsumerExample {
 
@@ -6,15 +15,11 @@ public class DataConsumerExample {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		while (true) {
-			System.out.println("-- main alive --");
-			try {
-				Thread.sleep(2000);
-			} catch (InterruptedException e) {
-				// It is OK to ignore because this is just a basic example
-			}
-		}
-		//System.out.println("-- main DONE --");
+
+		AccelerometerDataConsumer consumer = new AccelerometerDataConsumer();
+		AccelerometerDataProducer producer = new AccelerometerDataProducer(3,1200);
+		new Thread(consumer).start();
+		new Thread(producer).start();
 	}
 	
 }
