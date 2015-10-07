@@ -1,8 +1,8 @@
 <!---
-	Markdown
-	
-	Copyright 2015 IS2T. All rights reserved.
-	IS2T PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
+Markdown
+
+Copyright 2015 IS2T. All rights reserved.
+IS2T PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
 -->
 
 # Overview
@@ -20,7 +20,7 @@ The following steps will be taken :
 * MicroEJ 3.1 or later.
 * BSP specific toolchain.
 
-## Adapting this procedure to your BSP toolchain
+## Adapting this example to your BSP toolchain
 
 This document shows the process for a STM32F429I-Disco (&trade;) target using a Keil MicroVision (&trade;) toolchain.
 
@@ -41,14 +41,13 @@ We need to generate and build a Java Platform (JPF), i.e. the set of object file
 		* Select **STM32F429I-Disco > Basic**
 		* // Select **STM32F429I-Disco > Basic-SNI and SP**
 	* Click **Next**
-		* Specify a name such as **Basic\_SNI** in the relevant field
-		* // Specify a name such as **Basic\_SNI\_SP** in the relevant field
+		* Specify a name such as **CallingCFromJava** in the relevant field
 	* Click Finish. This will lead to the generation of a few projects in our workspace :
-		* **Basic\_SNI**-bsp
-		* **Basic\_SNI**-configuration
-		* **Basic\_SNI**-javaExample
-		* // **Basic\_SNI**-mock
-	* Delete the **Basic\_SNI**-javaExample project
+		* **CallingCFromJava**-bsp
+		* **CallingCFromJava**-configuration
+		* **CallingCFromJava**-javaExample
+		* // **CallingCFromJava**-mock
+	* Delete the **CallingCFromJava**-javaExample project
 
 ##Modules selection
 * From the **Content** tab of the generated example.platform file
@@ -60,7 +59,7 @@ We need to generate and build a Java Platform (JPF), i.e. the set of object file
 ##Build
 * From the **Overview** tab of the generated example.platform file
 	* Click on the **Build platform** hyperlink. This will generate the following project :
-		* **Basic\_SNI**-1.0.0
+		* **CallingCFromJava**-1.0.0
 * Click on **Window > Preferences > MicroEJ**
 	* In the **MicroEJ Repository** frame
 		* Click on the **Refresh** button 
@@ -73,7 +72,7 @@ In this section, we will create the java application to invoke our C code
 This project will host the application specific code
 
 * Select **File > New > Java Project** menu item
-	* Set **Project Name** field to **"InterfacingJavaAndC"**
+	* Set **Project Name** field to **"CallingCFromJava"**
 	* In the **Runtime Environment** frame, select the following MicroEJ Libraries :
 		* EDC 1.2 (selected by default)
 		* SNI 1.2.0
@@ -84,7 +83,7 @@ This project will host the application specific code
 * Select **File > New > Source Folder** menu item
 	* Set the **Folder name** field to /src/main/java
 * Select **File > New > Class** menu item
-	* Set the **Source folder** field to "InterfacingJavaAndC/src/main/java"
+	* Set the **Source folder** field to "CallingCFromJava/src/main/java"
 	* Set the **Package** field to "com.is2t.examples.java2C"
 	* Set the **Name** field to "NativeCCallExample"
 	* Click on **Finish**
@@ -109,34 +108,34 @@ This project will host the application specific code
 Here, we will create a MicroEJ "Run Configuration" that will compile the Java code we just created for the JPF we created previously
 
 * Select **File > New > Folder** menu item
-	* Set the **Enter or select the parent folder** field to "InterfacingJavaAndC" (Project root)
+	* Set the **Enter or select the parent folder** field to "CallingCFromJava" (Project root)
 	* Set the **Folder Name** field to "launches"
 * Select **Run Configurations...** from the **Run configurations** drop down list (or Press Ctrl+Shift+3 and type "Run Configurations...")
 * Select **MicroEJ Application** group and click **New**
 	* Set **Name** field to "NativeCCallExample_Build"
 	* In **Main** tab
-		* Set the **Project** field to "InterfacingJavaAndC"
+		* Set the **Project** field to "CallingCFromJava"
 		* Click on **Select Main type...** and type NativeCCallExample
 	* In **Execution** tab
 		* In **Target** frame
 			* Click the **Browse** button next to the JPF Field and select your platform
 		* In **Execution** frame
 			* Select **Execute on EmbJPF** radio button
-			* Leave the **Output Folder** field set to "${project_loc:InterfacingJavaAndC}"
+			* Leave the **Output Folder** field set to "${project_loc:CallingCFromJava}"
 	* In **Configuration** tab
 		* Select the **Target > Deploy** Node
 			* Set the **Means** field to "Copy at a location known by BSP Project"
 	* In **Common** tab
 		* In **Save as** frame
 			* Select the **Shared file** radio button
-			* Click on **Browse** and select **InterfacingJavaAndC\\launches** folder	
+			* Click on **Browse** and select **CallingCFromJava\\launches** folder	
 	* Click on "Run"
 
 # Building & Running the C target executable
 
 ## Opening the generated C project (BSP specific)
 * From the **Project Explorer** view
-	* Navigate to the **Basic\_SNI**-bsp/Project/MicroEJ/MDK-ARM folder
+	* Navigate to the **CallingCFromJava**-bsp/Project/MicroEJ/MDK-ARM folder
 	* Double-click on the Project.uvproj file => this will open the BSP project in the MicroVision IDE
 
 ## Getting a linker error (BSP specific)
@@ -171,7 +170,7 @@ This is perfectly normal since in **NativeCCallExample.java** we declared **some
 	* Right-Click and select **Add Group** this will add a group called "New Group"
 	* Select this group and hit **F2** key so as to rename it to "JavaNatives"
 	* Right-Click on the **JavaNatives** group and select **Add Existing Files to group 'JavaNatives'...**
-	* Navigate to the **NativeCCallExample.c** file (its location is in the clipboard ..\\..\\..\\..\\InterfacingJavaAndC\\bsp)
+	* Navigate to the **NativeCCallExample.c** file (its location is in the clipboard ..\\..\\..\\..\\CallingCFromJava\\bsp)
 	* Click **Add**
 	* Click **Close**
 
@@ -184,7 +183,6 @@ This is perfectly normal since in **NativeCCallExample.java** we declared **some
 		linking...
 		Program Size: Code=58744 RO-data=2844 RW-data=288 ZI-data=52912  
 		FromELF: creating hex file...
-		.\STM32F429i-DISCO\STM32429I-DISCO.hex: Warning: Q9931W: Your license for feature mdk_pro_compiler5 will expire in 19 days
 		Finished: 0 information, 1 warning and 0 error messages.
 		".\STM32F429i-DISCO\STM32429I-DISCO.axf" - 0 Error(s), 0 Warning(s).
 		Build Time Elapsed:  00:00:03
