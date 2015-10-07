@@ -1,9 +1,6 @@
-<!---
-Markdown
-
-Copyright 2015 IS2T. All rights reserved.
-IS2T PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
--->
+[](Markdown)
+[](Copyright 2015 IS2T. All rights reserved.)
+[](IS2T PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.)
 
 # Overview
 
@@ -49,14 +46,14 @@ We need to generate and build a Java Platform (JPF), i.e. the set of object file
 		* // **CallingCFromJava**-mock
 	* Delete the **CallingCFromJava**-javaExample project
 
-##Modules selection
+## Modules selection
 * From the **Content** tab of the generated example.platform file
 	* In the **modules** frame
 		* Click on the **Show/Hide modules** button
 		* Select the **Simple Native Interface API** option in the modules checkbox tree
 		* //In the **modules** list, check **Java to C Interface**
 
-##Build
+## Build
 * From the **Overview** tab of the generated example.platform file
 	* Click on the **Build platform** hyperlink. This will generate the following project :
 		* **CallingCFromJava**-1.0.0
@@ -64,7 +61,7 @@ We need to generate and build a Java Platform (JPF), i.e. the set of object file
 	* In the **MicroEJ Repository** frame
 		* Click on the **Refresh** button 
 
-#Building the Java client code
+# Building the Java client code
 In this section, we will create the java application to invoke our C code
 
 ## MicroEJ project creation
@@ -218,4 +215,7 @@ To access the document from MicroEJ :
 
 The Use Case shown in this document only covers a most basic usage of the Java to C interface feature provided by SNI. The native C function is invoked synchronously, meaning the thread of the calling Java method is suspended until the C function returns.
 
-Shall you need a more elaborate example of how to use SNI in an asynchronous context, you may refer to the **javaExample** provided with the **Basic-SNI and SP** template when creating a new Java Platform (just ensure that you do not select the **Basic** template as is the case in this document).
+Shall you need a more elaborate example of how to use SNI in an asynchronous context, you may refer to :
+
+* the **javaExample** provided with the **Basic-SNI and SP** template when creating a new Java Platform (just ensure that you do not select the **Basic** template as is the case in this document).
+* the **ProducerConsumerUsingShieldedPlug** example project
