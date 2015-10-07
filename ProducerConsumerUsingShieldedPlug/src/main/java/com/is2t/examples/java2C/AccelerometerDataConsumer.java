@@ -31,7 +31,7 @@ public class AccelerometerDataConsumer implements Runnable{
 				database.read(AccelerometerData.DATABASE_FIELD_ID_ACCELEROMETER, accelerometerDataAsByteArray);
 				// convert to 
 				AccelerometerData accelerometerData = new AccelerometerData(accelerometerDataAsByteArray);
-				System.out.println(accelerometerData.toString());
+				System.out.println("-" + accelerometerData.toString());
 			} catch (EmptyBlockException e) {
 				e.printStackTrace();
 			}

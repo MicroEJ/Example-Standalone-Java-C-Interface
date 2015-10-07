@@ -8,25 +8,26 @@
  */
 package com.is2t.examples.java2C;
 
-import com.is2t.sp.ShieldedPlug;
 import java.util.Random;
 public class AccelerometerData {
 
 	static Random generator = new Random();
 
-	byte id;
+	public static final int ACCELEROMETER_DATA_SIZE = 4;
+
+	byte sensorID;
 	byte x;
 	byte y;
 	byte z;
 
 	public AccelerometerData(byte[] accelerometerDataAsByteArray) {
-		id = accelerometerDataAsByteArray[0];
+		sensorID = accelerometerDataAsByteArray[0];
 		x = accelerometerDataAsByteArray[1];
 		y = accelerometerDataAsByteArray[2];
 		z = accelerometerDataAsByteArray[3];
 	}
 
-	public static AccelerometerData generatedRandomData(byte id)
+	public static AccelerometerData generateRandomData(byte id)
 	{
 		byte[] resultAsByteArray = new byte[ACCELEROMETER_DATA_SIZE];
 		generator.nextBytes(resultAsByteArray);
@@ -37,7 +38,7 @@ public class AccelerometerData {
 
 	public byte[] toByteArray() {
 		byte[] result = new byte[ACCELEROMETER_DATA_SIZE];
-		result [0] = (byte) id;
+		result [0] = (byte) sensorID;
 		result [1] = x;
 		result [2] = y;
 		result [3] = z;
@@ -48,7 +49,7 @@ public class AccelerometerData {
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
 		sb.append("ID : ");
-		sb.append(id);
+		sb.append(sensorID);
 		sb.append(" {x : ");
 		sb.append(x);
 		sb.append(", y : ");
@@ -59,11 +60,8 @@ public class AccelerometerData {
 		return sb.toString();
 	}
 
-	//see src/main/resources/database-definition.xml file for relevant values
+	//ShieldedPlug related IDs - see src/main/resources/database-definition.xml file for relevant values
 	public static final int DATABASE_ID = 0;
 	public static final int DATABASE_FIELD_ID_ACCELEROMETER = 0;
-
-	//see PUBLISHER_accelerometer_t struct in publisher-accelerometer.h file
-	public static final int ACCELEROMETER_DATA_SIZE = 4;
 
 }

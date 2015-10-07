@@ -12,10 +12,8 @@ import com.is2t.sp.ShieldedPlug;
 
 public class AccelerometerDataProducer implements Runnable{
 
-
 	private byte sensorID;
 	private int productionPeriodInMilliseconds;
-	
 	
 	public AccelerometerDataProducer(int sensorID,int productionPeriodInMilliseconds) {
 		super();
@@ -30,8 +28,9 @@ public class AccelerometerDataProducer implements Runnable{
 
 		while (true) {
 			try {
-				AccelerometerData data = AccelerometerData.generatedRandomData(sensorID);
-				database.write(AccelerometerData.DATABASE_FIELD_ID_ACCELEROMETER, data.toByteArray());				
+				AccelerometerData accelerometerData = AccelerometerData.generateRandomData(sensorID);
+				database.write(AccelerometerData.DATABASE_FIELD_ID_ACCELEROMETER, accelerometerData.toByteArray());
+				System.out.println("+" + accelerometerData.toString());
 			} catch (RuntimeException e) {
 				e.printStackTrace();
 			}
