@@ -36,27 +36,24 @@ We need to generate and build a Java Platform (JPF), i.e. the set of object file
 	* Click **Browse** button next to the **Java Platform Architecture** field and select **ARM Cortex-M4 ARMCC**
 	* Check the **Create a platform from an example or a template.** option
 		* Select **STM32F429I-Disco > Basic**
-		* // Select **STM32F429I-Disco > Basic-SNI and SP**
 	* Click **Next**
-		* Specify a name such as **CallingCFromJava** in the relevant field
+		* Specify a name such as "**CallingCFromJava**" in the relevant field
 	* Click Finish. This will lead to the generation of a few projects in our workspace :
-		* **CallingCFromJava**-bsp
-		* **CallingCFromJava**-configuration
-		* **CallingCFromJava**-javaExample
-		* // **CallingCFromJava**-mock
-	* Delete the **CallingCFromJava**-javaExample project
+		* [**CallingCFromJava**-bsp](CallingCFromJava-bsp)
+		* [**CallingCFromJava**-configuration](CallingCFromJava-configuration)
+		* [**CallingCFromJava**-javaExample](CallingCFromJava-javaExample)
+	* Delete the [**CallingCFromJava**-javaExample](CallingCFromJava-javaExample) project
 
 ## Modules selection
 * From the **Content** tab of the generated example.platform file
 	* In the **modules** frame
 		* Click on the **Show/Hide modules** button
 		* Select the **Simple Native Interface API** option in the modules checkbox tree
-		* //In the **modules** list, check **Java to C Interface**
 
 ## Build
 * From the **Overview** tab of the generated example.platform file
 	* Click on the **Build platform** hyperlink. This will generate the following project :
-		* **CallingCFromJava**-1.0.0
+		* [**CallingCFromJava**-1.0.0](CallingCFromJava-1.0.0)
 * Click on **Window > Preferences > MicroEJ**
 	* In the **MicroEJ Repository** frame
 		* Click on the **Refresh** button 
@@ -84,7 +81,7 @@ This project will host the application specific code
 	* Set the **Package** field to "com.is2t.examples.java2C"
 	* Set the **Name** field to "NativeCCallExample"
 	* Click on **Finish**
-	* Copy and paste the following code inside the generated **NativeCCallExample.java** file 
+	* Copy and paste the following code inside the generated [NativeCCallExample.java](/CallingCFromJava/src/main/java/com/is2t/examples/java2C/NativeCCallExample.java) file 
 
 			package com.is2t.examples.java2C;		
 			public class NativeCCallExample {
@@ -105,8 +102,8 @@ This project will host the application specific code
 Here, we will create a MicroEJ "Run Configuration" that will compile the Java code we just created for the JPF we created previously
 
 * Select **File > New > Folder** menu item
-	* Set the **Enter or select the parent folder** field to "CallingCFromJava" (Project root)
-	* Set the **Folder Name** field to "launches"
+	* Set the **Enter or select the parent folder** field to ["CallingCFromJava"](/CallingCFromJava) (Project root)
+	* Set the **Folder Name** field to ["launches"](/CallingCFromJava/launches)
 * Select **Run Configurations...** from the **Run configurations** drop down list (or Press Ctrl+Shift+3 and type "Run Configurations...")
 * Select **MicroEJ Application** group and click **New**
 	* Set **Name** field to "NativeCCallExample_Build"
@@ -125,15 +122,15 @@ Here, we will create a MicroEJ "Run Configuration" that will compile the Java co
 	* In **Common** tab
 		* In **Save as** frame
 			* Select the **Shared file** radio button
-			* Click on **Browse** and select **CallingCFromJava\\launches** folder	
+			* Click on **Browse** and select [CallingCFromJava/launches](/CallingCFromJava/launches) folder	
 	* Click on "Run"
 
 # Building & Running the C target executable
 
 ## Opening the generated C project (BSP specific)
 * From the **Project Explorer** view
-	* Navigate to the **CallingCFromJava**-bsp/Project/MicroEJ/MDK-ARM folder
-	* Double-click on the Project.uvproj file => this will open the BSP project in the MicroVision IDE
+	* Navigate to the [**CallingCFromJava**-bsp/Project/MicroEJ/MDK-ARM](CallingCFromJava-bsp/Project/MicroEJ/MDK-ARM) folder
+	* Double-click on the [Project.uvproj](CallingCFromJava-bsp/Project/MicroEJ/MDK-ARM/Project.uvproj) file (this will open the BSP project in the MicroVision IDE)
 
 ## Getting a linker error (BSP specific)
 * From the MicroVision IDE
@@ -142,7 +139,7 @@ Here, we will create a MicroEJ "Run Configuration" that will compile the Java co
 
 		```.\STM32F429i-DISCO\STM32429I-DISCO.axf: Error: L6218E: Undefined symbol Java_com_is2t_examples_java2C_NativeCCallExample_someCFunctionReturningTwiceAValue (referred from javaapp.o).```
 
-This is perfectly normal since in **NativeCCallExample.java** we declared **someCFunctionReturningTwiceAValue** as a native function, when building the MicroEJ project, the generated linker configuration file expects to find a C function definition matching the qualified name of the function. 
+This is perfectly normal since in [NativeCCallExample.java](/CallingCFromJava/src/main/java/com/is2t/examples/java2C/NativeCCallExample.java) we declared **someCFunctionReturningTwiceAValue** as a native function, when building the MicroEJ project, the generated linker configuration file expects to find a C function definition matching the qualified name of the function. 
 
 ## Fixing the linker error
 ### C Native function implementation
@@ -151,7 +148,7 @@ This is perfectly normal since in **NativeCCallExample.java** we declared **some
 * Right-Click on the folder that you just created
 	* Select **New > File** context menu item
 	* Set the **File Name** field to "NativeCCallExample.c"
-	* Copy and paste the following code inside the generated **NativeCCallExample.c**
+	* Copy and paste the following code inside the generated [NativeCCallExample.c](/CallingCFromJava/src/main/c/com/is2t/examples/java2C/NativeCCallExample.c)
 
 			#include <sni.h>
 			int Java_com_is2t_examples_java2C_NativeCCallExample_someCFunctionReturningTwiceAValue(int aValue) {
@@ -167,7 +164,7 @@ This is perfectly normal since in **NativeCCallExample.java** we declared **some
 	* Right-Click and select **Add Group** this will add a group called "New Group"
 	* Select this group and hit **F2** key so as to rename it to "JavaNatives"
 	* Right-Click on the **JavaNatives** group and select **Add Existing Files to group 'JavaNatives'...**
-	* Navigate to the **NativeCCallExample.c** file (its location is in the clipboard ..\\..\\..\\..\\CallingCFromJava\\bsp)
+	* Navigate to the [NativeCCallExample.c](/CallingCFromJava/src/main/c/com/is2t/examples/java2C/NativeCCallExample.c) file (its location is in the clipboard ..\\..\\..\\..\\CallingCFromJava\\bsp)
 	* Click **Add**
 	* Click **Close**
 
@@ -218,4 +215,4 @@ The Use Case shown in this document only covers a most basic usage of the Java t
 Shall you need a more elaborate example of how to use SNI in an asynchronous context, you may refer to :
 
 * the **javaExample** provided with the **Basic-SNI and SP** template when creating a new Java Platform (just ensure that you do not select the **Basic** template as is the case in this document).
-* the **ProducerConsumerUsingShieldedPlug** example project
+* the [ProducerConsumerUsingShieldedPlug](/ProducerConsumerUsingShieldedPlug) example project
