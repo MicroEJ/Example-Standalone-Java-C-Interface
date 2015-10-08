@@ -39,10 +39,10 @@ We need to generate and build a Java Platform (JPF), i.e. the set of object file
 	* Click **Next**
 		* Specify a name such as "**CallingCFromJava**" in the relevant field
 	* Click Finish. This will lead to the generation of a few projects in our workspace :
-		* [**CallingCFromJava**-bsp](CallingCFromJava-bsp)
-		* [**CallingCFromJava**-configuration](CallingCFromJava-configuration)
-		* [**CallingCFromJava**-javaExample](CallingCFromJava-javaExample)
-	* Delete the [**CallingCFromJava**-javaExample](CallingCFromJava-javaExample) project
+		* [CallingCFromJava-bsp](CallingCFromJava-bsp)
+		* [CallingCFromJava-configuration](CallingCFromJava-configuration)
+		* [CallingCFromJava-javaExample](CallingCFromJava-javaExample)
+	* Delete the [CallingCFromJava-javaExample](CallingCFromJava-javaExample) project
 
 ## Modules selection
 * From the **Content** tab of the generated example.platform file
@@ -53,7 +53,7 @@ We need to generate and build a Java Platform (JPF), i.e. the set of object file
 ## Build
 * From the **Overview** tab of the generated example.platform file
 	* Click on the **Build platform** hyperlink. This will generate the following project :
-		* [**CallingCFromJava**-1.0.0](CallingCFromJava-1.0.0)
+		* [CallingCFromJava-1.0.0](CallingCFromJava-1.0.0)
 * Click on **Window > Preferences > MicroEJ**
 	* In the **MicroEJ Repository** frame
 		* Click on the **Refresh** button 
@@ -66,7 +66,7 @@ In this section, we will create the java application to invoke our C code
 This project will host the application specific code
 
 * Select **File > New > Java Project** menu item
-	* Set **Project Name** field to **"CallingCFromJava"**
+	* Set **Project Name** field to "**CallingCFromJava**"
 	* In the **Runtime Environment** frame, select the following MicroEJ Libraries :
 		* EDC 1.2 (selected by default)
 		* SNI 1.2.0
@@ -75,11 +75,11 @@ This project will host the application specific code
 
 ## Java Class creation
 * Select **File > New > Source Folder** menu item
-	* Set the **Folder name** field to /src/main/java
+	* Set the **Folder name** field to "**/src/main/java**"
 * Select **File > New > Class** menu item
-	* Set the **Source folder** field to "CallingCFromJava/src/main/java"
+	* Set the **Source folder** field to "**CallingCFromJava/src/main/java**"
 	* Set the **Package** field to "com.is2t.examples.java2C"
-	* Set the **Name** field to "NativeCCallExample"
+	* Set the **Name** field to "**NativeCCallExample**"
 	* Click on **Finish**
 	* Copy and paste the following code inside the generated [NativeCCallExample.java](CallingCFromJava/src/main/java/com/is2t/examples/java2C/NativeCCallExample.java) file 
 
@@ -129,7 +129,7 @@ Here, we will create a MicroEJ "Run Configuration" that will compile the Java co
 
 ## Opening the generated C project (BSP specific)
 * From the **Project Explorer** view
-	* Navigate to the [**CallingCFromJava**-bsp/Project/MicroEJ/MDK-ARM](CallingCFromJava-bsp/Project/MicroEJ/MDK-ARM) folder
+	* Navigate to the [CallingCFromJava-bsp/Project/MicroEJ/MDK-ARM](CallingCFromJava-bsp/Project/MicroEJ/MDK-ARM) folder
 	* Double-click on the [Project.uvproj](CallingCFromJava-bsp/Project/MicroEJ/MDK-ARM/Project.uvproj) file (this will open the BSP project in the MicroVision IDE)
 
 ## Getting a linker error (BSP specific)
@@ -187,6 +187,7 @@ This is perfectly normal since in [NativeCCallExample.java](CallingCFromJava/src
 
 ### Checking the behavior
 * Set up a terminal on the board serial port and press the reset input. You shall get the following output :
+
 		VM START
 		Calling : someCFunctionReturningTwiceAValue(120)
 		Result  : 240
@@ -215,4 +216,4 @@ The Use Case shown in this document only covers a most basic usage of the Java t
 Shall you need a more elaborate example of how to use SNI in an asynchronous context, you may refer to :
 
 * the **javaExample** provided with the **Basic-SNI and SP** template when creating a new Java Platform (just ensure that you do not select the **Basic** template as is the case in this document).
-* the [ProducerConsumerUsingShieldedPlug](/ProducerConsumerUsingShieldedPlug) example project
+* the [ProducerConsumerUsingShieldedPlug](ProducerConsumerUsingShieldedPlug) example project
