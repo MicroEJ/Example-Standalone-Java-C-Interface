@@ -81,7 +81,7 @@ This project will host the application specific code
 	* Set the **Package** field to "com.is2t.examples.java2C"
 	* Set the **Name** field to "NativeCCallExample"
 	* Click on **Finish**
-	* Copy and paste the following code inside the generated [NativeCCallExample.java](/CallingCFromJava/src/main/java/com/is2t/examples/java2C/NativeCCallExample.java) file 
+	* Copy and paste the following code inside the generated [NativeCCallExample.java](CallingCFromJava/src/main/java/com/is2t/examples/java2C/NativeCCallExample.java) file 
 
 			package com.is2t.examples.java2C;		
 			public class NativeCCallExample {
@@ -102,8 +102,8 @@ This project will host the application specific code
 Here, we will create a MicroEJ "Run Configuration" that will compile the Java code we just created for the JPF we created previously
 
 * Select **File > New > Folder** menu item
-	* Set the **Enter or select the parent folder** field to ["CallingCFromJava"](/CallingCFromJava) (Project root)
-	* Set the **Folder Name** field to ["launches"](/CallingCFromJava/launches)
+	* Set the **Enter or select the parent folder** field to ["CallingCFromJava"](CallingCFromJava) (Project root)
+	* Set the **Folder Name** field to ["launches"](CallingCFromJava/launches)
 * Select **Run Configurations...** from the **Run configurations** drop down list (or Press Ctrl+Shift+3 and type "Run Configurations...")
 * Select **MicroEJ Application** group and click **New**
 	* Set **Name** field to "NativeCCallExample_Build"
@@ -122,7 +122,7 @@ Here, we will create a MicroEJ "Run Configuration" that will compile the Java co
 	* In **Common** tab
 		* In **Save as** frame
 			* Select the **Shared file** radio button
-			* Click on **Browse** and select [CallingCFromJava/launches](/CallingCFromJava/launches) folder	
+			* Click on **Browse** and select [CallingCFromJava/launches](CallingCFromJava/launches) folder	
 	* Click on "Run"
 
 # Building & Running the C target executable
@@ -139,7 +139,7 @@ Here, we will create a MicroEJ "Run Configuration" that will compile the Java co
 
 		```.\STM32F429i-DISCO\STM32429I-DISCO.axf: Error: L6218E: Undefined symbol Java_com_is2t_examples_java2C_NativeCCallExample_someCFunctionReturningTwiceAValue (referred from javaapp.o).```
 
-This is perfectly normal since in [NativeCCallExample.java](/CallingCFromJava/src/main/java/com/is2t/examples/java2C/NativeCCallExample.java) we declared **someCFunctionReturningTwiceAValue** as a native function, when building the MicroEJ project, the generated linker configuration file expects to find a C function definition matching the qualified name of the function. 
+This is perfectly normal since in [NativeCCallExample.java](CallingCFromJava/src/main/java/com/is2t/examples/java2C/NativeCCallExample.java) we declared **someCFunctionReturningTwiceAValue** as a native function, when building the MicroEJ project, the generated linker configuration file expects to find a C function definition matching the qualified name of the function. 
 
 ## Fixing the linker error
 ### C Native function implementation
@@ -148,7 +148,7 @@ This is perfectly normal since in [NativeCCallExample.java](/CallingCFromJava/sr
 * Right-Click on the folder that you just created
 	* Select **New > File** context menu item
 	* Set the **File Name** field to "NativeCCallExample.c"
-	* Copy and paste the following code inside the generated [NativeCCallExample.c](/CallingCFromJava/src/main/c/com/is2t/examples/java2C/NativeCCallExample.c)
+	* Copy and paste the following code inside the generated [NativeCCallExample.c](CallingCFromJava/src/main/c/com/is2t/examples/java2C/NativeCCallExample.c)
 
 			#include <sni.h>
 			int Java_com_is2t_examples_java2C_NativeCCallExample_someCFunctionReturningTwiceAValue(int aValue) {
@@ -164,7 +164,7 @@ This is perfectly normal since in [NativeCCallExample.java](/CallingCFromJava/sr
 	* Right-Click and select **Add Group** this will add a group called "New Group"
 	* Select this group and hit **F2** key so as to rename it to "JavaNatives"
 	* Right-Click on the **JavaNatives** group and select **Add Existing Files to group 'JavaNatives'...**
-	* Navigate to the [NativeCCallExample.c](/CallingCFromJava/src/main/c/com/is2t/examples/java2C/NativeCCallExample.c) file (its location is in the clipboard ..\\..\\..\\..\\CallingCFromJava\\bsp)
+	* Navigate to the [NativeCCallExample.c](CallingCFromJava/src/main/c/com/is2t/examples/java2C/NativeCCallExample.c) file (its location is in the clipboard ..\\..\\..\\..\\CallingCFromJava\\bsp)
 	* Click **Add**
 	* Click **Close**
 
