@@ -12,6 +12,7 @@
 
 #include <stdint.h>
 #include <stdio.h>
+#include <string.h>
 #include <stdlib.h>
 
 #define DATABASE_ID 0
@@ -31,14 +32,15 @@ Accelerometer_data_t Accelerometer_data_generate_sample(int8_t sensor_ID)
 
 }
 
-void Accelerometer_data_print(const Accelerometer_data_t* data)
+void Accelerometer_data_toString(const Accelerometer_data_t* data, char * output)
 {
 	if ( NULL != data )
 	{
-		printf("%d : {x : %d, y : %d, z : %d}\n",data->sensor_ID, data->x,data->y,data->z);
+		snprintf(output,ACCELEROMETER_DATA_MAX_STRING_LENGTH,"ID : %d {x : %d, y : %d, z : %d}",data->sensor_ID, data->x,data->y,data->z);
 	}
 	else
 	{
+		snprintf(output,(unsigned)strlen(""),"");
 		printf("%s error : pointer to data is NULL !\n",__PRETTY_FUNCTION__);
 	}
 }

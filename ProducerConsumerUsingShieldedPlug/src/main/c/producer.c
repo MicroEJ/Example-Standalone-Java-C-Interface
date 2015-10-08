@@ -8,7 +8,7 @@
 
 /* Includes ------------------------------------------------------------------*/
 
-#include "publisher.h"
+#include "producer.h"
 
 #include "FreeRTOS.h"
 #include "task.h"
@@ -20,38 +20,38 @@
 
 /* Defines -------------------------------------------------------------------*/
 
-#define PUBLISHER_STACK_SIZE 4096
-#define PUBLISHER_TASK_PRIORITY      ( 3 ) /** Should be > tskIDLE_PRIORITY & < configTIMER_TASK_PRIORITY */
-#define PUBLISHER_TASK_STACK_SIZE     PUBLISHER_STACK_SIZE/4
+#define PRODUCER_STACK_SIZE 4096
+#define PRODUCER_TASK_PRIORITY      ( 3 ) /** Should be > tskIDLE_PRIORITY & < configTIMER_TASK_PRIORITY */
+#define PRODUCER_TASK_STACK_SIZE     PRODUCER_STACK_SIZE/4
 
 
 /* API -----------------------------------------------------------------------*/
 
-void PUBLISHER_init(PUBLISHER_t* pPublisher)
+void PRODUCER_init(PRODUCER_t* pProducer)
 {
-	if ( NULL != pPublisher )
+	if ( NULL != pProducer )
 	{
-		// create the PUBLISHER task
-		xTaskCreate(PUBLISHER_taskBody, NULL, PUBLISHER_TASK_STACK_SIZE, (void*) pPublisher, PUBLISHER_TASK_PRIORITY, NULL);
+		// create the PRODUCER task
+		xTaskCreate(PRODUCER_taskBody, NULL, PRODUCER_TASK_STACK_SIZE, (void*) pProducer, PRODUCER_TASK_PRIORITY, NULL);
 	}
 	else
 	{
-		printf("%s error : pointer to publicationFunction is NULL !\n",__PRETTY_FUNCTION__);
+		printf("%s error : pointer to productionFunction is NULL !\n",__PRETTY_FUNCTION__);
 	}
 }
 
-void PUBLISHER_taskBody(void* arg)
+void PRODUCER_taskBody(void* arg)
 {
 	if ( NULL != arg )
 	{
-		PUBLISHER_t* pPublisher = (PUBLISHER_t*) arg;	
-		const portTickType xDelay = pPublisher->publicationPeriodInMS / portTICK_RATE_MS;
+		PRODUCER_t* pProducer = (PRODUCER_t*) arg;	
+		const portTickType xDelay = pProducer->productionPeriodInMS / portTICK_RATE_MS;
 
-		if ( NULL != pPublisher->publicationFunction )
+		if ( NULL != pProducer->productionFunction )
 		{
-			ShieldedPlug database = SP_getDatabase(pPublisher->shieldedPlugDatabaseId);
+			ShieldedPlug database = SP_getDatabase(pProducer->shieldedPlugDatabaseId);
 
-			pPublisher->pDatabase = &database;
+			pProducer->pDatabase = &database;
 			
 			int32_t SPS_size = SP_getSize(database);
 
@@ -64,13 +64,13 @@ void PUBLISHER_taskBody(void* arg)
 			
 			for(;;)
 			{
-				pPublisher->publicationFunction(pPublisher);
+				pProducer->productionFunction(pProducer);
 				vTaskDelay(xDelay);			
 			}
 		}
 		else
 		{
-			printf("%s error : pointer to publicationFunction is NULL !\n",__PRETTY_FUNCTION__);
+			printf("%s error : pointer to productionFunction is NULL !\n",__PRETTY_FUNCTION__);
 		}
 	}
 	else

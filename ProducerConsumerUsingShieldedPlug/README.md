@@ -180,8 +180,8 @@ Each producer runs on a dedicated thread. In pseudocode, the thread body roughly
 	while (true)
 	{
 		data = generateData()
-		publish(data)
-		wait(publication_period)
+		produce(data)
+		wait(production_period)
 	}
 	
  The actual source code is in the **com.is2t.examples.java2C.AccelerometerDataProducer.java** file. 
@@ -245,35 +245,35 @@ For reuse purposes, we shall separate the producer-consumer pattern implementati
 
 Here we shall define that a producer is a task that must periodically call a produce function, which contents are actually domain specific.
 
-This leads us to defining a publisher "class" with the following contents
+This leads us to defining a producer "class" with the following contents
 * attributes (will be set by the domain-specific producer)
-	* publication period
-	* pointer to publication function (with pointer to publisher argument so as to be able to associate published data with publisher)
+	* production period
+	* pointer to production function (with pointer to producer argument so as to be able to associate produceed data with producer)
 * methods
-	* initialisation method (will start the publication task)
-	* taskbody (calls the publication function at every publication period expiration) 
+	* initialisation method (will start the production task)
+	* taskbody (calls the production function at every production period expiration) 
 
 Although the design is to some extent object-oriented, the implementation in this example is in C, not in C++.
 
-The source code is in the **src/main/c/publisher.<h|c>** files.
+The source code is in the **src/main/c/producer.<h|c>** files.
 
 ### Domain-specific producer code
 
 Here we shall define an accelerometer "class" with the following contents
 * attributes
 	* sensor_ID (useful for tracing from which sensor the data comes from)
-	* "parent" publisher member (so as to reuse Domain-agnostic producer code)
+	* "parent" producer member (so as to reuse Domain-agnostic producer code)
 * methods
 	* initialisation method (will propagate initialisation to "parent")
-	* adapter publication function
-		* with signature matching the one of the pointer to publication function in the domain-agnostic publisher struct
-		* used as an adapter method to call a more specialized publication function that can use domain-specific publisher info (such as sensor_ID)
+	* adapter production function
+		* with signature matching the one of the pointer to production function in the domain-agnostic producer struct
+		* used as an adapter method to call a more specialized production function that can use domain-specific producer info (such as sensor_ID)
 		
 ### Instantiation code
 
-The PUBLISHER_accelerometer_init_ALL function instantiates two producers with different IDs and publication periods
+The PRODUCER_accelerometer_init_ALL function instantiates two producers with different IDs and production periods
 
-The source code is in the **src/main/c/publisher-accelerator.<h|c>** files.
+The source code is in the **src/main/c/producer-accelerator.<h|c>** files.
 
 # Integration
 
@@ -285,8 +285,8 @@ We need to modify the main C program so as to call our producers instantiation c
 * From the **Project Explorer** view
 	* Navigate to the **STM32F429IDISCO-SNI_SP_FreeRTOS-CM4_ARMCC-bsp/Project/MicroEJ/src** folder
 	* Double-click on the main.c file
-	* Add `#include "publisher-accelerometer.h"` to the include directives
-	* In the `main()` function, insert a call to `	PUBLISHER_accelerometer_init_ALL()` function just before the following line
+	* Add `#include "producer-accelerometer.h"` to the include directives
+	* In the `main()` function, insert a call to `	PRODUCER_accelerometer_init_ALL()` function just before the following line
 			xTaskCreate( xJavaTaskFunction, NULL, JAVA_TASK_STACK_SIZE, NULL, JAVA_TASK_PRIORITY, NULL );
 			
 ## Building the updated C project
@@ -309,12 +309,46 @@ We need to modify the main C program so as to call our producers instantiation c
 #### Adding the C file to the BSP IDE project structure (BSP specific)
 * Select the root node of your project
 	* Right-Click and select **Add Group** this will add a group called "New Group"
-	* Select this group and hit **F2** key so as to rename it to "Publication"
-	* Right-Click on the **Publication** group and select **Add Existing Files to group 'Publication'...**
+	* Select this group and hit **F2** key so as to rename it to "Production"
+	* Right-Click on the **Publication** group and select **Add Existing Files to group 'Production'...**
 	* Navigate to the **ProducerConsumerUsingShieldedPlug\src\main\c** folder
 	* Select all the .c source files in the folder
 	* Click **Add**
 	* Click **Close**
+
+### Building the binary
+* From the MicroVision IDE
+	* Select **Project > Build Target** menu item (or press F7 keyboard shortcut)
+
+### Flashing the board (BSP specific)
+* Connect your board
+* Select **Flash > Download** menu item (or press F8 keyboard shortcut).
+
+### Checking the behavior
+* Set up a terminal on the board serial port and press the reset input. You shall get an output similar to the one below :
+
+	-ID : 2 {x : -68, y : 40, z : 91}
+	+ID : 1 {x : -37, y : -110, z : 70}
+	-ID : 1 {x : -37, y : -110, z : 70}
+	+ID : 3 {x : -68, y : -122, z : 106}
+	-ID : 3 {x : -68, y : -122, z : 106}
+	+ID : 1 {x : 33, y : 41, z : -56}
+	-ID : 1 {x : 33, y : 41, z : -56}
+	+ID : 2 {x : 68, y : 71, z : 87}
+	-ID : 2 {x : 68, y : 71, z : 87}
+	+ID : 3 {x : -100, y : -76, z : -86}
+	-ID : 3 {x : -100, y : -76, z : -86}
+	+ID : 1 {x : 94, y : 34, z : -51}
+	-ID : 1 {x : 94, y : 34, z : -51}
+	+ID : 2 {x : 101, y : 84, z : -32}
+	-ID : 2 {x : 101, y : 84, z : -32}
+	+ID : 1 {x : -77, y : 83, z : -86}
+	-ID : 1 {x : -77, y : 83, z : -86}
+	+ID : 3 {x : 76, y : -24, z : 54}
+
+* The '-' prefix indicates data consumption
+* The '+' prefix indicates data production
+* The number right after the ID indicates which sensor the data originates from
 
 
 # Additional references

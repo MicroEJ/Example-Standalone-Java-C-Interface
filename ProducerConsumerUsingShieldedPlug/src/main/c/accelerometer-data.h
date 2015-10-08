@@ -10,6 +10,7 @@
 
 #include <stdint.h>
 
+#define ACCELEROMETER_DATA_MAX_STRING_LENGTH 64
 
 typedef struct Accelerometer_data_t{
 	int8_t sensor_ID;
@@ -20,6 +21,6 @@ typedef struct Accelerometer_data_t{
 
 
 Accelerometer_data_t Accelerometer_data_generate_sample(int8_t sensorID);
-void Accelerometer_data_print(const Accelerometer_data_t* data);
+void Accelerometer_data_toString(const Accelerometer_data_t* data, char* output);
 
 #endif // ACCELEROMETER_DATA_H
