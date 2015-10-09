@@ -18,6 +18,7 @@ The following steps will be taken :
 * Project setup
 * Building a Java Platform
 	* Building a skeleton Java executable
+	* Running Java on the board (BSP specific)
 * Java design
 	* Java data class
 	* Java producer class
@@ -26,6 +27,9 @@ The following steps will be taken :
 	* C data struct
 	* C producer task
 * Integration
+	* Spawning the C tasks from the main C program
+	* Building the updated C project
+	* Deploying the binary
 
 ## Requirements
 
@@ -360,6 +364,8 @@ We need to modify the main C program so as to call our producers instantiation c
 ### Building the binary
 * From the MicroVision IDE
 	* Select **Project > Build Target** menu item (or press F7 keyboard shortcut)
+
+## Deploying the binary
 
 ### Flashing the board (BSP specific)
 * Connect your board
