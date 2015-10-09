@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+	Copyright 2015 IS2T. All rights reserved.	
+	Modification and distribution is permitted under certain conditions.
+	IS2T PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
+-->
+<project name="configuration" default="howto">
+
+	<!--
+		Defines some properties used in this configuration project 
+		(in ant and properties files)
+	-->
+	<dirname file="${ant.file.configuration}" property="project.dir"/>
+	<property name="workspace" location="${project.dir}/.."/>
+	<basename file="${project.dir}" suffix="-configuration" property="project.prefix"/>
+	
+	<!--
+		Optional Java example build: build some additional files relative
+		to the Java example 
+	-->
+	<import file="${workspace}/${project.prefix}-javaExample/build/build.xml" optional="true"/>
+	
+	<!--
+		Optional mock build: build a/some additional mock(s) into the
+		platform
+	-->
+	<import file="${workspace}/${project.prefix}-mock/build/build.xml" optional="true"/>
+	
+	<!-- 
+		Helpful target
+	-->
+	<target name="howto">
+		<property name="readme" location="${ant.file.configuration}/../documentation/README.txt"/>
+		<echo message="This script file is not the entry point to build the platform."/>
+		<echo message="Please follow the steps described into the file '${readme}'."/>
+	</target>
+</project>

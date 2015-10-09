@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<platform hardwarePartNumber="STM32F429IDISCO" name="SNI_SP_FreeRTOS" version="1.0.0" provider="IS2T" vendorUrl="" workbenchMinVersion="1.7.0">
+    <environment architecture="CM4" baseline="14" hardwarePartNumber="CM4" toolchain="CM4_ARMCC" name="flopi4" techVersion="1.6" version="5.3.3" level="dev" provider="IS2T" licenseTag="IS2T_J8F5C"/>
+    <group name="extensible"/>
+</platform>

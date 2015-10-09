@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+	ANT
+	
+	Copyright 2014 IS2T. All rights reserved.
+	Modification and distribution is permitted under certain conditions.
+	IS2T PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
+-->
+<project name="buildCProject">
+
+	<dirname file="${ant.file.buildCProject}" property="ant.file.buildCProject.dir"/>
+	<import file="${ant.file.buildCProject.dir}/buildIKeilUVisionProject.microejTask"/>
+
+	<macrodef name="microej.buildCProject" description="Build a C project by invoking ">
+		<!-- ANT 1.7 compatible -->
+		<attribute name="buildCProject.project.file" description="Third party IDE project file"/>
+		<attribute name="buildCProject.project.configuration" default="" description="Project configuration to use (Debug, Release, etc.)"/>
+		<attribute name="buildCProject.failonerror" default="true" description="Set to 'true' if build has to fail if errors occurred, 'false' otherwise"/>
+		<sequential>
+			<echo message="buildCProject.project.file=@{buildCProject.project.file}"/>
+			<microej.keilUVisionProjectBuild
+				keilUVisionProjectBuild.project.file="@{buildCProject.project.file}"
+				keilUVisionProjectBuild.failonerror="@{buildCProject.failonerror}"
+			/>
+		</sequential>
+	</macrodef>
+	
+	<macrodef name="microej.getCProjectFileExtension" description="Build a C project by invoking ">
+		<attribute name="getCProjectFileExtension.output.property" description="Return the file extension of the third party IDE project file"/>
+		<sequential>
+			<property name="@{getCProjectFileExtension.output.property}" value=".uvproj"/>
+		</sequential>
+	</macrodef>
+</project>
