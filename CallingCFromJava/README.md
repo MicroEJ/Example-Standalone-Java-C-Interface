@@ -102,7 +102,7 @@ This project will host the application specific code
 Here, we will create a MicroEJ "Run Configuration" that will compile the Java code we just created for the JPF we created previously
 
 * Select **File > New > Folder** menu item
-	* Set the **Enter or select the parent folder** field to ["CallingCFromJava"](CallingCFromJava) (Project root)
+	* Set the **Enter or select the parent folder** field to ["CallingCFromJava"](.) (Project root)
 	* Set the **Folder Name** field to ["launches"](CallingCFromJava/launches)
 * Select **Run Configurations...** from the **Run configurations** drop down list (or Press Ctrl+Shift+3 and type "Run Configurations...")
 * Select **MicroEJ Application** group and click **New**

@@ -47,6 +47,40 @@ Please refer to the relevant "Build a Java Platform" guide in the "Getting start
 
 We need to generate and build a Java Platform (JPF), i.e. the set of object files and libraries required to execute Java code on the target platform linked by an executable C program.
 
+### (Optional) Recreating the platform (BSP Specific)
+
+The platform provided is **based** on the [STM32F429I-DISCO Platform \(Keil,FreeRTOS\)](http://developer.microej.com/ivy/artifacts/com/is2t/CM4/examples/st/STM32F429IDISCO-HMI-CM4_ARMCC-FreeRTOS-eval/1.0.0/STM32F429IDISCO-HMI-CM4_ARMCC-FreeRTOS-eval_src-1.0.0.zip) platform available from [developer.microej.com](http://developer.microej.com)
+
+However, as such, this platform does not provided Shielded Plug support. Besides, the UI support is not needed for this example. Therefore, 
+the following modifications have been performed on the platform:
+
+#### Renaming of the platform
+
+So as to avoid confusion, the platform has been renamed to **STM32F429IDISCO-SNI_SP_FreeRTOS-CM4_ARMCC**
+
+#### Selection of the modules
+
+* From the **Content** tab of the [example.platform](STM32F429IDISCO-SNI_SP_FreeRTOS-CM4_ARMCC-configuration/example.platform) file
+	* In the **modules** frame
+		* Click on the **Show/Hide modules** button
+		* In the **modules** list, check **Java to C Interface**
+		
+#### Stripping the UI support
+* BSP UI support has been removed
+* microuiGeneratorExtension project has been removed
+
+#### Implementation of the Shielded Plug API in C
+
+* The 
+* Add [LLSP_FreeRTOS.c](/STM32F429IDISCO-SNI_SP_FreeRTOS-CM4_ARMCC-bsp/Project/MicroEJ/src/LLSP_FreeRTOS.c) source file to the (/STM32F429IDISCO-SNI_SP_FreeRTOS-CM4_ARMCC-bsp/Project/MicroEJ/src)[STM32F429IDISCO-SNI_SP_FreeRTOS-CM4_ARMCC-bsp/Project/MicroEJ/src] directory
+* From the **Project Explorer** view
+	* Double-click on the [Project.uvproj](/STM32F429IDISCO-SNI_SP_FreeRTOS-CM4_ARMCC-bsp/Project/MicroEJ/MDK-ARM/Project.uvproj) file (this will open the BSP project in the MicroVision IDE)
+* From the MicroVision IDE
+* Right-click on the **STM32F429i-DISCO>MicroEJ** node of your project and select **Add Existing Files to group 'MicroEJ'**
+	* Select the [LLSP_FreeRTOS.c](/STM32F429IDISCO-SNI_SP_FreeRTOS-CM4_ARMCC-bsp/Project/MicroEJ/src/LLSP_FreeRTOS.c) source file 
+	* Click **Add**
+	* Click **Close
+
 ### Importing existing platform configuration (BSP Specific)
 
 * Select **File > Import... > Existing Projects into Workspace** menu item
@@ -56,10 +90,10 @@ We need to generate and build a Java Platform (JPF), i.e. the set of object file
 	* Click on **Finish**
 
 ### Build
-* Open the **example.platform** file in the **STM32F429IDISCO-SNI_SP_FreeRTOS-CM4_ARMCC-configuration** project
+* Open the [example.platform](STM32F429IDISCO-SNI_SP_FreeRTOS-CM4_ARMCC-configuration/example.platform) file in the [(STM32F429IDISCO-SNI_SP_FreeRTOS-CM4_ARMCC-configuration)](STM32F429IDISCO-SNI_SP_FreeRTOS-CM4_ARMCC-configuration) project
 * From the **Overview** tab of the generated example.platform file
 	* Click on the **Build platform** hyperlink. This will generate the following project :
-		* **STM32F429IDISCO-SNI_SP_FreeRTOS-CM4_ARMCC-1.0.0**-1.0.0
+		* [STM32F429IDISCO-SNI_SP_FreeRTOS-CM4_ARMCC-1.0.0](STM32F429IDISCO-SNI_SP_FreeRTOS-CM4_ARMCC-1.0.0)
 * Click on **Window > Preferences > MicroEJ**
 	* In the **MicroEJ Repository** frame
 		* Click on the **Refresh** button 
@@ -89,7 +123,7 @@ This project will host the application specific code
 	* Set the **Package** field to "com.is2t.examples.java2C"
 	* Set the **Name** field to "DataConsumerExample"
 	* Click on **Finish**
-	* Copy and paste the following code inside the generated **DataConsumerExample.java** file 
+	* Copy and paste the following code inside the generated [DataConsumerExample.java](ProducerConsumerUsingShieldedPlug/src/main/java/com/is2t/examples/java2C/DataConsumerExample.java) file 
 
 			package com.is2t.examples.java2C;
 			public class DataConsumerExample {
@@ -133,15 +167,15 @@ Here, we will create a MicroEJ "Run Configuration" that will compile the Java co
 	* In **Common** tab
 		* In **Save as** frame
 			* Select the **Shared file** radio button
-			* Click on **Browse** and select **ProducerConsumerUsingShieldedPlug\\launches** folder	
+			* Click on **Browse** and select [ProducerConsumerUsingShieldedPlug/launches](ProducerConsumerUsingShieldedPlug/launches) folder	
 	* Click on "Run"
 
 ## Running Java on the board (BSP specific)
 
 ### Opening the generated C project
 * From the **Project Explorer** view
-	* Navigate to the **STM32F429IDISCO-SNI_SP_FreeRTOS-CM4_ARMCC-bsp/Project/MicroEJ/MDK-ARM** folder
-	* Double-click on the Project.uvproj file => this will open the BSP project in the MicroVision IDE
+	* Navigate to the [STM32F429IDISCO-SNI_SP_FreeRTOS-CM4_ARMCC-bsp/Project/MicroEJ/MDK-ARM](STM32F429IDISCO-SNI_SP_FreeRTOS-CM4_ARMCC-bsp/Project/MicroEJ/MDK-ARM) folder
+	* Double-click on the [Project.uvproj](/STM32F429IDISCO-SNI_SP_FreeRTOS-CM4_ARMCC-bsp/Project/MicroEJ/MDK-ARM/Project.uvproj) file (this will open the BSP project in the MicroVision IDE)
 
 ### Building the binary
 * From the MicroVision IDE
@@ -168,7 +202,7 @@ Before interfacing with the C world, we shall design a Java-only system that exc
 
 ## Java data class
 
-In this section, we shall create a class to represent the data being exchanged between producer(s) and consumer(s). The source code is in the **com.is2t.examples.java2C.AccelerometerData.java** file.
+In this section, we shall create a class to represent the data being exchanged between producer(s) and consumer(s). The source code is in the [AccelerometerData.java](src/main/java/AccelerometerData.java) file.
 
 
 # Java producer class
@@ -184,11 +218,11 @@ Each producer runs on a dedicated thread. In pseudocode, the thread body roughly
 		wait(production_period)
 	}
 	
- The actual source code is in the **com.is2t.examples.java2C.AccelerometerDataProducer.java** file. 
+ The actual source code is in the [AccelerometerDataProducer.java](src/main/java/AccelerometerDataProducer.java) file. 
 
 ## Starting the producer thread
 
-* Open the **ProducerConsumerUsingShieldedPlug/src/main/java/DataConsumerExample.java** source file
+* Open the [DataConsumerExample.java](/ProducerConsumerUsingShieldedPlug/src/main/java/com/is2t/examples/java2C/DataConsumerExample.java) source file
 * Replace the main() method by the code below
 	
 	public static void main(String[] args) {
@@ -207,12 +241,12 @@ Each consumer runs on a dedicated thread. In pseudocode, the thread body roughly
 		data = getNextData() //blocking call until some data is available
 	}
 
-The source code is in the **com.is2t.examples.java2C.AccelerometerDataConsumer.java** file.
+The source code is in the [AccelerometerDataConsumer.java](/ProducerConsumerUsingShieldedPlug/src/main/java/com/is2t/examples/java2C/AccelerometerDataConsumer.java) file.
 
 ## Starting the consumer thread
 
-* Open the **ProducerConsumerUsingShieldedPlug/src/main/java/DataConsumerExample.java** source file
-* Updated the main() method using the code below
+* Open the [DataConsumerExample.java](/ProducerConsumerUsingShieldedPlug/src/main/java/com/is2t/examples/java2C/DataConsumerExample.java) source file
+* Update the main() method using the code below
 	
 	public static void main(String[] args) {
 
@@ -233,7 +267,9 @@ Let us define :
 * some method to generate/retrieve the data (and trace where it comes from - that is what the **sensor_ID** field is for)
 * some debug helper function (the **print** function)
 
-The source code is in the **src/main/c/accelerometer-data.<h|c>** files.
+The source code is available in the following files.
+* [accelerometer-data.h](/ProducerConsumerUsingShieldedPlug/src/main/c/accelerometer-data.h)
+* [accelerometer-data.c](/ProducerConsumerUsingShieldedPlug/src/main/c/accelerometer-data.c)
 
 ## C producer task
 
@@ -255,7 +291,10 @@ This leads us to defining a producer "class" with the following contents
 
 Although the design is to some extent object-oriented, the implementation in this example is in C, not in C++.
 
-The source code is in the **src/main/c/producer.<h|c>** files.
+The source code is available in the following files.
+* [producer.h](/ProducerConsumerUsingShieldedPlug/src/main/c/producer.h)
+* [producer.c](/ProducerConsumerUsingShieldedPlug/src/main/c/producer.c)
+
 
 ### Domain-specific producer code
 
@@ -271,9 +310,12 @@ Here we shall define an accelerometer "class" with the following contents
 		
 ### Instantiation code
 
-The PRODUCER_accelerometer_init_ALL function instantiates two producers with different IDs and production periods
+The `PRODUCER_accelerometer_init_ALL` function instantiates two producers with different IDs and production periods
 
-The source code is in the **src/main/c/producer-accelerator.<h|c>** files.
+The source code is available in the following files.
+* [producer-accelerometer.h](/ProducerConsumerUsingShieldedPlug/src/main/c/producer-accelerometer.h)
+* [producer-accelerometer.c](/ProducerConsumerUsingShieldedPlug/src/main/c/producer-accelerometer.c)
+
 
 # Integration
 
@@ -283,8 +325,7 @@ We need to modify the main C program so as to call our producers instantiation c
 
 ### Opening the generated C project (BSP specific)
 * From the **Project Explorer** view
-	* Navigate to the **STM32F429IDISCO-SNI_SP_FreeRTOS-CM4_ARMCC-bsp/Project/MicroEJ/src** folder
-	* Double-click on the main.c file
+	* Open the [main.c](/STM32F429IDISCO-SNI_SP_FreeRTOS-CM4_ARMCC-bsp/Project/MicroEJ/src/main.c) source file
 	* Add `#include "producer-accelerometer.h"` to the include directives
 	* In the `main()` function, insert a call to `	PRODUCER_accelerometer_init_ALL()` function just before the following line
 			xTaskCreate( xJavaTaskFunction, NULL, JAVA_TASK_STACK_SIZE, NULL, JAVA_TASK_PRIORITY, NULL );
@@ -294,24 +335,24 @@ We need to modify the main C program so as to call our producers instantiation c
 
 #### Opening the generated C project
 * From the **Project Explorer** view
-	* Navigate to the **STM32F429IDISCO-SNI_SP_FreeRTOS-CM4_ARMCC-bsp/Project/MicroEJ/MDK-ARM** folder
-	* Double-click on the Project.uvproj file => this will open the BSP project in the MicroVision IDE
+	* Double-click on the [Project.uvproj](/STM32F429IDISCO-SNI_SP_FreeRTOS-CM4_ARMCC-bsp/Project/MicroEJ/MDK-ARM/Project.uvproj) file (this will open the BSP project in the MicroVision IDE)
 	
 #### Updating the include path
+* From the MicroVision IDE
 * Right-click on the root node of your project (the one called **STM32F429i-DISCO**)
 * Select **Options for Target STM32F429i-DISCO**
 	* Go to C/C++ tab
 	* Click on **...** next to the **Include Paths** field
 		* Click on the **New** button
 			* Click on **...** next to the newly created entry
-				* Navigate to the **ProducerConsumerUsingShieldedPlug\src\main\c** folder
+				* Navigate to the [ProducerConsumerUsingShieldedPlug\src\main\c](ProducerConsumerUsingShieldedPlug\src\main\c) folder
 
 #### Adding the C file to the BSP IDE project structure (BSP specific)
 * Select the root node of your project
 	* Right-Click and select **Add Group** this will add a group called "New Group"
 	* Select this group and hit **F2** key so as to rename it to "Production"
 	* Right-Click on the **Publication** group and select **Add Existing Files to group 'Production'...**
-	* Navigate to the **ProducerConsumerUsingShieldedPlug\src\main\c** folder
+	* Navigate to the [ProducerConsumerUsingShieldedPlug/src/main/c](/ProducerConsumerUsingShieldedPlug/src/main/c) folder
 	* Select all the .c source files in the folder
 	* Click **Add**
 	* Click **Close**
