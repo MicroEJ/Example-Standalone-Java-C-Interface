@@ -96,7 +96,7 @@ So as to avoid confusion, the platform has been renamed to **STM32F429IDISCO-SNI
 * Open the [example.platform](STM32F429IDISCO-SNI_SP_FreeRTOS-CM4_ARMCC-configuration/example.platform) file in the [(STM32F429IDISCO-SNI_SP_FreeRTOS-CM4_ARMCC-configuration)](STM32F429IDISCO-SNI_SP_FreeRTOS-CM4_ARMCC-configuration) project
 * From the **Overview** tab of the generated example.platform file
 	* Click on the **Build platform** hyperlink. This will generate the following project :
-		* [STM32F429IDISCO-SNI_SP_FreeRTOS-CM4_ARMCC-1.0.0](STM32F429IDISCO-SNI_SP_FreeRTOS-CM4_ARMCC-1.0.0)
+		* STM32F429IDISCO-SNI_SP_FreeRTOS-CM4_ARMCC-1.0.0
 * Click on **Window > Preferences > MicroEJ**
 	* In the **MicroEJ Repository** frame
 		* Click on the **Refresh** button 
@@ -205,7 +205,7 @@ Before interfacing with the C world, we shall design a Java-only system that exc
 
 ## Java data class
 
-In this section, we shall create a class to represent the data being exchanged between producer(s) and consumer(s). The source code is in the [AccelerometerData.java](/ProducerConsumerUsingShieldedPlug/src/main/java/AccelerometerData.java) file.
+In this section, we shall create a class to represent the data being exchanged between producer(s) and consumer(s). The source code is in the [AccelerometerData.java](/ProducerConsumerUsingShieldedPlug/src/main/java/com/is2t/examples/java2C/AccelerometerData.java) file.
 
 
 # Java producer class
@@ -221,7 +221,7 @@ Each producer runs on a dedicated thread. In pseudocode, the thread body roughly
 		wait(production_period)
 	}
 	
- The actual source code is in the [AccelerometerDataProducer.java](/ProducerConsumerUsingShieldedPlug/src/main/java/AccelerometerDataProducer.java) file. 
+ The actual source code is in the [AccelerometerDataProducer.java](/ProducerConsumerUsingShieldedPlug/src/main/java/com/is2t/examples/java2C/AccelerometerDataProducer.java) file. 
 
 ## Starting the producer thread
 
@@ -233,7 +233,7 @@ Each producer runs on a dedicated thread. In pseudocode, the thread body roughly
 		new Thread(producer).start();
 	}
 
-# J	ava consumer class
+# Java consumer class
 
 In this section, we shall create a class to consume data as soon as it is available.
 
