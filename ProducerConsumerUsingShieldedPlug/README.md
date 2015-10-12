@@ -75,7 +75,6 @@ So as to avoid confusion, the platform has been renamed to **STM32F429IDISCO-SNI
 
 #### Implementation of the Shielded Plug API in C
 
-* The 
 * Add [LLSP_FreeRTOS.c](/STM32F429IDISCO-SNI_SP_FreeRTOS-CM4_ARMCC-bsp/Project/MicroEJ/src/LLSP_FreeRTOS.c) source file to the (/STM32F429IDISCO-SNI_SP_FreeRTOS-CM4_ARMCC-bsp/Project/MicroEJ/src)[STM32F429IDISCO-SNI_SP_FreeRTOS-CM4_ARMCC-bsp/Project/MicroEJ/src] directory
 * From the **Project Explorer** view
 	* Double-click on the [Project.uvproj](/STM32F429IDISCO-SNI_SP_FreeRTOS-CM4_ARMCC-bsp/Project/MicroEJ/MDK-ARM/Project.uvproj) file (this will open the BSP project in the MicroVision IDE)
@@ -206,7 +205,7 @@ Before interfacing with the C world, we shall design a Java-only system that exc
 
 ## Java data class
 
-In this section, we shall create a class to represent the data being exchanged between producer(s) and consumer(s). The source code is in the [AccelerometerData.java](src/main/java/AccelerometerData.java) file.
+In this section, we shall create a class to represent the data being exchanged between producer(s) and consumer(s). The source code is in the [AccelerometerData.java](/ProducerConsumerUsingShieldedPlug/src/main/java/AccelerometerData.java) file.
 
 
 # Java producer class
@@ -222,7 +221,7 @@ Each producer runs on a dedicated thread. In pseudocode, the thread body roughly
 		wait(production_period)
 	}
 	
- The actual source code is in the [AccelerometerDataProducer.java](src/main/java/AccelerometerDataProducer.java) file. 
+ The actual source code is in the [AccelerometerDataProducer.java](/ProducerConsumerUsingShieldedPlug/src/main/java/AccelerometerDataProducer.java) file. 
 
 ## Starting the producer thread
 
