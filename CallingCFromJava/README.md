@@ -4,7 +4,7 @@
 
 # Overview
 
-This example shows the minimum steps required to create a Java program that calls a C function via the SNI interface, starting from an empty MicroEJ workspace.
+This example shows the minimum steps required to create a Java program that makes a blocking call to a C function via the SNI interface, starting from an empty MicroEJ workspace.
 
 The following steps will be taken :
 
@@ -81,7 +81,7 @@ This project will host the application specific code
 	* Set the **Package** field to "com.is2t.examples.java2C"
 	* Set the **Name** field to "**NativeCCallExample**"
 	* Click on **Finish**
-	* Copy and paste the following code inside the generated [NativeCCallExample.java](CallingCFromJava/src/main/java/com/is2t/examples/java2C/NativeCCallExample.java) file 
+	* Copy and paste the following code inside the generated [NativeCCallExample.java](CallingCFromJava/src/main/java/com/is2t/examples/java2C/NativeCCallExample.java) file. Notice the **native** qualifier used for the declaration of the C function binding.  
 
 			package com.is2t.examples.java2C;		
 			public class NativeCCallExample {
@@ -148,12 +148,13 @@ This is perfectly normal since in [NativeCCallExample.java](CallingCFromJava/src
 * Right-Click on the folder that you just created
 	* Select **New > File** context menu item
 	* Set the **File Name** field to "NativeCCallExample.c"
-	* Copy and paste the following code inside the generated [NativeCCallExample.c](CallingCFromJava/src/main/c/com/is2t/examples/java2C/NativeCCallExample.c)
+	* Copy and paste the following code inside the generated [NativeCCallExample.c](CallingCFromJava/src/main/c/com/is2t/examples/java2C/NativeCCallExample.c). Notice the C function follows the strict SNI naming convention mentioned earlier.
 
 			#include <sni.h>
-			int Java_com_is2t_examples_java2C_NativeCCallExample_someCFunctionReturningTwiceAValue(int aValue) {
+			jint Java_com_is2t_examples_java2C_NativeCCallExample_someCFunctionReturningTwiceAValue(jint aValue) {
 				return aValue*2;
 			}
+
 
 * Right-click on the file that you just created
 	* Select **Properties** context menu item

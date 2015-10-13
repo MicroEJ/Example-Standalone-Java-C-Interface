@@ -398,7 +398,7 @@ We need to modify the main C program so as to call our producers instantiation c
 
 
 # Additional references
-## SNI Library Specification
+## Shielded Plug Library Specification
 
 The **Shielded Plug Profile Specification** document contains detailed information on :
 
