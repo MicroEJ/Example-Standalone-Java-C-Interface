@@ -22,7 +22,7 @@ typedef struct PRODUCER_accelerometer_t{
 void PRODUCER_accelerometer_init_ALL(void);
 void PRODUCER_accelerometer_init(PRODUCER_accelerometer_t* accelerometer);
 
-void PRODUCER_accelerometer_publish_adapter(PRODUCER_t* pProducer);
-void PRODUCER_accelerometer_publish(PRODUCER_accelerometer_t* pProducer);
+void PRODUCER_accelerometer_produce_adapter(PRODUCER_t* pProducer);
+void PRODUCER_accelerometer_produce(PRODUCER_accelerometer_t* pProducer);
 
 #endif // PRODUCER_ACCELEROMETER_H

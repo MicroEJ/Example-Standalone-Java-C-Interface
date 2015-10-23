@@ -15,7 +15,7 @@ The following steps will be taken :
 ## Requirements
 * JRE 7 (or later) x86.
 * MicroEJ 3.1 or later.
-* BSP specific toolchain.
+* BSP specific toolchain (Keil MicroVision (&trade;) v5 or later with v4 legacy pack)
 
 ## Adapting this example to your BSP toolchain
 
@@ -195,20 +195,6 @@ This is perfectly normal since in [NativeCCallExample.java](CallingCFromJava/src
 		VM END (exit code = 0)
 
 # Additional references
-## SNI Library Specification
-
-The **Simple Native Interface for GreenThread Context Profile Specification** document contains detailed information on :
-
-* how to map Java primitive types to portable C types for methods/functions parameters and return types
-* naming conventions for C functions implementing Java SNI native implementations
-	* these have to be followed to generate valid linker configuration files
-* sharing memory areas between Java C
-* controlling (as in suspend and resume) Java Thread execution from C code
-
-To access the document from MicroEJ :
-
-* Select **Help > MicroEJ Resource Center** menu item
-	* Select **Library Specification > SNI_GT 1.2**
 
 ## Asynchronous communication use case
 

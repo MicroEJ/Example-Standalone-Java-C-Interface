@@ -6,7 +6,7 @@
  * IS2T PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  *
  */
-package com.is2t.examples.java2C;
+package com.is2t.examples.java2c;
 
 import com.is2t.sp.ShieldedPlug;
 

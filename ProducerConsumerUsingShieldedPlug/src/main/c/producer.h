@@ -15,9 +15,9 @@ typedef struct PRODUCER_t PRODUCER_t;								//forward declaration of struct typ
 
 struct PRODUCER_t{
 	//== "public" data - needs to be set when calling PRODUCER_init(...)
-	const signed char name[32];										//name of the publishing task (useful for debugging purposes)
-	int16_t productionPeriodInMS;									//period (in Milliseconds) for publishing data
-	void (*productionFunction)(PRODUCER_t* pProducer);			//pointer to production function - with pointer to publisher argument
+	const signed char name[32];										//name of the producing task (useful for debugging purposes)
+	int16_t productionPeriodInMS;									//period (in Milliseconds) for producing data
+	void (*productionFunction)(PRODUCER_t* pProducer);			//pointer to production function - with pointer to producer argument
 
 	int8_t shieldedPlugDatabaseId;									//shielded plug database ID
 

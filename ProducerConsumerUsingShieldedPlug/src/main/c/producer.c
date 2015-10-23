@@ -75,7 +75,7 @@ void PRODUCER_taskBody(void* arg)
 	}
 	else
 	{
-		printf("%s error : pointer to publisher is NULL !\n",__PRETTY_FUNCTION__);
+		printf("%s error : pointer to producer is NULL !\n",__PRETTY_FUNCTION__);
 	}
 }
 

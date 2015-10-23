@@ -33,7 +33,7 @@
 <stringAttribute key="com.is2t.microej.workbench.stdMicroEJLaunchConfigurationJPFConfigurationTabCSTART_com.is2t.microej.workbench.std.launch.ext.TextFieldOption_CENDcmx.14root.core.memory.threads.pool.size" value="10"/>
 <stringAttribute key="com.is2t.microej.workbench.stdMicroEJLaunchConfigurationJPFConfigurationTabCSTART_com.is2t.microej.workbench.std.launch.ext.TextFieldOption_CENDcmx.14root.core.memory.threads.size" value="5"/>
 <stringAttribute key="com.is2t.microej.workbench.stdMicroEJLaunchConfigurationJPFConfigurationTabCSTART_com.is2t.microej.workbench.std.launch.ext.TextFieldOption_CENDcore.outputstream.class" value=""/>
-<stringAttribute key="com.is2t.microej.workbench.stdMicroEJLaunchConfigurationMainClass" value="com.is2t.examples.java2C.DataConsumerExample"/>
+<stringAttribute key="com.is2t.microej.workbench.stdMicroEJLaunchConfigurationMainClass" value="com.is2t.examples.java2c.DataConsumerExample"/>
 <stringAttribute key="com.is2t.microej.workbench.stdMicroEJLaunchConfigurationMicroJVM" value="MICROJVM"/>
 <stringAttribute key="com.is2t.microej.workbench.stdMicroEJLaunchConfigurationOutputDir" value="${project_loc:ProducerConsumerUsingShieldedPlug}"/>
 <stringAttribute key="com.is2t.microej.workbench.stdMicroEJLaunchConfigurationPlatformArchitecture" value="CM4"/>
@@ -51,13 +51,13 @@
 <listAttribute key="com.is2t.microej.workbench.stdMicroEJLaunchConfigurationResources"/>
 <booleanAttribute key="com.is2t.microej.workbench.stdMicroEJLaunchConfigurationVerbose" value="false"/>
 <listAttribute key="org.eclipse.debug.core.MAPPED_RESOURCE_PATHS">
-<listEntry value="/ProducerConsumerUsingShieldedPlug/src/main/java/com/is2t/examples/java2C/DataConsumerExample.java"/>
+<listEntry value="/ProducerConsumerUsingShieldedPlug/src/main/java/com/is2t/examples/java2c/DataConsumerExample.java"/>
 </listAttribute>
 <listAttribute key="org.eclipse.debug.core.MAPPED_RESOURCE_TYPES">
 <listEntry value="1"/>
 </listAttribute>
 <booleanAttribute key="org.eclipse.jdt.launching.ALLOW_TERMINATE" value="true"/>
 <stringAttribute key="org.eclipse.jdt.launching.JRE_CONTAINER" value="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.7"/>
-<stringAttribute key="org.eclipse.jdt.launching.MAIN_TYPE" value="com.is2t.examples.java2C.DataConsumerExample"/>
+<stringAttribute key="org.eclipse.jdt.launching.MAIN_TYPE" value="com.is2t.examples.java2c.DataConsumerExample"/>
 <stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="ProducerConsumerUsingShieldedPlug"/>
 </launchConfiguration>

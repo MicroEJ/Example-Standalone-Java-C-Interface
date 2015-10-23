@@ -22,10 +22,10 @@
 
 void PRODUCER_accelerometer_init_ALL(void)
 {
-	//since publishers are passed as FreeRTOS task parameters, they must live for the lifetime of the task (i.e. forever)
+	//since producers are passed as FreeRTOS task parameters, they must live for the lifetime of the task (i.e. forever)
 	//we therefore declare them as static
-	static PRODUCER_accelerometer_t accelerometerProducer1 = {{"PRODUCER_Accelerometer_Task_1",1000,&PRODUCER_accelerometer_publish_adapter,DATABASE_ID},1};
-	static PRODUCER_accelerometer_t accelerometerProducer2 = {{"PRODUCER_Accelerometer_Task_2",1500,&PRODUCER_accelerometer_publish_adapter,DATABASE_ID},2}; //
+	static PRODUCER_accelerometer_t accelerometerProducer1 = {{"PRODUCER_Accelerometer_Task_1",1000,&PRODUCER_accelerometer_produce_adapter,DATABASE_ID},1};
+	static PRODUCER_accelerometer_t accelerometerProducer2 = {{"PRODUCER_Accelerometer_Task_2",1500,&PRODUCER_accelerometer_produce_adapter,DATABASE_ID},2}; //
 
 	PRODUCER_accelerometer_init(&accelerometerProducer1);
 	PRODUCER_accelerometer_init(&accelerometerProducer2);
@@ -39,15 +39,15 @@ void PRODUCER_accelerometer_init(PRODUCER_accelerometer_t* pAccelerometer)
 	}
 }
 
-void PRODUCER_accelerometer_publish_adapter(PRODUCER_t* pProducer)
+void PRODUCER_accelerometer_produce_adapter(PRODUCER_t* pProducer)
 {
 	if ( NULL != pProducer )
 	{
-		PRODUCER_accelerometer_publish((PRODUCER_accelerometer_t*) pProducer);
+		PRODUCER_accelerometer_produce((PRODUCER_accelerometer_t*) pProducer);
 	}
 }
 
-void PRODUCER_accelerometer_publish(PRODUCER_accelerometer_t* pProducer)
+void PRODUCER_accelerometer_produce(PRODUCER_accelerometer_t* pProducer)
 {
 	ShieldedPlug* pDatabase = pProducer->super.pDatabase;
 	if ( NULL != pDatabase )
