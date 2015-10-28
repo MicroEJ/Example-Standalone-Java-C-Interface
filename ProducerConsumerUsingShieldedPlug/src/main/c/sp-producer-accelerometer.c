@@ -8,7 +8,7 @@
 
 /* Includes ------------------------------------------------------------------*/
 
-#include "producer-accelerometer.h"
+#include "sp-producer-accelerometer.h"
 #include "accelerometer-data.h"
 
 #include <stdint.h>

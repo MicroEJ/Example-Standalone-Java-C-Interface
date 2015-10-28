@@ -9,7 +9,7 @@
 #define PRODUCER_ACCELEROMETER_H
 
 #include <stdint.h>
-#include "producer.h"
+#include "sp-producer.h"
 
 typedef struct PRODUCER_accelerometer_t{
 	PRODUCER_t super;

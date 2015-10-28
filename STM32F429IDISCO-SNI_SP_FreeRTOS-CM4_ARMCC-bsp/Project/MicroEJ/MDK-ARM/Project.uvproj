@@ -723,12 +723,12 @@
             <File>
               <FileName>javaruntime.lib</FileName>
               <FileType>4</FileType>
-              <FilePath>C:\Users\Xavier Sautejeau\Documents\workspaces-MicroEJ-DEV-3.1.1\Example-Java-SNI-ShieldedPlug\STM32F429IDISCO-SNI_SP_FreeRTOS-CM4_ARMCC-1.0.0\source\lib\javaruntime.lib</FilePath>
+              <FilePath>C:\Users\Xavier Sautejeau\Documents\workspaces-MicroEJ-DEV-3.1.1\Example-Java-C-Interface\STM32F429IDISCO-SNI_SP_FreeRTOS-CM4_ARMCC-1.0.0\source\lib\javaruntime.lib</FilePath>
             </File>
             <File>
               <FileName>javaapp.o</FileName>
               <FileType>3</FileType>
-              <FilePath>C:\Users\Xavier Sautejeau\Documents\workspaces-MicroEJ-DEV-3.1.1\Example-Java-SNI-ShieldedPlug\.microej\CM4_ARMCC\application\javaapp.o</FilePath>
+              <FilePath>C:\Users\Xavier Sautejeau\Documents\workspaces-MicroEJ-DEV-3.1.1\Example-Java-C-Interface\.microej\CM4_ARMCC\application\javaapp.o</FilePath>
             </File>
           </Files>
         </Group>
@@ -816,14 +816,14 @@
               <FilePath>..\..\..\..\ProducerConsumerUsingShieldedPlug\src\main\c\accelerometer-data.c</FilePath>
             </File>
             <File>
-              <FileName>producer.c</FileName>
+              <FileName>sp-producer.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\..\ProducerConsumerUsingShieldedPlug\src\main\c\producer.c</FilePath>
+              <FilePath>..\..\..\..\ProducerConsumerUsingShieldedPlug\src\main\c\sp-producer.c</FilePath>
             </File>
             <File>
-              <FileName>producer-accelerometer.c</FileName>
+              <FileName>sp-producer-accelerometer.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\..\ProducerConsumerUsingShieldedPlug\src\main\c\producer-accelerometer.c</FilePath>
+              <FilePath>..\..\..\..\ProducerConsumerUsingShieldedPlug\src\main\c\sp-producer-accelerometer.c</FilePath>
             </File>
           </Files>
         </Group>

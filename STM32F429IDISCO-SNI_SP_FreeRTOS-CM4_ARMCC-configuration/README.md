@@ -185,7 +185,7 @@ We need to modify the main C program so as to call our producers instantiation c
 ### Opening the generated C project (BSP specific)
 * From the **Project Explorer** view
 	* Open the [main.c](/STM32F429IDISCO-SNI_SP_FreeRTOS-CM4_ARMCC-bsp/Project/MicroEJ/src/main.c) source file
-	* Add `#include "producer-accelerometer.h"` to the include directives
+	* Add `#include "sp-producer-accelerometer.h"` to the include directives
 	* In the `main()` function, insert a call to `	PRODUCER_accelerometer_init_ALL()` function just before the following line
 			xTaskCreate( xJavaTaskFunction, NULL, JAVA_TASK_STACK_SIZE, NULL, JAVA_TASK_PRIORITY, NULL );
 			

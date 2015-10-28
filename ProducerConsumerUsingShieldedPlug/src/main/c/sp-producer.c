@@ -8,7 +8,7 @@
 
 /* Includes ------------------------------------------------------------------*/
 
-#include "producer.h"
+#include "sp-producer.h"
 
 #include "FreeRTOS.h"
 #include "task.h"

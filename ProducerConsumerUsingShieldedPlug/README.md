@@ -27,7 +27,7 @@ The following steps will be taken :
 
 # Project setup
 
-For reference, BSP toolchain setup related instructions are described in the **Project setup** section of the [STM32F429IDISCO-SNI_SP_FreeRTOS-CM4_ARMCC-configuration README.md](/STM32F429IDISCO-SNI_SP_FreeRTOS-CM4_ARMCC-configuration/README.md) file.
+For reference, BSP toolchain setup related instructions are described in the [Building a java platform](/STM32F429IDISCO-SNI_SP_FreeRTOS-CM4_ARMCC-configuration/README.md#building-a-java-platform) section of the [STM32F429IDISCO-SNI_SP_FreeRTOS-CM4_ARMCC-configuration README.md](/STM32F429IDISCO-SNI_SP_FreeRTOS-CM4_ARMCC-configuration/README.md) file.
 
 These steps have already been done in this workspace and you do not need to repeat them.
 
@@ -127,8 +127,8 @@ This leads us to defining a producer "class" with the following contents
 Although the design is to some extent object-oriented, the implementation in this example is in C, not in C++.
 
 The source code is available in the following files.
-* [producer.h](/ProducerConsumerUsingShieldedPlug/src/main/c/producer.h)
-* [producer.c](/ProducerConsumerUsingShieldedPlug/src/main/c/producer.c)
+* [producer.h](/ProducerConsumerUsingShieldedPlug/src/main/c/sp-producer.h)
+* [producer.c](/ProducerConsumerUsingShieldedPlug/src/main/c/sp-producer.c)
 
 
 ### Domain-specific producer code
@@ -148,13 +148,13 @@ Here we shall define an accelerometer "class" with the following contents
 The `PRODUCER_accelerometer_init_ALL` function instantiates two producers with different IDs and production periods
 
 The source code is available in the following files.
-* [producer-accelerometer.h](/ProducerConsumerUsingShieldedPlug/src/main/c/producer-accelerometer.h)
-* [producer-accelerometer.c](/ProducerConsumerUsingShieldedPlug/src/main/c/producer-accelerometer.c)
+* [producer-accelerometer.h](/ProducerConsumerUsingShieldedPlug/src/main/c/sp-producer-accelerometer.h)
+* [producer-accelerometer.c](/ProducerConsumerUsingShieldedPlug/src/main/c/sp-producer-accelerometer.c)
 
 
 # Integration
 
-For reference, BSP toolchain integration related instructions are described in the **Producer Consumer Integration** section of the [STM32F429IDISCO-SNI_SP_FreeRTOS-CM4_ARMCC-configuration/README.md](/STM32F429IDISCO-SNI_SP_FreeRTOS-CM4_ARMCC-configuration/README.md) file.
+For reference, BSP toolchain integration related instructions are described in the [Produced Consumer Integration](/STM32F429IDISCO-SNI_SP_FreeRTOS-CM4_ARMCC-configuration/README.md#producer-consumer-integration) section of the [STM32F429IDISCO-SNI_SP_FreeRTOS-CM4_ARMCC-configuration/README.md](/STM32F429IDISCO-SNI_SP_FreeRTOS-CM4_ARMCC-configuration/README.md) file.
 
 These steps have already been done in this workspace and you do not need to repeat them.
 

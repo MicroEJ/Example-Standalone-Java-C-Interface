@@ -850,7 +850,7 @@
       <Focus>0</Focus>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>C:\Users\Xavier Sautejeau\Documents\workspaces-MicroEJ-DEV-3.1.1\Example-Java-SNI-ShieldedPlug\STM32F429IDISCO-SNI_SP_FreeRTOS-CM4_ARMCC-1.0.0\source\lib\javaruntime.lib</PathWithFileName>
+      <PathWithFileName>C:\Users\Xavier Sautejeau\Documents\workspaces-MicroEJ-DEV-3.1.1\Example-Java-C-Interface\STM32F429IDISCO-SNI_SP_FreeRTOS-CM4_ARMCC-1.0.0\source\lib\javaruntime.lib</PathWithFileName>
       <FilenameWithoutPath>javaruntime.lib</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
@@ -863,7 +863,7 @@
       <Focus>0</Focus>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>C:\Users\Xavier Sautejeau\Documents\workspaces-MicroEJ-DEV-3.1.1\Example-Java-SNI-ShieldedPlug\.microej\CM4_ARMCC\application\javaapp.o</PathWithFileName>
+      <PathWithFileName>C:\Users\Xavier Sautejeau\Documents\workspaces-MicroEJ-DEV-3.1.1\Example-Java-C-Interface\.microej\CM4_ARMCC\application\javaapp.o</PathWithFileName>
       <FilenameWithoutPath>javaapp.o</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
@@ -1082,8 +1082,8 @@
       <Focus>0</Focus>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>..\..\..\..\ProducerConsumerUsingShieldedPlug\src\main\c\producer.c</PathWithFileName>
-      <FilenameWithoutPath>producer.c</FilenameWithoutPath>
+      <PathWithFileName>..\..\..\..\ProducerConsumerUsingShieldedPlug\src\main\c\sp-producer.c</PathWithFileName>
+      <FilenameWithoutPath>sp-producer.c</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
     </File>
@@ -1095,8 +1095,8 @@
       <Focus>0</Focus>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>..\..\..\..\ProducerConsumerUsingShieldedPlug\src\main\c\producer-accelerometer.c</PathWithFileName>
-      <FilenameWithoutPath>producer-accelerometer.c</FilenameWithoutPath>
+      <PathWithFileName>..\..\..\..\ProducerConsumerUsingShieldedPlug\src\main\c\sp-producer-accelerometer.c</PathWithFileName>
+      <FilenameWithoutPath>sp-producer-accelerometer.c</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
     </File>

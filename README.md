@@ -26,11 +26,19 @@ Although MicroEJ lets you leverage Java in an embedded context, there are still 
 
 For tasks/threads synchronisation via function calls and callbacks, MicroEJ provides the SNI API.
 For data exchange issues between tasks/threads, MicroEJ provides a few options.
+* Shielded Plug API (suitable for read/write accesses to structured data, with built-in wait/release synchronisation APIs)
+* Immortals API and SNI API (suitable for sharing access to raw data, but you need to provide your own synchronisation mechanism)
 
 The following examples illustrate how to use those APIs :
-* [Making synchronous C functions calls from Java](/CallingCFromJava)
-* [Producer Consumer problem](/ProducerConsumerUsingShieldedPlug) using Shielded Plug API as the delivery mechanism
+* [Making synchronous C functions calls from Java](/CallingCFromJava) using SNI
+* [Producer Consumer problem with ShieldedPlug](/ProducerConsumerUsingShieldedPlug) using Shielded Plug API as the delivery mechanism
+* [Producer Consumer problem with SNI](/ProducerConsumerUsingSNIAndImmortals) using SNI and Immortals APIs
 
+## API Selection Criterion
+
+* Need to share big memory area ?
+* Resource access contention ?
+* ...
 
 <!--
 

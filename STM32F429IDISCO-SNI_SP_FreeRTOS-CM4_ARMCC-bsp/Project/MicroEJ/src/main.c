@@ -35,7 +35,7 @@ void xJavaTaskFunction(void * pvParameters)
 /*
  * Generic main function
  */
-#include "producer-accelerometer.h"
+#include "sp-producer-accelerometer.h"
 int main(void)
 {
 	printf("START\n");
