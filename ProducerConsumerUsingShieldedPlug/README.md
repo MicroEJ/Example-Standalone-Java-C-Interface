@@ -60,10 +60,10 @@ Each producer runs on a dedicated thread. In pseudocode, the thread body roughly
 * Open the [DataConsumerExample.java](/ProducerConsumerUsingShieldedPlug/src/main/java/com/is2t/examples/java2C/DataConsumerExample.java) source file
 * Replace the main() method by the code below
 	
-	public static void main(String[] args) {
-		AccelerometerDataProducer producer = new AccelerometerDataProducer(3,1200);
-		new Thread(producer).start();
-	}
+		public static void main(String[] args) {
+			AccelerometerDataProducer producer = new AccelerometerDataProducer(3,1200);
+			new Thread(producer).start();
+		}
 
 # Java consumer class
 
@@ -83,13 +83,13 @@ The source code is in the [AccelerometerDataConsumer.java](/ProducerConsumerUsin
 * Open the [DataConsumerExample.java](/ProducerConsumerUsingShieldedPlug/src/main/java/com/is2t/examples/java2C/DataConsumerExample.java) source file
 * Update the main() method using the code below
 	
-	public static void main(String[] args) {
-
-		AccelerometerDataConsumer consumer = new AccelerometerDataConsumer();
-		AccelerometerDataProducer producer = new AccelerometerDataProducer(3,1200);
-		new Thread(consumer).start();
-		new Thread(producer).start();
-	}
+		public static void main(String[] args) {
+	
+			AccelerometerDataConsumer consumer = new AccelerometerDataConsumer();
+			AccelerometerDataProducer producer = new AccelerometerDataProducer(3,1200);
+			new Thread(consumer).start();
+			new Thread(producer).start();
+		}
 
 # C design
 
@@ -148,8 +148,8 @@ Here we shall define an accelerometer "class" with the following contents
 The `PRODUCER_accelerometer_init_ALL` function instantiates two producers with different IDs and production periods
 
 The source code is available in the following files.
-* [producer-accelerometer.h](/ProducerConsumerUsingShieldedPlug/src/main/c/sp-producer-accelerometer.h)
-* [producer-accelerometer.c](/ProducerConsumerUsingShieldedPlug/src/main/c/sp-producer-accelerometer.c)
+* [sp-producer-accelerometer.h](/ProducerConsumerUsingShieldedPlug/src/main/c/sp-producer-accelerometer.h)
+* [sp-producer-accelerometer.c](/ProducerConsumerUsingShieldedPlug/src/main/c/sp-producer-accelerometer.c)
 
 
 # Integration
@@ -161,24 +161,24 @@ These steps have already been done in this workspace and you do not need to repe
 ## Checking the behavior
 * After flashing the board, set up a terminal on the board serial port and press the reset input. You shall get an output similar to the one below :
 
-	-ID : 2 {x : -68, y : 40, z : 91}
-	+ID : 1 {x : -37, y : -110, z : 70}
-	-ID : 1 {x : -37, y : -110, z : 70}
-	+ID : 3 {x : -68, y : -122, z : 106}
-	-ID : 3 {x : -68, y : -122, z : 106}
-	+ID : 1 {x : 33, y : 41, z : -56}
-	-ID : 1 {x : 33, y : 41, z : -56}
-	+ID : 2 {x : 68, y : 71, z : 87}
-	-ID : 2 {x : 68, y : 71, z : 87}
-	+ID : 3 {x : -100, y : -76, z : -86}
-	-ID : 3 {x : -100, y : -76, z : -86}
-	+ID : 1 {x : 94, y : 34, z : -51}
-	-ID : 1 {x : 94, y : 34, z : -51}
-	+ID : 2 {x : 101, y : 84, z : -32}
-	-ID : 2 {x : 101, y : 84, z : -32}
-	+ID : 1 {x : -77, y : 83, z : -86}
-	-ID : 1 {x : -77, y : 83, z : -86}
-	+ID : 3 {x : 76, y : -24, z : 54}
+		-ID : 2 {x : -68, y : 40, z : 91}
+		+ID : 1 {x : -37, y : -110, z : 70}
+		-ID : 1 {x : -37, y : -110, z : 70}
+		+ID : 3 {x : -68, y : -122, z : 106}
+		-ID : 3 {x : -68, y : -122, z : 106}
+		+ID : 1 {x : 33, y : 41, z : -56}
+		-ID : 1 {x : 33, y : 41, z : -56}
+		+ID : 2 {x : 68, y : 71, z : 87}
+		-ID : 2 {x : 68, y : 71, z : 87}
+		+ID : 3 {x : -100, y : -76, z : -86}
+		-ID : 3 {x : -100, y : -76, z : -86}
+		+ID : 1 {x : 94, y : 34, z : -51}
+		-ID : 1 {x : 94, y : 34, z : -51}
+		+ID : 2 {x : 101, y : 84, z : -32}
+		-ID : 2 {x : 101, y : 84, z : -32}
+		+ID : 1 {x : -77, y : 83, z : -86}
+		-ID : 1 {x : -77, y : 83, z : -86}
+		+ID : 3 {x : 76, y : -24, z : 54}
 
 * The '-' prefix indicates data consumption
 * The '+' prefix indicates data production

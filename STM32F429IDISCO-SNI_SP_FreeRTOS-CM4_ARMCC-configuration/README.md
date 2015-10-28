@@ -66,7 +66,7 @@ So as to avoid confusion, the platform has been renamed to **STM32F429IDISCO-SNI
 * Right-click on the **STM32F429i-DISCO>MicroEJ** node of your project and select **Add Existing Files to group 'MicroEJ'**
 	* Select the [LLSP_FreeRTOS.c](/STM32F429IDISCO-SNI_SP_FreeRTOS-CM4_ARMCC-bsp/Project/MicroEJ/src/LLSP_FreeRTOS.c) source file 
 	* Click **Add**
-	* Click **Close
+	* Click **Close**
 
 ## Building the platform
 * Open the [example.platform](STM32F429IDISCO-SNI_SP_FreeRTOS-CM4_ARMCC-configuration/example.platform) file in the [(STM32F429IDISCO-SNI_SP_FreeRTOS-CM4_ARMCC-configuration)](STM32F429IDISCO-SNI_SP_FreeRTOS-CM4_ARMCC-configuration) project
