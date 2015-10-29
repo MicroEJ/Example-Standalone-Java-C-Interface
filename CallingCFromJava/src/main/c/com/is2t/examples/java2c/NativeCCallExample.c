@@ -12,6 +12,6 @@
 * \param	aValue
 * \return	twice the input value, stored as a portable int
 */
-jint Java_com_is2t_examples_java2C_NativeCCallExample_someCFunctionReturningTwiceAValue(jint aValue) {
+jint Java_com_is2t_examples_java2c_NativeCCallExample_someCFunctionReturningTwiceAValue(jint aValue) {
 	return aValue*2;
 }
