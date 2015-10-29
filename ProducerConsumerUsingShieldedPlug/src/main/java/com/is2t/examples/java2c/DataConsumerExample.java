@@ -17,9 +17,14 @@ public class DataConsumerExample {
 	public static void main(String[] args) {
 
 		AccelerometerDataConsumer consumer = new AccelerometerDataConsumer();
-		AccelerometerDataProducer producer = new AccelerometerDataProducer(3,1200);
 		new Thread(consumer).start();
+
+		AccelerometerDataProducer producer = new AccelerometerDataProducer(3,1200);
 		new Thread(producer).start();
+
+		AccelerometerDataProducerUsingTimerTask producerUsingTimerTask = new AccelerometerDataProducerUsingTimerTask(4,1200);
+		producerUsingTimerTask.start();
+
 	}
 	
 }
