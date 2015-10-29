@@ -99,12 +99,12 @@ This project will host the application specific code
 	* Set the **Folder name** field to /src/main/java
 * Select **File > New > Class** menu item
 	* Set the **Source folder** field to "ProducerConsumerUsingShieldedPlug/src/main/java"
-	* Set the **Package** field to "com.is2t.examples.java2C"
+	* Set the **Package** field to "com.is2t.examples.java2c"
 	* Set the **Name** field to "DataConsumerExample"
 	* Click on **Finish**
-	* Copy and paste the following code inside the generated [DataConsumerExample.java](ProducerConsumerUsingShieldedPlug/src/main/java/com/is2t/examples/java2C/DataConsumerExample.java) file 
+	* Copy and paste the following code inside the generated [DataConsumerExample.java](ProducerConsumerUsingShieldedPlug/src/main/java/com/is2t/examples/java2c/DataConsumerExample.java) file 
 
-			package com.is2t.examples.java2C;
+			package com.is2t.examples.java2c;
 			public class DataConsumerExample {
 			
 					public static void main(String[] args) {
