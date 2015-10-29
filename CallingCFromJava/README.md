@@ -78,12 +78,12 @@ This project will host the application specific code
 	* Set the **Folder name** field to "**/src/main/java**"
 * Select **File > New > Class** menu item
 	* Set the **Source folder** field to "**CallingCFromJava/src/main/java**"
-	* Set the **Package** field to "com.is2t.examples.java2C"
+	* Set the **Package** field to "com.is2t.examples.java2c"
 	* Set the **Name** field to "**NativeCCallExample**"
 	* Click on **Finish**
-	* Copy and paste the following code inside the generated [NativeCCallExample.java](CallingCFromJava/src/main/java/com/is2t/examples/java2C/NativeCCallExample.java) file. Notice the **native** qualifier used for the declaration of the C function binding.  
+	* Copy and paste the following code inside the generated [NativeCCallExample.java](CallingCFromJava/src/main/java/com/is2t/examples/java2c/NativeCCallExample.java) file. Notice the **native** qualifier used for the declaration of the C function binding.  
 
-			package com.is2t.examples.java2C;		
+			package com.is2t.examples.java2c;		
 			public class NativeCCallExample {
 			
 				public static void main(String[] args) {
@@ -137,9 +137,9 @@ Here, we will create a MicroEJ "Run Configuration" that will compile the Java co
 	* Select **Project > Build Target** menu item (or press F7 keyboard shortcut)
 	* A linker error message shall appear :
 
-		```.\STM32F429i-DISCO\STM32429I-DISCO.axf: Error: L6218E: Undefined symbol Java_com_is2t_examples_java2C_NativeCCallExample_someCFunctionReturningTwiceAValue (referred from javaapp.o).```
+		```.\STM32F429i-DISCO\STM32429I-DISCO.axf: Error: L6218E: Undefined symbol Java_com_is2t_examples_java2c_NativeCCallExample_someCFunctionReturningTwiceAValue (referred from javaapp.o).```
 
-This is perfectly normal since in [NativeCCallExample.java](CallingCFromJava/src/main/java/com/is2t/examples/java2C/NativeCCallExample.java) we declared **someCFunctionReturningTwiceAValue** as a native function, when building the MicroEJ project, the generated linker configuration file expects to find a C function definition matching the qualified name of the function. 
+This is perfectly normal since in [NativeCCallExample.java](CallingCFromJava/src/main/java/com/is2t/examples/java2c/NativeCCallExample.java) we declared **someCFunctionReturningTwiceAValue** as a native function, when building the MicroEJ project, the generated linker configuration file expects to find a C function definition matching the qualified name of the function. 
 
 ## Fixing the linker error
 ### C Native function implementation
@@ -148,10 +148,10 @@ This is perfectly normal since in [NativeCCallExample.java](CallingCFromJava/src
 * Right-Click on the folder that you just created
 	* Select **New > File** context menu item
 	* Set the **File Name** field to "NativeCCallExample.c"
-	* Copy and paste the following code inside the generated [NativeCCallExample.c](CallingCFromJava/src/main/c/com/is2t/examples/java2C/NativeCCallExample.c). Notice the C function follows the strict SNI naming convention mentioned earlier.
+	* Copy and paste the following code inside the generated [NativeCCallExample.c](CallingCFromJava/src/main/c/com/is2t/examples/java2c/NativeCCallExample.c). Notice the C function follows the strict SNI naming convention mentioned earlier.
 
 			#include <sni.h>
-			jint Java_com_is2t_examples_java2C_NativeCCallExample_someCFunctionReturningTwiceAValue(jint aValue) {
+			jint Java_com_is2t_examples_java2c_NativeCCallExample_someCFunctionReturningTwiceAValue(jint aValue) {
 				return aValue*2;
 			}
 
@@ -165,7 +165,7 @@ This is perfectly normal since in [NativeCCallExample.java](CallingCFromJava/src
 	* Right-Click and select **Add Group** this will add a group called "New Group"
 	* Select this group and hit **F2** key so as to rename it to "JavaNatives"
 	* Right-Click on the **JavaNatives** group and select **Add Existing Files to group 'JavaNatives'...**
-	* Navigate to the [NativeCCallExample.c](CallingCFromJava/src/main/c/com/is2t/examples/java2C/NativeCCallExample.c) file (its location is in the clipboard ..\\..\\..\\..\\CallingCFromJava\\bsp)
+	* Navigate to the [NativeCCallExample.c](CallingCFromJava/src/main/c/com/is2t/examples/java2c/NativeCCallExample.c) file (its location is in the clipboard ..\\..\\..\\..\\CallingCFromJava\\bsp)
 	* Click **Add**
 	* Click **Close**
 

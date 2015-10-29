@@ -6,7 +6,7 @@
 
 This example shows an implementation of the producer consumer pattern.
 
-There is one consumer (written in Java) and three producers (one written in Java, two written in C).
+There is one consumer (written in Java) and four producers (two written in Java, two written in C).
 
 Data is exchanged via a shared in-memory database using the Shielded Plug API.
 
@@ -37,7 +37,7 @@ Before interfacing with the C world, we shall design a Java-only system that exc
 
 ## Java data class
 
-In this section, we shall create a class to represent the data being exchanged between producer(s) and consumer(s). The source code is in the [AccelerometerData.java](/ProducerConsumerUsingShieldedPlug/src/main/java/com/is2t/examples/java2C/AccelerometerData.java) file.
+In this section, we shall create a class to represent the data being exchanged between producer(s) and consumer(s). The source code is in the [AccelerometerData.java](/ProducerConsumerUsingShieldedPlug/src/main/java/com/is2t/examples/java2c/AccelerometerData.java) file.
 
 
 # Java producer class
@@ -49,21 +49,31 @@ Each producer runs on a dedicated thread. In pseudocode, the thread body roughly
 	while (true)
 	{
 		data = generateData()
-		produce(data)
+		deliver(data)
 		wait(production_period)
 	}
 	
- The actual source code is in the [AccelerometerDataProducer.java](/ProducerConsumerUsingShieldedPlug/src/main/java/com/is2t/examples/java2C/AccelerometerDataProducer.java) file. 
+ The actual source code is in the [AccelerometerDataProducer.java](/ProducerConsumerUsingShieldedPlug/src/main/java/com/is2t/examples/java2c/AccelerometerDataProducer.java) file. 
+ 
+## Alternate implementation using TimerTask
 
-## Starting the producer thread
+Because of the fixed periodic nature of the task and of its short execution time, an alternate implementation based on Timer and TimerTask API is proposed in the [AccelerometerDataProducerUsingTimerTask.java](/ProducerConsumerUsingShieldedPlug/src/main/java/com/is2t/examples/java2c/AccelerometerDataProducerUsingTimerTask.java) file.
 
-* Open the [DataConsumerExample.java](/ProducerConsumerUsingShieldedPlug/src/main/java/com/is2t/examples/java2C/DataConsumerExample.java) source file
+
+## Starting the producer threads
+
+* Open the [DataConsumerExample.java](/ProducerConsumerUsingShieldedPlug/src/main/java/com/is2t/examples/java2c/DataConsumerExample.java) source file
 * Replace the main() method by the code below
 	
 		public static void main(String[] args) {
 			AccelerometerDataProducer producer = new AccelerometerDataProducer(3,1200);
 			new Thread(producer).start();
+
+			AccelerometerDataProducerUsingTimerTask producerUsingTimerTask = new AccelerometerDataProducerUsingTimerTask(4,1200);
+			producerUsingTimerTask.start();
 		}
+
+At this point, you may flash on target and check that both producers generate data using a debug connection on the serial port.
 
 # Java consumer class
 
@@ -73,23 +83,28 @@ Each consumer runs on a dedicated thread. In pseudocode, the thread body roughly
 
 	while (true)
 	{
-		data = getNextData() //blocking call until some data is available
+		data = getNextAvailableData() //blocking call until some data is available
 	}
 
-The source code is in the [AccelerometerDataConsumer.java](/ProducerConsumerUsingShieldedPlug/src/main/java/com/is2t/examples/java2C/AccelerometerDataConsumer.java) file.
+The source code is in the [AccelerometerDataConsumer.java](/ProducerConsumerUsingShieldedPlug/src/main/java/com/is2t/examples/java2c/AccelerometerDataConsumer.java) file.
 
 ## Starting the consumer thread
 
-* Open the [DataConsumerExample.java](/ProducerConsumerUsingShieldedPlug/src/main/java/com/is2t/examples/java2C/DataConsumerExample.java) source file
+* Open the [DataConsumerExample.java](/ProducerConsumerUsingShieldedPlug/src/main/java/com/is2t/examples/java2c/DataConsumerExample.java) source file
 * Update the main() method using the code below
 	
 		public static void main(String[] args) {
-	
 			AccelerometerDataConsumer consumer = new AccelerometerDataConsumer();
-			AccelerometerDataProducer producer = new AccelerometerDataProducer(3,1200);
 			new Thread(consumer).start();
+	
+			AccelerometerDataProducer producer = new AccelerometerDataProducer(3,1200);
 			new Thread(producer).start();
+	
+			AccelerometerDataProducerUsingTimerTask producerUsingTimerTask = new AccelerometerDataProducerUsingTimerTask(4,1200);
+			producerUsingTimerTask.start();
 		}
+
+At this point, you may flash on target and check that consumer reads data using a debug connection on the serial port.
 
 # C design
 
@@ -119,7 +134,8 @@ Here we shall define that a producer is a task that must periodically call a pro
 This leads us to defining a producer "class" with the following contents
 * attributes (will be set by the domain-specific producer)
 	* production period
-	* pointer to production function (with pointer to producer argument so as to be able to associate produceed data with producer)
+	* pointer to configuration function (with pointer to producer argument so as to be able to retrieve configuration information from a producer)
+	* pointer to production function (with pointer to producer argument so as to be able to associate produced data with producer)
 * methods
 	* initialisation method (will start the production task)
 	* taskbody (calls the production function at every production period expiration) 
@@ -139,6 +155,9 @@ Here we shall define an accelerometer "class" with the following contents
 	* "parent" producer member (so as to reuse Domain-agnostic producer code)
 * methods
 	* initialisation method (will propagate initialisation to "parent")
+	* adapter configuration function
+		* with signature matching the one of the pointer to production function in the domain-agnostic producer struct
+		* used as an adapter method to call a more specialized configuration function that can set implementation-specific info (such as pointer to Shielded Plug database)
 	* adapter production function
 		* with signature matching the one of the pointer to production function in the domain-agnostic producer struct
 		* used as an adapter method to call a more specialized production function that can use domain-specific producer info (such as sensor_ID)
@@ -161,37 +180,41 @@ These steps have already been done in this workspace and you do not need to repe
 ## Checking the behavior
 * After flashing the board, set up a terminal on the board serial port and press the reset input. You shall get an output similar to the one below :
 
-		-ID : 2 {x : -68, y : 40, z : 91}
-		+ID : 1 {x : -37, y : -110, z : 70}
-		-ID : 1 {x : -37, y : -110, z : 70}
-		+ID : 3 {x : -68, y : -122, z : 106}
-		-ID : 3 {x : -68, y : -122, z : 106}
-		+ID : 1 {x : 33, y : 41, z : -56}
-		-ID : 1 {x : 33, y : 41, z : -56}
-		+ID : 2 {x : 68, y : 71, z : 87}
-		-ID : 2 {x : 68, y : 71, z : 87}
-		+ID : 3 {x : -100, y : -76, z : -86}
-		-ID : 3 {x : -100, y : -76, z : -86}
-		+ID : 1 {x : 94, y : 34, z : -51}
-		-ID : 1 {x : 94, y : 34, z : -51}
-		+ID : 2 {x : 101, y : 84, z : -32}
-		-ID : 2 {x : 101, y : 84, z : -32}
-		+ID : 1 {x : -77, y : 83, z : -86}
-		-ID : 1 {x : -77, y : 83, z : -86}
-		+ID : 3 {x : 76, y : -24, z : 54}
+		+ID : 3 {x : -48, y : -101, z : -18}
+		-ID : 3 {x : -48, y : -101, z : -18}
+		+ID : 4 {x : -82, y : -26, z : 14}
+		-ID : 4 {x : -82, y : -26, z : 14}
+		+ID : 1 {x : 45, y : 124, z : -24}
+		-ID : 1 {x : 45, y : 124, z : -24}
+		+ID : 2 {x : 27, y : -101, z : 82}
+		-ID : 2 {x : 27, y : -101, z : 82}
+		+ID : 1 {x : 6, y : -31, z : -23}
+		-ID : 1 {x : 6, y : -31, z : -23}
+		+ID : 3 {x : 101, y : 1, z : -51}
+		-ID : 3 {x : 101, y : 1, z : -51}
+		+ID : 4 {x : -48, y : -54, z : 103}
+		-ID : 4 {x : -48, y : -54, z : 103}
+		+ID : 2 {x : -120, y : 4, z : 7}
+		-ID : 2 {x : -120, y : 4, z : 7}
+		+ID : 1 {x : 23, y : 30, z : -30}
+		-ID : 1 {x : 23, y : 30, z : -30}
+		+ID : 3 {x : -119, y : 68, z : 61}
+		-ID : 3 {x : -119, y : 68, z : 61}
+		+ID : 4 {x : -2, y : -13, z : -95}
+		-ID : 4 {x : -2, y : -13, z : -95}
+		+ID : 1 {x : -115, y : 37, z : 20}
+		-ID : 1 {x : -115, y : 37, z : 20}
 
 * The '-' prefix indicates data consumption
 * The '+' prefix indicates data production
 * The number right after the ID indicates which sensor the data originates from
 
 
-# Additional references
+# Advanced use cases
 
-## Advanced use cases
+The Use Case shown in this document only covers a most basic usage of the shared memory feature provided by Shielded Plug to solve a specific configuration of the producer consumer problem. Here, some data may be overwritten before getting a chance to be consumed. If this is an issue, the following options shall be considered :
 
-The Use Case shown in this document only covers a most basic usage of the shared memory feature provided by Shielded Plug. Here, some data may be overwritten before getting a chance to be consumed. If this is an issue, the following options shall be considered :
-
-* **Bufferization of the data being produced**: Here, only one data slot is available at any time, and it is overwritten if data has not been consumed faster than it was produced. Assuming production rate is not always greater than consumption rate, using a buffer able to accomodate production/consumption peak ratios can be considered.
+* **Bufferization of the data being produced**: Here, only one data slot is available at any time, and it is overwritten if data has not been consumed faster than it was produced. Assuming production rate is not always greater than consumption rate, using a buffer able to accommodate production/consumption peak ratios can be considered.
 
 * **Consumer-Producer synchronization**: If production can be paused, the consumer(s) could notify the producer(s) that consumable data has been processed. The producer(s) may then adapt its production to the (variable) consumption rate.
  
