@@ -37,7 +37,7 @@ Before interfacing with the C world, we shall design a Java-only system that exc
 
 ## Java data class
 
-In this section, we shall create a class to represent the data being exchanged between producer(s) and consumer(s). The source code is in the [AccelerometerData.java](/ProducerConsumerUsingShieldedPlug/src/main/java/com/is2t/examples/java2C/AccelerometerData.java) file.
+In this section, we shall create a class to represent the data being exchanged between producer(s) and consumer(s). The source code is in the [AccelerometerData.java](/ProducerConsumerUsingShieldedPlug/src/main/java/com/is2t/examples/java2c/AccelerometerData.java) file.
 
 
 # Java producer class
@@ -53,7 +53,7 @@ Each producer runs on a dedicated thread. In pseudocode, the thread body roughly
 		wait(production_period)
 	}
 	
- The actual source code is in the [AccelerometerDataProducer.java](/ProducerConsumerUsingShieldedPlug/src/main/java/com/is2t/examples/java2C/AccelerometerDataProducer.java) file. 
+ The actual source code is in the [AccelerometerDataProducer.java](/ProducerConsumerUsingShieldedPlug/src/main/java/com/is2t/examples/java2c/AccelerometerDataProducer.java) file. 
  
 ## Alternate implementation using TimerTask
 
@@ -62,7 +62,7 @@ Because of the fixed periodic nature of the task and of its short execution time
 
 ## Starting the producer threads
 
-* Open the [DataConsumerExample.java](/ProducerConsumerUsingShieldedPlug/src/main/java/com/is2t/examples/java2C/DataConsumerExample.java) source file
+* Open the [DataConsumerExample.java](/ProducerConsumerUsingShieldedPlug/src/main/java/com/is2t/examples/java2c/DataConsumerExample.java) source file
 * Replace the main() method by the code below
 	
 		public static void main(String[] args) {
@@ -86,11 +86,11 @@ Each consumer runs on a dedicated thread. In pseudocode, the thread body roughly
 		data = getNextAvailableData() //blocking call until some data is available
 	}
 
-The source code is in the [AccelerometerDataConsumer.java](/ProducerConsumerUsingShieldedPlug/src/main/java/com/is2t/examples/java2C/AccelerometerDataConsumer.java) file.
+The source code is in the [AccelerometerDataConsumer.java](/ProducerConsumerUsingShieldedPlug/src/main/java/com/is2t/examples/java2c/AccelerometerDataConsumer.java) file.
 
 ## Starting the consumer thread
 
-* Open the [DataConsumerExample.java](/ProducerConsumerUsingShieldedPlug/src/main/java/com/is2t/examples/java2C/DataConsumerExample.java) source file
+* Open the [DataConsumerExample.java](/ProducerConsumerUsingShieldedPlug/src/main/java/com/is2t/examples/java2c/DataConsumerExample.java) source file
 * Update the main() method using the code below
 	
 		public static void main(String[] args) {
@@ -112,12 +112,12 @@ Now that we are confident with the production-consumption mechanism in Java, we 
 
 ## C data struct
 
-Let us define :
-* some struct to hold the data
-* some method to generate/retrieve the data (and trace where it comes from - that is what the **sensor_ID** field is for)
-* some debug helper function (the **print** function)
+Let us define some
+* struct to hold the data
+* method to generate/retrieve the data (and trace where it comes from - that is what the **sensor_ID** field is for)
+* debug helper function (the **print** function)
 
-The source code is available in the following files.
+The source code is available in the following files :
 * [accelerometer-data.h](/ProducerConsumerUsingShieldedPlug/src/main/c/accelerometer-data.h)
 * [accelerometer-data.c](/ProducerConsumerUsingShieldedPlug/src/main/c/accelerometer-data.c)
 
@@ -143,8 +143,8 @@ This leads us to defining a producer "class" with the following contents
 Although the design is to some extent object-oriented, the implementation in this example is in C, not in C++.
 
 The source code is available in the following files.
-* [producer.h](/ProducerConsumerUsingShieldedPlug/src/main/c/sp-producer.h)
-* [producer.c](/ProducerConsumerUsingShieldedPlug/src/main/c/sp-producer.c)
+* [sp-producer.h](/ProducerConsumerUsingShieldedPlug/src/main/c/sp-producer.h)
+* [sp-producer.c](/ProducerConsumerUsingShieldedPlug/src/main/c/sp-producer.c)
 
 
 ### Domain-specific producer code
@@ -164,7 +164,7 @@ Here we shall define an accelerometer "class" with the following contents
 		
 ### Instantiation code
 
-The `PRODUCER_accelerometer_init_ALL` function instantiates two producers with different IDs and production periods
+The `PRODUCER_accelerometer_init_factory` function instantiates two producers with different IDs and production periods
 
 The source code is available in the following files.
 * [sp-producer-accelerometer.h](/ProducerConsumerUsingShieldedPlug/src/main/c/sp-producer-accelerometer.h)
