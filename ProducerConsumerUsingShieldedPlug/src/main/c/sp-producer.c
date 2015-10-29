@@ -24,15 +24,17 @@
 #define PRODUCER_TASK_PRIORITY      ( 3 ) /** Should be > tskIDLE_PRIORITY & < configTIMER_TASK_PRIORITY */
 #define PRODUCER_TASK_STACK_SIZE     PRODUCER_STACK_SIZE/4
 
-
 /* API -----------------------------------------------------------------------*/
 
 void PRODUCER_init(PRODUCER_t* pProducer)
 {
 	if ( NULL != pProducer )
 	{
+		printf("%s name : %s\n",__PRETTY_FUNCTION__,pProducer->name);
+		printf("%s productionPeriodInMS : %d\n",__PRETTY_FUNCTION__,pProducer->productionPeriodInMS);
+
 		// create the PRODUCER task
-		xTaskCreate(PRODUCER_taskBody, NULL, PRODUCER_TASK_STACK_SIZE, (void*) pProducer, PRODUCER_TASK_PRIORITY, NULL);
+		xTaskCreate(_PRODUCER_taskBody, NULL, PRODUCER_TASK_STACK_SIZE, (void*) pProducer, PRODUCER_TASK_PRIORITY, NULL);
 	}
 	else
 	{
@@ -40,37 +42,34 @@ void PRODUCER_init(PRODUCER_t* pProducer)
 	}
 }
 
-void PRODUCER_taskBody(void* arg)
+void _PRODUCER_taskBody(void* arg)
 {
 	if ( NULL != arg )
 	{
 		PRODUCER_t* pProducer = (PRODUCER_t*) arg;	
 		const portTickType xDelay = pProducer->productionPeriodInMS / portTICK_RATE_MS;
 
-		if ( NULL != pProducer->productionFunction )
+		if ( NULL != pProducer->configurationFunction )
 		{
-			ShieldedPlug database = SP_getDatabase(pProducer->shieldedPlugDatabaseId);
+			pProducer->configurationFunction(pProducer);
 
-			pProducer->pDatabase = &database;
-			
-			int32_t SPS_size = SP_getSize(database);
-
-			printf("%s SPS_size %d\n",__PRETTY_FUNCTION__,SPS_size);
-
-			int32_t SPS_length_block_0 = SP_getLength(database,0);
-
-			printf("%s SPS_length_block_0 %d\n",__PRETTY_FUNCTION__,SPS_length_block_0);
-			vTaskDelay(xDelay);
-			
-			for(;;)
+			if ( NULL != pProducer->productionFunction )
 			{
-				pProducer->productionFunction(pProducer);
-				vTaskDelay(xDelay);			
+				vTaskDelay(xDelay);
+				for(;;)
+				{
+					pProducer->productionFunction(pProducer);
+					vTaskDelay(xDelay);
+				}
+			}
+			else
+			{
+				printf("%s error : pointer to productionFunction is NULL !\n",__PRETTY_FUNCTION__);
 			}
 		}
 		else
 		{
-			printf("%s error : pointer to productionFunction is NULL !\n",__PRETTY_FUNCTION__);
+			printf("%s error : pointer to configurationFunction is NULL !\n",__PRETTY_FUNCTION__);
 		}
 	}
 	else
