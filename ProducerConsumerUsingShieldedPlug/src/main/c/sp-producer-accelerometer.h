@@ -9,6 +9,7 @@
 #define SP_PRODUCER_ACCELEROMETER_H
 
 #include <stdint.h>
+#include <sp.h>
 #include "sp-producer.h"
 
 typedef struct PRODUCER_accelerometer_t{
@@ -22,6 +23,7 @@ typedef struct PRODUCER_accelerometer_t{
 
 }PRODUCER_accelerometer_t;
 
+//== constructor
 void PRODUCER_accelerometer_init(PRODUCER_accelerometer_t* accelerometer);
 
 //== functions adapters

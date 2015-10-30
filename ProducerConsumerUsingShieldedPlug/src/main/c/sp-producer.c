@@ -24,8 +24,8 @@
 #define PRODUCER_TASK_PRIORITY      ( 3 ) /** Should be > tskIDLE_PRIORITY & < configTIMER_TASK_PRIORITY */
 #define PRODUCER_TASK_STACK_SIZE     PRODUCER_STACK_SIZE/4
 
-/* API -----------------------------------------------------------------------*/
-
+//==== "public" method(s)
+//== constructor
 void PRODUCER_init(PRODUCER_t* pProducer)
 {
 	if ( NULL != pProducer )
@@ -33,7 +33,6 @@ void PRODUCER_init(PRODUCER_t* pProducer)
 		printf("%s name : %s\n",__PRETTY_FUNCTION__,pProducer->name);
 		printf("%s productionPeriodInMS : %d\n",__PRETTY_FUNCTION__,pProducer->productionPeriodInMS);
 
-		// create the PRODUCER task
 		xTaskCreate(_PRODUCER_taskBody, NULL, PRODUCER_TASK_STACK_SIZE, (void*) pProducer, PRODUCER_TASK_PRIORITY, NULL);
 	}
 	else
@@ -42,6 +41,7 @@ void PRODUCER_init(PRODUCER_t* pProducer)
 	}
 }
 
+//==== "private" method(s)
 void _PRODUCER_taskBody(void* arg)
 {
 	if ( NULL != arg )

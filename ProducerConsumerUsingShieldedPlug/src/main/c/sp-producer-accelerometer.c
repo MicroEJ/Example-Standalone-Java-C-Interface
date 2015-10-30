@@ -18,8 +18,7 @@
 #define DATABASE_ID 0
 #define DATABASE_FIELD_ID_ACCELEROMETER 0
 
-/* Public API Implementation -----------------------------------------------------------------------*/
-
+//== constructor
 void PRODUCER_accelerometer_init(PRODUCER_accelerometer_t* pAccelerometer)
 {
 	if ( NULL != pAccelerometer )
@@ -49,7 +48,7 @@ void PRODUCER_accelerometer_produce_adapter(PRODUCER_t* pProducer)
 //== functions implementations
 void PRODUCER_accelerometer_configure(PRODUCER_accelerometer_t* pProducer)
 {
-	//ShieldedPlug is a typed to void*, so the database will outlive the scope of the function
+	//ShieldedPlug is a typedef to void*, so the database will outlive the scope of the function
 	ShieldedPlug database = SP_getDatabase(pProducer->shieldedPlugDatabaseId);
 	pProducer->pDatabase = database;
 

@@ -9,7 +9,6 @@
 #define SP_PRODUCER_H
 
 #include <stdint.h>
-#include <sp.h>
 
 typedef struct PRODUCER_t PRODUCER_t;						//forward declaration of struct type needed for self-reference to struct in pointer to function
 
@@ -21,10 +20,11 @@ struct PRODUCER_t{
 	void (*productionFunction)(PRODUCER_t* pProducer);		//pointer to production function - with pointer to producer argument
 };
 
-//== "public" method(s)
+//==== "public" method(s)
+//== constructor
 void PRODUCER_init(PRODUCER_t* pProducer);
 
-//== "private" method(s)
+//==== "private" method(s)
 void _PRODUCER_taskBody(void* arg);
 
 #endif // SP_PRODUCER_H
