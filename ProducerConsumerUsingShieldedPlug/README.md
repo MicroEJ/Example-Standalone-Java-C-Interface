@@ -37,7 +37,7 @@ Before interfacing with the C world, we shall design a Java-only system that exc
 
 ## Java data class
 
-In this section, we shall create a class to represent the data being exchanged between producer(s) and consumer(s). The source code is in the [AccelerometerData.java](/ProducerConsumerUsingShieldedPlug/src/main/java/com/is2t/examples/java2c/AccelerometerData.java) file.
+In this section, we shall create a class to represent the data being exchanged between producer(s) and consumer(s). The source code is in the [AccelerometerData.java](/ProducerConsumerData/src/main/java/com/microej/examples/java2c/AccelerometerData.java) file.
 
 
 # Java producer class
@@ -53,16 +53,16 @@ Each producer runs on a dedicated thread. In pseudocode, the thread body roughly
 		wait(production_period)
 	}
 	
- The actual source code is in the [AccelerometerDataProducer.java](/ProducerConsumerUsingShieldedPlug/src/main/java/com/is2t/examples/java2c/AccelerometerDataProducer.java) file. 
+ The actual source code is in the [AccelerometerDataProducer.java](/ProducerConsumerUsingShieldedPlug/src/main/java/com/microej/examples/java2c/AccelerometerDataProducer.java) file. 
  
 ## Alternate implementation using TimerTask
 
-Because of the fixed periodic nature of the task and of its short execution time, an alternate implementation based on Timer and TimerTask API is proposed in the [AccelerometerDataProducerUsingTimerTask.java](/ProducerConsumerUsingShieldedPlug/src/main/java/com/is2t/examples/java2c/AccelerometerDataProducerUsingTimerTask.java) file.
+Because of the fixed periodic nature of the task and of its short execution time, an alternate implementation based on Timer and TimerTask API is proposed in the [AccelerometerDataProducerUsingTimerTask.java](/ProducerConsumerUsingShieldedPlug/src/main/java/com/microej/examples/java2c/AccelerometerDataProducerUsingTimerTask.java) file.
 
 
 ## Starting the producer threads
 
-* Open the [DataConsumerExample.java](/ProducerConsumerUsingShieldedPlug/src/main/java/com/is2t/examples/java2c/DataConsumerExample.java) source file
+* Open the [DataConsumerExample.java](/ProducerConsumerUsingShieldedPlug/src/main/java/com/microej/examples/java2c/DataConsumerExample.java) source file
 * Replace the main() method by the code below
 	
 		public static void main(String[] args) {
@@ -86,11 +86,11 @@ Each consumer runs on a dedicated thread. In pseudocode, the thread body roughly
 		data = getNextAvailableData() //blocking call until some data is available
 	}
 
-The source code is in the [AccelerometerDataConsumer.java](/ProducerConsumerUsingShieldedPlug/src/main/java/com/is2t/examples/java2c/AccelerometerDataConsumer.java) file.
+The source code is in the [AccelerometerDataConsumer.java](/ProducerConsumerUsingShieldedPlug/src/main/java/com/microej/examples/java2c/AccelerometerDataConsumer.java) file.
 
 ## Starting the consumer thread
 
-* Open the [DataConsumerExample.java](/ProducerConsumerUsingShieldedPlug/src/main/java/com/is2t/examples/java2c/DataConsumerExample.java) source file
+* Open the [DataConsumerExample.java](/ProducerConsumerUsingShieldedPlug/src/main/java/com/microej/examples/java2c/DataConsumerExample.java) source file
 * Update the main() method using the code below
 	
 		public static void main(String[] args) {
@@ -138,7 +138,7 @@ This leads us to defining a producer "class" with the following contents
 	* pointer to production function (with pointer to producer argument so as to be able to associate produced data with producer)
 * methods
 	* initialisation method (will start the production task)
-	* taskbody (calls the production function at every production period expiration) 
+	* taskbody (calls the configuration function once then calls the production function at every production period expiration)
 
 Although the design is to some extent object-oriented, the implementation in this example is in C, not in C++.
 
@@ -177,6 +177,7 @@ For reference, BSP toolchain integration related instructions are described in t
 
 These steps have already been done in this workspace and you do not need to repeat them.
 
+	
 ## Checking the behavior
 * After flashing the board, set up a terminal on the board serial port and press the reset input. You shall get an output similar to the one below :
 
