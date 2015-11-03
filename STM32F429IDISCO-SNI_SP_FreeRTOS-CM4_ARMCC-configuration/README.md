@@ -178,6 +178,22 @@ Here, we will create a MicroEJ "Run Configuration" that will compile the Java co
 
 # Producer Consumer Integration 
 
+## Shielded Plug database definition
+
+One requirement of the Shielded Plug API is that you define the database schema via a configuration file.
+
+The source code for that file is available here :
+* [database-definition.xml](/ProducerConsumerUsingShieldedPlug/src/main/resources/database-definition.xml)
+
+You then have to update your MicroEJ launch configuration to specify the location of this database definition :
+* Select **Run Configurations...**
+* Select the **ProducerConsumerUsingShieldedPlug_Build** confiiguration
+* Go to the **Configuration** tab
+* Select the **Shielded Plug** node
+* Click on the **Browse** button to the right of the **Database definition** field
+* Browse to the [database-definition.xml](/ProducerConsumerUsingShieldedPlug/src/main/resources/database-definition.xml) file
+* Click on **Apply** button
+
 ## Spawning the C tasks from the main C program
 
 We need to modify the main C program so as to call our producers instantiation code.
