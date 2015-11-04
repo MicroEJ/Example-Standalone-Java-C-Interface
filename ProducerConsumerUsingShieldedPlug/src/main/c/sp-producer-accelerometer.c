@@ -19,34 +19,34 @@
 #define DATABASE_FIELD_ID_ACCELEROMETER 0
 
 //== constructor
-void PRODUCER_accelerometer_init(PRODUCER_accelerometer_t* pAccelerometer)
+void SP_PRODUCER_accelerometer_init(SP_PRODUCER_accelerometer_t* pAccelerometer)
 {
 	if ( NULL != pAccelerometer )
 	{
-		PRODUCER_init(&pAccelerometer->super);
+		SP_PRODUCER_init(&pAccelerometer->super);
 		printf("%s sensor_ID : %d\n",__PRETTY_FUNCTION__,pAccelerometer->sensor_ID);
 	}
 }
 
 //== functions adapters
-void PRODUCER_accelerometer_configure_adapter(PRODUCER_t* pProducer)
+void SP_PRODUCER_accelerometer_configure_adapter(SP_PRODUCER_t* pProducer)
 {
 	if ( NULL != pProducer )
 	{
-		PRODUCER_accelerometer_configure((PRODUCER_accelerometer_t*) pProducer);
+		SP_PRODUCER_accelerometer_configure((SP_PRODUCER_accelerometer_t*) pProducer);
 	}
 }
 
-void PRODUCER_accelerometer_produce_adapter(PRODUCER_t* pProducer)
+void SP_PRODUCER_accelerometer_produce_adapter(SP_PRODUCER_t* pProducer)
 {
 	if ( NULL != pProducer )
 	{
-		PRODUCER_accelerometer_produce((PRODUCER_accelerometer_t*) pProducer);
+		SP_PRODUCER_accelerometer_produce((SP_PRODUCER_accelerometer_t*) pProducer);
 	}
 }
 
 //== functions implementations
-void PRODUCER_accelerometer_configure(PRODUCER_accelerometer_t* pProducer)
+void SP_PRODUCER_accelerometer_configure(SP_PRODUCER_accelerometer_t* pProducer)
 {
 	//ShieldedPlug is a typedef to void*, so the database will outlive the scope of the function
 	ShieldedPlug database = SP_getDatabase(pProducer->shieldedPlugDatabaseId);
@@ -58,7 +58,7 @@ void PRODUCER_accelerometer_configure(PRODUCER_accelerometer_t* pProducer)
 	printf("%s SPS_length_block_0 %d\n",__PRETTY_FUNCTION__,SPS_length_block_0);
 }
 
-void PRODUCER_accelerometer_produce(PRODUCER_accelerometer_t* pProducer)
+void SP_PRODUCER_accelerometer_produce(SP_PRODUCER_accelerometer_t* pProducer)
 {
 	ShieldedPlug* pDatabase = pProducer->pDatabase;
 	if ( NULL != pDatabase )
@@ -85,34 +85,34 @@ void PRODUCER_accelerometer_produce(PRODUCER_accelerometer_t* pProducer)
 
 
 //== "static" factory function
-void PRODUCER_accelerometer_init_factory(void)
+void SP_PRODUCER_accelerometer_init_factory(void)
 {
 	//since producers are passed as FreeRTOS task parameters, they must live for the lifetime of the task (i.e. forever)
 	//we therefore declare them as static
-	static PRODUCER_accelerometer_t accelerometerProducer1 = {
+	static SP_PRODUCER_accelerometer_t accelerometerProducer1 = {
 			{
 					"PRODUCER_Accelerometer_Task_1",
 					1000,
-					&PRODUCER_accelerometer_configure_adapter,
-					&PRODUCER_accelerometer_produce_adapter
+					&SP_PRODUCER_accelerometer_configure_adapter,
+					&SP_PRODUCER_accelerometer_produce_adapter
 			},
 			1,
 			DATABASE_ID,
 			NULL
 	};
 
-	static PRODUCER_accelerometer_t accelerometerProducer2 = {
+	static SP_PRODUCER_accelerometer_t accelerometerProducer2 = {
 			{
 					"PRODUCER_Accelerometer_Task_2",
 					1500,
-					&PRODUCER_accelerometer_configure_adapter,
-					&PRODUCER_accelerometer_produce_adapter
+					&SP_PRODUCER_accelerometer_configure_adapter,
+					&SP_PRODUCER_accelerometer_produce_adapter
 			},
 			2,
 			DATABASE_ID,
 			NULL
 	};
 
-	PRODUCER_accelerometer_init(&accelerometerProducer1);
-	PRODUCER_accelerometer_init(&accelerometerProducer2);
+	SP_PRODUCER_accelerometer_init(&accelerometerProducer1);
+	SP_PRODUCER_accelerometer_init(&accelerometerProducer2);
 }

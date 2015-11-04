@@ -12,29 +12,29 @@
 #include <sp.h>
 #include "sp-producer.h"
 
-typedef struct PRODUCER_accelerometer_t{
-	PRODUCER_t super;						//a PRODUCER_accelerometer_t "Is-a" PRODUCER_t
+typedef struct SP_PRODUCER_accelerometer_t{
+	SP_PRODUCER_t super;						//a SP_PRODUCER_accelerometer_t "Is-a" SP_PRODUCER_t
 
 	int8_t sensor_ID;
 
 	//== "private" data
 	int8_t shieldedPlugDatabaseId;			//shielded plug database ID
-	ShieldedPlug pDatabase;					//pointer to shielded plug database - set by PRODUCER_accelerometer_init(...)
+	ShieldedPlug pDatabase;					//pointer to shielded plug database - set by SP_PRODUCER_accelerometer_init(...)
 
-}PRODUCER_accelerometer_t;
+}SP_PRODUCER_accelerometer_t;
 
 //== constructor
-void PRODUCER_accelerometer_init(PRODUCER_accelerometer_t* accelerometer);
+void SP_PRODUCER_accelerometer_init(SP_PRODUCER_accelerometer_t* accelerometer);
 
 //== functions adapters
-void PRODUCER_accelerometer_configure_adapter(PRODUCER_t* pProducer);
-void PRODUCER_accelerometer_produce_adapter(PRODUCER_t* pProducer);
+void SP_PRODUCER_accelerometer_configure_adapter(SP_PRODUCER_t* pProducer);
+void SP_PRODUCER_accelerometer_produce_adapter(SP_PRODUCER_t* pProducer);
 
 //== functions implementations
-void PRODUCER_accelerometer_configure(PRODUCER_accelerometer_t* pProducer);
-void PRODUCER_accelerometer_produce(PRODUCER_accelerometer_t* pProducer);
+void SP_PRODUCER_accelerometer_configure(SP_PRODUCER_accelerometer_t* pProducer);
+void SP_PRODUCER_accelerometer_produce(SP_PRODUCER_accelerometer_t* pProducer);
 
 //== "static" factory function
-void PRODUCER_accelerometer_init_factory(void);
+void SP_PRODUCER_accelerometer_init_factory(void);
 
 #endif // SP_PRODUCER_ACCELEROMETER_H
