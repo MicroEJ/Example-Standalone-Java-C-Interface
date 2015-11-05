@@ -30,7 +30,4 @@ void SNI_PRODUCER_accelerometer_produce_adapter(SNI_PRODUCER_t* pProducer);
 void SNI_PRODUCER_accelerometer_configure(SNI_PRODUCER_accelerometer_t* pProducer);
 void SNI_PRODUCER_accelerometer_produce(SNI_PRODUCER_accelerometer_t* pProducer);
 
-//== "static" factory function
-void SNI_PRODUCER_accelerometer_init_factory(void);
-
 #endif // SP_PRODUCER_ACCELEROMETER_H

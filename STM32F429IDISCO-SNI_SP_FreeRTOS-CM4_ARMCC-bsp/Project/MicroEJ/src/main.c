@@ -34,7 +34,8 @@ void xJavaTaskFunction(void * pvParameters)
 /*
  * Generic main function
  */
-#include "sp-producer-accelerometer.h"
+#include "sni-producer-factory.h"
+#include "sp-producer-factory.h"
 
 int main(void)
 {
@@ -53,7 +54,8 @@ int main(void)
 //    volatile uint32_t* p_err = 0xFFFFFFFF;
 //    *p_err = 9;
 
-	PRODUCER_accelerometer_init_factory();
+	//SNI_PRODUCER_init_factory();
+	SP_PRODUCER_init_factory();	
 
 	// start the main task
 	xTaskCreate( xJavaTaskFunction, NULL, JAVA_TASK_STACK_SIZE, NULL, JAVA_TASK_PRIORITY, NULL );
