@@ -162,13 +162,17 @@ Here we shall define an accelerometer "class" with the following contents
 		* with signature matching the one of the pointer to production function in the domain-agnostic producer struct
 		* used as an adapter method to call a more specialized production function that can use domain-specific producer info (such as sensor_ID)
 		
-### Instantiation code
-
-The `PRODUCER_accelerometer_init_factory` function instantiates two producers with different IDs and production periods
-
 The source code is available in the following files.
 * [sp-producer-accelerometer.h](/ProducerConsumerUsingShieldedPlug/src/main/c/sp-producer-accelerometer.h)
 * [sp-producer-accelerometer.c](/ProducerConsumerUsingShieldedPlug/src/main/c/sp-producer-accelerometer.c)
+
+### Instantiation code
+
+The `SP_PRODUCER_init_factory` function instantiates two producers with different IDs and production periods
+
+The source code is available in the following files.
+* [sp-producer-accelerometer.h](/ProducerConsumerUsingShieldedPlug/src/main/c/sp-producer-factory.h)
+* [sp-producer-accelerometer.c](/ProducerConsumerUsingShieldedPlug/src/main/c/sp-producer-factory.c)
 
 
 # Integration

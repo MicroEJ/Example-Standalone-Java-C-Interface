@@ -15,9 +15,6 @@
 #include <string.h>
 #include <stdlib.h>
 
-#define DATABASE_ID 0
-#define DATABASE_FIELD_ID_ACCELEROMETER 0
-
 /* Private Functions implementations ---------------------------------------------------------------*/
 Accelerometer_data_t Accelerometer_data_generate_sample(int8_t sensor_ID)
 {

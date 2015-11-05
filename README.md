@@ -32,7 +32,7 @@ For data exchange issues between tasks/threads, MicroEJ provides a few options.
 The following examples illustrate how to use those APIs :
 * [Making synchronous C functions calls from Java](/CallingCFromJava) using SNI
 * [Producer Consumer problem with ShieldedPlug](/ProducerConsumerUsingShieldedPlug) using Shielded Plug API as the delivery mechanism
-* [Producer Consumer problem with SNI](/ProducerConsumerUsingSNIAndImmortals) using SNI and Immortals APIs
+* [Producer Consumer problem with SNI](/ProducerConsumerUsingSNIAndImmortals) using SNI and Immortals APIs to wrap the FreeRTOS native queue API as the delivery mechanism
 
 ## API Selection Criterion
 

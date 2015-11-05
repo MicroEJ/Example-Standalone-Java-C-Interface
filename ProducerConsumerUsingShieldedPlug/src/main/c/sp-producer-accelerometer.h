@@ -34,7 +34,4 @@ void SP_PRODUCER_accelerometer_produce_adapter(SP_PRODUCER_t* pProducer);
 void SP_PRODUCER_accelerometer_configure(SP_PRODUCER_accelerometer_t* pProducer);
 void SP_PRODUCER_accelerometer_produce(SP_PRODUCER_accelerometer_t* pProducer);
 
-//== "static" factory function
-void SP_PRODUCER_accelerometer_init_factory(void);
-
 #endif // SP_PRODUCER_ACCELEROMETER_H
