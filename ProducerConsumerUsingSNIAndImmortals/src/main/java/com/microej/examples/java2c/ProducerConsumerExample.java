@@ -11,22 +11,22 @@ package com.microej.examples.java2c;
 
 public class ProducerConsumerExample {
 
-	final static int QUEUE_ID = 7;
-	final static int DATA_SIZE = 4;
+	final static int ACCELEROMETER_DATA_QUEUE_ID = 7;
+	final static int ACCELEROMETER_DATA_SIZE = 4;
+
+	final static int MESSENGER_DATA_QUEUE_ID = 8;
+	final static int MESSENGER_DATA_SIZE = 255;
 
 	/**
 	 * @param args
 	 */
 	public static void main(String[] args) {
 
-		AccelerometerDataConsumer consumer = new AccelerometerDataConsumer(QUEUE_ID,DATA_SIZE);
-		new Thread(consumer).start();
+		AccelerometerDataConsumer accelerometerDataConsumer = new AccelerometerDataConsumer(ACCELEROMETER_DATA_QUEUE_ID,ACCELEROMETER_DATA_SIZE);
+		new Thread(accelerometerDataConsumer).start();
 
-/*		AccelerometerDataProducer producer = new AccelerometerDataProducer(3,1200);
-		new Thread(producer).start();
-
-		AccelerometerDataProducerUsingTimerTask producerUsingTimerTask = new AccelerometerDataProducerUsingTimerTask(4,1200);
-		producerUsingTimerTask.start();*/
+		MessengerDataConsumer messengerConsumer = new MessengerDataConsumer(MESSENGER_DATA_QUEUE_ID,MESSENGER_DATA_SIZE);
+		new Thread(messengerConsumer).start();
 
 	}
 	

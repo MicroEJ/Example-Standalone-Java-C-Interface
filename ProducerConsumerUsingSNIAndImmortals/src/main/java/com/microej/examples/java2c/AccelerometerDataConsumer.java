@@ -45,15 +45,15 @@ public class AccelerometerDataConsumer implements Runnable{
 			//use the QueueService to retrieve data
 			try {
 				final int readStatus = this.queueService.read(this.data);
-				if ( QueueOperationReturnCode.QUEUE_READ_OK ==  readStatus)
+				if ( QueueOperationReturnCode.QUEUE_READ_OK == readStatus)
 				{
-					AccelerometerData accelerometerData = new AccelerometerData(data);
-					System.out.println("-" + accelerometerData.toString());
+					AccelerometerData dataWrapper = new AccelerometerData(data);
+					System.out.println("-" + dataWrapper.toString());
 				}
-				/*else
+				else
 				{
 					System.out.println("failure reading data" + readStatus);
-				}*/
+				}
 			}
 			catch ( IOException e)
 			{
