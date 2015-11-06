@@ -64,9 +64,9 @@ void SNI_PRODUCER_messenger_produce(SNI_PRODUCER_messenger_t* pProducer)
 	char* data = Messenger_data_get_next_line(&pProducer->file_index, &pProducer->line_index);
 	if ( data != NULL )
 	{
-		if ( QUEUE_WRITE_OK == LLQueue_write(PRODUCER_MESSENGER_QUEUE_ID,(jbyte*)(&data)) ) //TODO error handling
+		if ( QUEUE_WRITE_OK == LLQueue_write(PRODUCER_MESSENGER_QUEUE_ID,(jbyte*)(data)) ) //TODO error handling
 		{
-			//printf("+%s",data);
+			//printf("+%s\n",data);
 		}
 		else
 		{
