@@ -11,7 +11,14 @@
 #define MESSENGER_DATA_MAX_STRING_LENGTH 255
 
 #include <stdint.h>
+#include <sni.h>
 
-char* Messenger_data_get_next_line(int32_t* fileIndex, int32_t* lineIndex);
+typedef struct Messenger_data_t{
+	int8_t sender_ID;
+	int8_t content_Length;
+	jbyte content[MESSENGER_DATA_MAX_STRING_LENGTH];
+} Messenger_data_t;
+
+Messenger_data_t Messenger_data_get_next_line(int8_t senderID, int32_t* fileIndex, int32_t* lineIndex);
 
 #endif // MESSENGER_DATA_H

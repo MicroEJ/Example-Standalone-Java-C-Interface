@@ -60,11 +60,11 @@ void SNI_PRODUCER_messenger_configure(SNI_PRODUCER_messenger_t* pProducer)
 }
 
 void SNI_PRODUCER_messenger_produce(SNI_PRODUCER_messenger_t* pProducer)
-{	
-	char* data = Messenger_data_get_next_line(&pProducer->file_index, &pProducer->line_index);
-	if ( data != NULL )
+{
+	Messenger_data_t data = Messenger_data_get_next_line(pProducer->sender_ID,&(pProducer->file_index), &(pProducer->line_index));
+	if ( 0 != data.content_Length )
 	{
-		if ( QUEUE_WRITE_OK == LLQueue_write(PRODUCER_MESSENGER_QUEUE_ID,(jbyte*)(data)) ) //TODO error handling
+		if ( QUEUE_WRITE_OK == LLQueue_write(PRODUCER_MESSENGER_QUEUE_ID,(jbyte*)(&data)) ) //TODO error handling
 		{
 			//printf("+%s\n",data);
 		}

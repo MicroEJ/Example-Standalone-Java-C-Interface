@@ -18,15 +18,15 @@
 typedef char* MSG_FILE[];
 
 MSG_FILE FILE_1 = {
-		"1.1. This is the first line\n",
-		"1.2. This is the next line\n",
-		"1.3. This is the Final line\n",
+		"1.1. This is the first line",
+		"1.2. This is the next line",
+		"1.3. This is the final line",
 		NULL
 };
 
 MSG_FILE FILE_2 = {
-		"2.1. File #2 has different lines, some of which are longer\n",
-		"2.2. But it only has two lines\n",
+		"2.1. File #2 has different lines, some of which are longer",
+		"2.2. But it only has two lines",
 		NULL
 };
 
@@ -57,9 +57,13 @@ int32_t getFilePtrsArrayLength( MSG_FILE* param_MSG_FILE_ptrs[] )
 	return count;
 }
 
-char* Messenger_data_get_next_line(int32_t* fileIndex, int32_t* lineIndex)
+Messenger_data_t Messenger_data_get_next_line(int8_t senderID, int32_t* fileIndex, int32_t* lineIndex)
 {
-	char *result = NULL;
+	Messenger_data_t result;
+	result.sender_ID = senderID;
+	result.content_Length = 0;
+	memset(result.content,0,MESSENGER_DATA_MAX_STRING_LENGTH);
+
 	if ( NULL != fileIndex && NULL != lineIndex)
 	{
 		if ( *fileIndex < getFilePtrsArrayLength(MSG_FILE_ptrs) )
@@ -71,7 +75,8 @@ char* Messenger_data_get_next_line(int32_t* fileIndex, int32_t* lineIndex)
 				{
 					if ( *lineIndex >= 0 )
 					{
-						result = (*currentFile)[*lineIndex];
+						strncpy((char*)result.content,(*currentFile)[*lineIndex],MESSENGER_DATA_MAX_STRING_LENGTH);
+						result.content_Length = strlen((char*)result.content);
 						*lineIndex = *lineIndex + 1;
 					}
 				}

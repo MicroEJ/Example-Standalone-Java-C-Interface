@@ -13,6 +13,8 @@
 
 typedef struct SNI_PRODUCER_messenger_t{
 	SNI_PRODUCER_t super;						//a SNI_PRODUCER_messenger_t "Is-a" SNI_PRODUCER_t
+	int8_t sender_ID;
+
 	int32_t file_index;
 	int32_t line_index;
 }SNI_PRODUCER_messenger_t;

@@ -52,7 +52,7 @@ public class AccelerometerDataConsumer implements Runnable{
 				}
 				else
 				{
-					System.out.println("failure reading data" + readStatus);
+					//System.out.println("failure reading data" + readStatus);
 				}
 			}
 			catch ( IOException e)

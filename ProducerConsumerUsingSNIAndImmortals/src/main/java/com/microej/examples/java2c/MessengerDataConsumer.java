@@ -47,12 +47,8 @@ public class MessengerDataConsumer implements Runnable{
 				final int readStatus = this.queueService.read(this.data);
 				if ( QueueOperationReturnCode.QUEUE_READ_OK == readStatus)
 				{
-					String debug = new String(this.data);
-					int eolIndex = debug.indexOf(0);
-					if ( eolIndex != -1)
-					{
-						System.out.println("-" + debug.substring(0,eolIndex));
-					}
+					MessengerData dataWrapper = new MessengerData(data);
+					System.out.println("-" + dataWrapper.toString());
 				}
 				else
 				{
