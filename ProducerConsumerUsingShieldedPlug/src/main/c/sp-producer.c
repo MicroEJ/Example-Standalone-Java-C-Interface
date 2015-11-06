@@ -19,7 +19,7 @@
 
 /* Defines -------------------------------------------------------------------*/
 
-#define SP_PRODUCER_STACK_SIZE 4096
+#define SP_PRODUCER_STACK_SIZE 2048
 #define SP_PRODUCER_TASK_PRIORITY      ( 3 ) /** Should be > tskIDLE_PRIORITY & < configTIMER_TASK_PRIORITY */
 #define SP_PRODUCER_TASK_STACK_SIZE     SP_PRODUCER_STACK_SIZE/4
 
@@ -32,7 +32,13 @@ void SP_PRODUCER_init(SP_PRODUCER_t* pProducer)
 		printf("%s name : %s\n",__PRETTY_FUNCTION__,pProducer->name);
 		printf("%s productionPeriodInMS : %d\n",__PRETTY_FUNCTION__,pProducer->productionPeriodInMS);
 
-		xTaskCreate(_SP_PRODUCER_taskBody, NULL, SP_PRODUCER_TASK_STACK_SIZE, (void*) pProducer, SP_PRODUCER_TASK_PRIORITY, NULL);
+		xTaskHandle xHandle;
+		portBASE_TYPE xReturn;
+		xReturn = xTaskCreate(_SP_PRODUCER_taskBody, NULL, SP_PRODUCER_TASK_STACK_SIZE, (void*) pProducer, SP_PRODUCER_TASK_PRIORITY, xHandle);
+		if( xReturn != pdPASS )
+		{
+			printf("%s error : unable to create task for %s\n",__PRETTY_FUNCTION__, pProducer->name);
+		}
 	}
 	else
 	{
