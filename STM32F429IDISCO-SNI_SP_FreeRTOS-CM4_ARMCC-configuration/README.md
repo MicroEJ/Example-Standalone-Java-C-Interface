@@ -177,6 +177,7 @@ This project will host the application specific code
 	* In the **Projects** Tab
 		* Click on **Add...**
 		* Select the **ProducerConsumerData** project from the workspace
+		* Select the **NativeQueueWrapper** project from the workspace
 	* Click on **Finish**
 
 #### Java Class creation
