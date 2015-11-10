@@ -64,15 +64,16 @@ void SP_PRODUCER_accelerometer_produce(SP_PRODUCER_accelerometer_t* pProducer)
 		Accelerometer_data_t data = Accelerometer_data_generate_sample(pProducer->sensor_ID);
 		
 		int32_t writeStatus = SP_write(pDatabase,ACCELEROMETER_SP_DATABASE_FIELD_ID_ACCELEROMETER,&data);
-		if (SP_SUCCESS != writeStatus )
-		{
-			printf("%s could not write data. writeStatus : %d\n",__PRETTY_FUNCTION__,writeStatus);
-		}
-		else
+		if (SP_SUCCESS == writeStatus )
 		{
 			char dataAsString[ACCELEROMETER_DATA_MAX_STRING_LENGTH];
 			Accelerometer_data_toString(&data,dataAsString);
 			printf("+%s\n",dataAsString);
+			fflush(stdout);
+		}
+		else
+		{
+			printf("%s could not write data. writeStatus : %d\n",__PRETTY_FUNCTION__,writeStatus);
 		}
 	}
 	else
