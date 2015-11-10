@@ -54,8 +54,8 @@ int main(void)
 //    volatile uint32_t* p_err = 0xFFFFFFFF;
 //    *p_err = 9;
 
-	//SNI_PRODUCER_init_factory();
-	SP_PRODUCER_init_factory();	
+	SNI_PRODUCER_init_factory();
+	//SP_PRODUCER_init_factory();	
 
 	// start the main task
 	xTaskCreate( xJavaTaskFunction, NULL, JAVA_TASK_STACK_SIZE, NULL, JAVA_TASK_PRIORITY, NULL );

@@ -19,7 +19,7 @@ void SNI_PRODUCER_init_factory(void)
 	static SNI_PRODUCER_accelerometer_t accelerometerProducer1 = {
 			{
 					"PRODUCER_Accelerometer_Task_1",
-					1000,
+					1600,
 					&SNI_PRODUCER_accelerometer_configure_adapter,
 					&SNI_PRODUCER_accelerometer_produce_adapter
 			},
@@ -39,16 +39,30 @@ void SNI_PRODUCER_init_factory(void)
 	static SNI_PRODUCER_messenger_t messenger1 = {
 			{
 					"PRODUCER_Messenger_Task_1",
-					400,
+					1100,
 					&SNI_PRODUCER_messenger_configure_adapter,
 					&SNI_PRODUCER_messenger_produce_adapter
 			},
+			11,
 			0,
 			0
 	};
 
+		static SNI_PRODUCER_messenger_t messenger2 = {
+			{
+					"PRODUCER_Messenger_Task_2",
+					1800,
+					&SNI_PRODUCER_messenger_configure_adapter,
+					&SNI_PRODUCER_messenger_produce_adapter
+			},
+			22,
+			0,
+			0
+	};
+
+	SNI_PRODUCER_messenger_init(&messenger1);
 	SNI_PRODUCER_accelerometer_init(&accelerometerProducer1);
 	SNI_PRODUCER_accelerometer_init(&accelerometerProducer2);
-	SNI_PRODUCER_messenger_init(&messenger1);
+	SNI_PRODUCER_messenger_init(&messenger2);
 
 }
