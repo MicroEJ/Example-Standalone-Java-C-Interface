@@ -51,11 +51,7 @@ void _SNI_PRODUCER_taskBody(void* arg)
 	{
 		SNI_PRODUCER_t* pProducer = (SNI_PRODUCER_t*) arg;
 
-		portTickType xDelay = 0;
-		if ( 0 != pProducer->productionPeriodInMS )
-		{
-			xDelay = pProducer->productionPeriodInMS / portTICK_RATE_MS;
-		}
+		const portTickType xDelay = pProducer->productionPeriodInMS / portTICK_RATE_MS;
 
 		if ( NULL != pProducer->configurationFunction )
 		{
@@ -65,12 +61,10 @@ void _SNI_PRODUCER_taskBody(void* arg)
 		if ( NULL != pProducer->productionFunction )
 		{
 
-			vTaskDelay(xDelay);
-			
 			for(;;)
 			{
-				pProducer->productionFunction(pProducer);
 				vTaskDelay(xDelay);
+				pProducer->productionFunction(pProducer);
 			}
 		}
 		else

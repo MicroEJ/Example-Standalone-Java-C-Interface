@@ -52,6 +52,7 @@ void _SP_PRODUCER_taskBody(void* arg)
 	if ( NULL != arg )
 	{
 		SP_PRODUCER_t* pProducer = (SP_PRODUCER_t*) arg;
+
 		const portTickType xDelay = pProducer->productionPeriodInMS / portTICK_RATE_MS;
 
 		if ( NULL != pProducer->configurationFunction )
@@ -60,11 +61,11 @@ void _SP_PRODUCER_taskBody(void* arg)
 
 			if ( NULL != pProducer->productionFunction )
 			{
-				vTaskDelay(xDelay);
+				portTickType xLastWakeTime = xTaskGetTickCount ();
 				for(;;)
 				{
+					vTaskDelayUntil(&xLastWakeTime,xDelay);
 					pProducer->productionFunction(pProducer);
-					vTaskDelay(xDelay);
 				}
 			}
 			else
