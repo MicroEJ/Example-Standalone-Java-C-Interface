@@ -7,8 +7,8 @@
 This example shows an implementation of the producer consumer pattern.
 
 There are two kinds of data produced :
-- fixed size [AccelerometerData.java](/ProducerConsumerData/src/main/java/com/microej/examples/java2c/AccelerometerData.java)
-- variable size [MessengerData.java](/ProducerConsumerData/src/main/java/com/microej/examples/java2c/MessengerData.java)
+- fixed size (cf [AccelerometerData.java](/ProducerConsumerData/src/main/java/com/microej/examples/java2c/AccelerometerData.java) source file)
+- variable size (cf [MessengerData.java](/ProducerConsumerData/src/main/java/com/microej/examples/java2c/MessengerData.java) source file)
 
 There is one consumer (written in Java) and two producers (written in C) for each kind of data.
 
@@ -22,8 +22,8 @@ The following steps will be taken :
 
 * Project setup
 * Java design
-	* Java data class
-	* Java consumer class
+	* Java data classes
+	* Java consumer classes
 * C design
 	* C data structs
 	* C producer tasks
@@ -37,7 +37,7 @@ These steps have already been done in this workspace and you do not need to repe
 
 # Java design
 
-## Java data class
+## Java data classes
 
 In this section, we shall create classes to represent the data being exchanged between producer(s) and consumer(s).
 
@@ -85,7 +85,7 @@ The source code is in the following files :
 
 We shall now design a way to generate data from the C world, since the actual data production is more likely to originate from a device with a driver implemented in C.
 
-## C data struct
+## C data structs
 
 Let us define some
 * struct to hold the data **Accelerometer_data_t** and **Messenger_data_t**
@@ -98,7 +98,7 @@ The source code is available in the following files :
 * [messenger-data.h](/ProducerConsumerData/src/main/c/messenger-data.h)
 * [messenger-data.c](/ProducerConsumerData/src/main/c/messenger-data.c)
 
-## C producer task
+## C producer tasks
 
 In this section, we shall create C code to produce data sporadically.
 
@@ -120,8 +120,8 @@ This leads us to defining a producer "class" with the following contents
 Although the design is to some extent object-oriented, the implementation in this example is in C, not in C++.
 
 The source code is available in the following files.
-* [sp-producer.h](/ProducerConsumerUsingSNIAndImmortals/src/main/c/sni-producer.h)
-* [sp-producer.c](/ProducerConsumerUsingSNIAndImmortals/src/main/c/sni-producer.c)
+* [sni-producer.h](/ProducerConsumerUsingSNIAndImmortals/src/main/c/sni-producer.h)
+* [sni-producer.c](/ProducerConsumerUsingSNIAndImmortals/src/main/c/sni-producer.c)
 
 
 ### Domain-specific producer code
@@ -139,6 +139,10 @@ Here we shall define the relevant "classes" :
 		* adapter production function
 			* with signature matching the one of the pointer to production function in the domain-agnostic producer struct
 			* used as an adapter method to call a more specialized production function that can use domain-specific producer info (such as sensor_ID)
+	* source code
+		* [sni-producer-accelerometer.h](/ProducerConsumerUsingSNIAndImmortals/src/main/c/sni-producer-accelerometer.h)
+		* [sni-producer-accelerometer.c](/ProducerConsumerUsingSNIAndImmortals/src/main/c/sni-producer-accelerometer.c)
+			
 * a messenger "class" with the following contents :
 	* attributes
 		* sender_ID (useful for tracing from who the message comes from)
@@ -151,21 +155,17 @@ Here we shall define the relevant "classes" :
 		* adapter production function
 			* with signature matching the one of the pointer to production function in the domain-agnostic producer struct
 			* used as an adapter method to call a more specialized production function that can use domain-specific producer info (such as sender_ID)
-
-The source code is available in the following files.
-* [sni-producer-accelerometer.h](/ProducerConsumerUsingSNIAndImmortals/src/main/c/sni-producer-accelerometer.h)
-* [sni-producer-accelerometer.c](/ProducerConsumerUsingSNIAndImmortals/src/main/c/sni-producer-accelerometer.c)
-* [sni-producer-messenger.h](/ProducerConsumerUsingSNIAndImmortals/src/main/c/sni-producer-messenger.h)
-* [sni-producer-messenger.c](/ProducerConsumerUsingSNIAndImmortals/src/main/c/sp-producer-messenger.c)
-
+	* source code
+		* [sni-producer-messenger.h](/ProducerConsumerUsingSNIAndImmortals/src/main/c/sni-producer-messenger.h)
+		* [sni-producer-messenger.c](/ProducerConsumerUsingSNIAndImmortals/src/main/c/sni-producer-messenger.c)
 
 ### Instantiation code
 
 The `SNI_PRODUCER_init_factory` function instantiates two producers with different IDs and production periods for each kind of data
 
 The source code is available in the following files.
-* [sni-producer-factory.h](/ProducerConsumerUsingSNIAndImmortals/src/main/c/sp-producer-factory.h)
-* [sni-producer-factory.c](/ProducerConsumerUsingSNIAndImmortals/src/main/c/sp-producer-factory.c)
+* [sni-producer-factory.h](/ProducerConsumerUsingSNIAndImmortals/src/main/c/sni-producer-factory.h)
+* [sni-producer-factory.c](/ProducerConsumerUsingSNIAndImmortals/src/main/c/sni-producer-factory.c)
 
 
 # Integration
