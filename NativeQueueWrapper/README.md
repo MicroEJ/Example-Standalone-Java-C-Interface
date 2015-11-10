@@ -26,4 +26,20 @@ Add this project to your project build Path :
 
 ## API Usage
 
-Refer to the [AccelerometerDataConsumer.java](/ProducerConsumerUsingSNIAndImmortals/src/main/java/com/microej/examples/java2c/AccelerometerDataConsumer.java) source file for sample API usage 
+### Producer
+
+* After creation, OS Queues have to be registered using the LLQueue_registerQueue API.
+* Data must be posted using the LLQueue_write API
+
+For sample API usage, refer to the following source files :
+* [sni-producer-accelerometer.c](/ProducerConsumerUsingSNIAndImmortals/src/main/c/sni-producer-accelerometer.c)
+* [sni-producer-messenger.c](/ProducerConsumerUsingSNIAndImmortals/src/main/c/sni-producer-messenger.c)
+
+### Consumer
+
+* One shall start by creating an instance of the QueueService class, specifying the OS Queue ID and the data item size in bytes
+* Then one shall attempt to get an item from the queue using the QueueService read API, passing as a parameter the buffer to write data on. This parameter shall be marked as belonging to the Immortals pool.
+
+For sample API usage, refer to the following source files :
+* [AccelerometerDataConsumer.java](/ProducerConsumerUsingSNIAndImmortals/src/main/java/com/microej/examples/java2c/AccelerometerDataConsumer.java)
+* [ProducerConsumerExample.java](/ProducerConsumerUsingSNIAndImmortals/src/main/java/com/microej/examples/java2c/ProducerConsumerExample.java)

@@ -113,13 +113,13 @@ Now that we are confident with the production-consumption mechanism in Java, we 
 ## C data struct
 
 Let us define some
-* struct to hold the data
-* method to generate/retrieve the data (and trace where it comes from - that is what the **sensor_ID** field is for)
+* struct to hold the data : **Accelerometer_data_t**
+* method to generate/retrieve the data (and trace where it comes from - that is what the **Accelerometer_data_t::sensor_ID** field is for)
 * debug helper function (the **print** function)
 
 The source code is available in the following files :
-* [accelerometer-data.h](/ProducerConsumerUsingShieldedPlug/src/main/c/accelerometer-data.h)
-* [accelerometer-data.c](/ProducerConsumerUsingShieldedPlug/src/main/c/accelerometer-data.c)
+* [accelerometer-data.h](/ProducerConsumerData/src/main/c/accelerometer-data.h)
+* [accelerometer-data.c](/ProducerConsumerData/src/main/c/accelerometer-data.c)
 
 ## C producer task
 
@@ -171,15 +171,19 @@ The source code is available in the following files.
 The `SP_PRODUCER_init_factory` function instantiates two producers with different IDs and production periods
 
 The source code is available in the following files.
-* [sp-producer-accelerometer.h](/ProducerConsumerUsingShieldedPlug/src/main/c/sp-producer-factory.h)
-* [sp-producer-accelerometer.c](/ProducerConsumerUsingShieldedPlug/src/main/c/sp-producer-factory.c)
+* [sp-producer-factory.h](/ProducerConsumerUsingShieldedPlug/src/main/c/sp-producer-factory.h)
+* [sp-producer-factory.c](/ProducerConsumerUsingShieldedPlug/src/main/c/sp-producer-factory.c)
 
 
 # Integration
 
-For reference, BSP toolchain integration related instructions are described in the [Produced Consumer Integration](/STM32F429IDISCO-SNI_SP_FreeRTOS-CM4_ARMCC-configuration/README.md#producer-consumer-integration) section of the [STM32F429IDISCO-SNI_SP_FreeRTOS-CM4_ARMCC-configuration/README.md](/STM32F429IDISCO-SNI_SP_FreeRTOS-CM4_ARMCC-configuration/README.md) file.
+For reference, BSP toolchain integration related instructions are described in the [Producer Consumer Using Shielded Plug Integration](/STM32F429IDISCO-SNI_SP_FreeRTOS-CM4_ARMCC-configuration/README.md#producer-consumer-integration-using-shielded-plug-integration) section of the [STM32F429IDISCO-SNI_SP_FreeRTOS-CM4_ARMCC-configuration/README.md](/STM32F429IDISCO-SNI_SP_FreeRTOS-CM4_ARMCC-configuration/README.md) file.
 
 These steps have already been done in this workspace and you do not need to repeat them.
+
+However, you still need to perform the following operation :
+uncomment the call to `SP_PRODUCER_init_factory` in the [main.c](/STM32F429IDISCO-SNI_SP_FreeRTOS-CM4_ARMCC-bsp/Project/MicroEJ/src/main.c) source file
+
 
 	
 ## Checking the behavior
@@ -212,7 +216,7 @@ These steps have already been done in this workspace and you do not need to repe
 
 * The '-' prefix indicates data consumption
 * The '+' prefix indicates data production
-* The number right after the ID indicates which sensor the data originates from
+* The number right after the ID indicates which sensor the data originates from. The 4 different IDs in the trace show us that data from our 4 different producers get consumed.
 
 
 # Advanced use cases

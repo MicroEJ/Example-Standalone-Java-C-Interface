@@ -4,7 +4,7 @@
 
 # Overview
 
-This document describes how to create the **STM32F429IDISCO-SNI_SP_FreeRTOS-CM4_ARMCC** MicroEJ platform and how to integrate the code from the [ProducerConsumerUsingShieldedPlug](/ProducerConsumerUsingShieldedPlug) project into it.
+This document describes how to create the **STM32F429IDISCO-SNI_SP_FreeRTOS-CM4_ARMCC** MicroEJ platform and how to integrate the code from the [ProducerConsumerUsingShieldedPlug](/ProducerConsumerUsingShieldedPlug) and [ProducerConsumerUsingSNIAndImmortals](/ProducerConsumerUsingSNIAndImmortals) projects into it.
 
 The following steps will be taken :
 
@@ -12,10 +12,18 @@ The following steps will be taken :
 	* (Optional) Recreating the platform
 	* Building the platform
 	* Building a skeleton Java executable
+		* For Shielded Plug
+		* For SNI
 	* Running Java on the board
-* Producer Consumer Integration
+* Producer Consumer Using Shielded Plug Integration
+	* Shielded Plug database definition
 	* Spawning the C tasks from the main C program
 	* Building the updated C project
+* Producer Consumer Using SNI and Immortals Integration
+	* Spawning the C tasks from the main C program
+	* Building the updated C project
+* Testing
+	* Building the binary
 	* Deploying the binary
 
 ## Requirements
@@ -75,13 +83,15 @@ So as to avoid confusion, the platform has been renamed to **STM32F429IDISCO-SNI
 		* STM32F429IDISCO-SNI_SP_FreeRTOS-CM4_ARMCC-1.0.0
 * Click on **Window > Preferences > MicroEJ**
 	* In the **MicroEJ Repository** frame
-		* Click on the **Refresh** button 
+		* Click on the **Refresh** button
 
 ## Building a skeleton Java executable
 
 In this section, we will create a skeleton Java program that does nothing relevant (yet), but is required so as to generate a proper BSP toolchain project from MicroEJ.
 
-### MicroEJ project creation
+### For Shielded Plug
+
+#### MicroEJ project creation
 
 This project will host the application specific code
 
@@ -90,11 +100,13 @@ This project will host the application specific code
 	* In the **Runtime Environment** frame, select the following MicroEJ Libraries :
 		* EDC 1.2 (selected by default)
 		* SP 1.0 (will be required later)
-* Click on **Next**
-* Click on **Finish**
+		* Click on **Next**
+	* In the **Projects** Tab
+		* Click on **Add...**
+		* Select the **ProducerConsumerData** project from the workspace
+	* Click on **Finish**		
 
-
-### Java Class creation
+#### Java Class creation
 * Select **File > New > Source Folder** menu item
 	* Set the **Folder name** field to /src/main/java
 * Select **File > New > Class** menu item
@@ -102,10 +114,10 @@ This project will host the application specific code
 	* Set the **Package** field to "com.is2t.examples.java2c"
 	* Set the **Name** field to "DataConsumerExample"
 	* Click on **Finish**
-	* Copy and paste the following code inside the generated [DataConsumerExample.java](ProducerConsumerUsingShieldedPlug/src/main/java/com/is2t/examples/java2c/DataConsumerExample.java) file 
+	* Copy and paste the following code inside the generated [ProducerConsumerExample.java](ProducerConsumerUsingShieldedPlug/src/main/java/com/is2t/examples/java2c/ProducerConsumerExample.java) file 
 
-			package com.is2t.examples.java2c;
-			public class DataConsumerExample {
+			package com.microej.examples.java2c;
+			public class ProducerConsumerExample {
 			
 					public static void main(String[] args) {
 						while (true) {
@@ -121,7 +133,7 @@ This project will host the application specific code
 			}
 
 
-### Compiling the Java code for the target
+#### Compiling the Java code for the target
 
 Here, we will create a MicroEJ "Run Configuration" that will compile the Java code we just created for the JPF we created previously
 
@@ -133,7 +145,7 @@ Here, we will create a MicroEJ "Run Configuration" that will compile the Java co
 	* Set **Name** field to "ProducerConsumerUsingShieldedPlug_Build"
 	* In **Main** tab
 		* Set the **Project** field to "ProducerConsumerUsingShieldedPlug"
-		* Click on **Select Main type...** and type DataConsumerExample
+		* Click on **Select Main type...** and type ProducerConsumerExample
 	* In **Execution** tab
 		* In **Target** frame
 			* Click the **Browse** button next to the JPF Field and select your platform
@@ -147,6 +159,79 @@ Here, we will create a MicroEJ "Run Configuration" that will compile the Java co
 		* In **Save as** frame
 			* Select the **Shared file** radio button
 			* Click on **Browse** and select [ProducerConsumerUsingShieldedPlug/launches](ProducerConsumerUsingShieldedPlug/launches) folder	
+	* Click on "Run"
+
+### For SNI and Immortals
+
+#### MicroEJ project creation
+
+This project will host the application specific code
+
+* Select **File > New > Java Project** menu item
+	* Set **Project Name** field to **"ProducerConsumerUsingSNIAndImmortals"**
+	* In the **Runtime Environment** frame, select the following MicroEJ Libraries :
+		* EDC 1.2 (selected by default)
+		* BON (1.2) (will be required later)
+		* SNI (1.2.0) (will be required later)
+	* Click on **Next**
+	* In the **Projects** Tab
+		* Click on **Add...**
+		* Select the **ProducerConsumerData** project from the workspace
+	* Click on **Finish**
+
+#### Java Class creation
+* Select **File > New > Source Folder** menu item
+	* Set the **Folder name** field to /src/main/java
+* Select **File > New > Class** menu item
+	* Set the **Source folder** field to "ProducerConsumerUsingSNIAndImmortals/src/main/java"
+	* Set the **Package** field to "com.is2t.examples.java2c"
+	* Set the **Name** field to "DataConsumerExample"
+	* Click on **Finish**
+	* Copy and paste the following code inside the generated [ProducerConsumerExample.java](ProducerConsumerUsingSNIAndImmortals/src/main/java/com/is2t/examples/java2c/ProducerConsumerExample.java) file 
+
+			package com.microej.examples.java2c;
+			public class ProducerConsumerExample {
+			
+					public static void main(String[] args) {
+						while (true) {
+							System.out.println("-- main alive --");
+							try {
+									Thread.sleep(2000);
+							} catch (InterruptedException e) {
+									// It is OK to ignore because this is just a basic example
+							}
+						}
+					}
+				
+			}
+
+
+#### Compiling the Java code for the target
+
+Here, we will create a MicroEJ "Run Configuration" that will compile the Java code we just created for the JPF we created previously
+
+* Select **File > New > Folder** menu item
+	* Set the **Enter or select the parent folder** field to "ProducerConsumerUsingSNIAndImmortals" (Project root)
+	* Set the **Folder Name** field to "launches"
+* Select **Run Configurations...** from the **Run configurations** drop down list (or Press Ctrl+Shift+3 and type "Run Configurations...")
+* Select **MicroEJ Application** group and click **New**
+	* Set **Name** field to "ProducerConsumerUsingSNIAndImmortals_Build"
+	* In **Main** tab
+		* Set the **Project** field to "ProducerConsumerUsingSNIAndImmortals"
+		* Click on **Select Main type...** and type ProducerConsumerExample
+	* In **Execution** tab
+		* In **Target** frame
+			* Click the **Browse** button next to the JPF Field and select your platform
+		* In **Execution** frame
+			* Select **Execute on EmbJPF** radio button
+			* Leave the **Output Folder** field set to "${project_loc:ProducerConsumerUsingSNIAndImmortals}"
+	* In **Configuration** tab
+		* Select the **Target > Deploy** Node
+			* Set the **Means** field to "Copy at a location known by BSP Project"
+	* In **Common** tab
+		* In **Save as** frame
+			* Select the **Shared file** radio button
+			* Click on **Browse** and select [ProducerConsumerUsingSNIAndImmortals/launches](ProducerConsumerUsingSNIAndImmortals/launches) folder	
 	* Click on "Run"
 
 ## Running Java on the board
@@ -176,7 +261,7 @@ Here, we will create a MicroEJ "Run Configuration" that will compile the Java co
 	...
 	
 
-# Producer Consumer Integration 
+# Producer Consumer Using Shielded Plug Integration 
 
 ## Shielded Plug database definition
 
@@ -198,15 +283,15 @@ You then have to update your MicroEJ launch configuration to specify the locatio
 
 We need to modify the main C program so as to call our producers instantiation code.
 
-### Opening the generated C project (BSP specific)
+### Opening the generated C project
 * From the **Project Explorer** view
 	* Open the [main.c](/STM32F429IDISCO-SNI_SP_FreeRTOS-CM4_ARMCC-bsp/Project/MicroEJ/src/main.c) source file
-	* Add `#include "sp-producer-accelerometer.h"` to the include directives
-	* In the `main()` function, insert a call to `	PRODUCER_accelerometer_init_ALL()` function just before the following line
+	* Add `#include "sp-producer-factory.h"` to the include directives
+	* In the `main()` function, insert a call to `SP_PRODUCER_init_factory()` function just before the following line
 			xTaskCreate( xJavaTaskFunction, NULL, JAVA_TASK_STACK_SIZE, NULL, JAVA_TASK_PRIORITY, NULL );
 			
 ## Building the updated C project
-### Adding the C source files to the generated C project (BSP specific)
+### Adding the C source files to the generated C project
 
 #### Opening the generated C project
 * From the **Project Explorer** view
@@ -220,19 +305,83 @@ We need to modify the main C program so as to call our producers instantiation c
 	* Click on **...** next to the **Include Paths** field
 		* Click on the **New** button
 			* Click on **...** next to the newly created entry
+				* Navigate to the [ProducerConsumerData\src\main\c](ProducerConsumerData\src\main\c) folder
+ 		* Click on the **New** button
+			* Click on **...** next to the newly created entry
 				* Navigate to the [ProducerConsumerUsingShieldedPlug\src\main\c](ProducerConsumerUsingShieldedPlug\src\main\c) folder
 
-#### Adding the C file to the BSP IDE project structure (BSP specific)
+#### Adding the C files to the BSP IDE project structure
 * Select the root node of your project
 	* Right-Click and select **Add Group** this will add a group called "New Group"
 	* Select this group and hit **F2** key so as to rename it to "Production"
 	* Right-Click on the **Publication** group and select **Add Existing Files to group 'Production'...**
+	* Navigate to the [NativeQueueWrapper/src/main/c](/NativeQueueWrapper/src/main/c) folder
+		* Select all the .c source files in the folder
+		* Click **Add**
+		* Click **Close**
+	* Navigate to the [ProducerConsumerData/src/main/c](/ProducerConsumerData/src/main/c) folder
+		* Select all the .c source files in the folder
+		* Click **Add**
+		* Click **Close**
 	* Navigate to the [ProducerConsumerUsingShieldedPlug/src/main/c](/ProducerConsumerUsingShieldedPlug/src/main/c) folder
-	* Select all the .c source files in the folder
-	* Click **Add**
-	* Click **Close**
+		* Select all the .c source files in the folder
+		* Click **Add**
+		* Click **Close**
 
-### Building the binary
+# Producer Consumer Using SNI and Immortals Integration 
+
+## Spawning the C tasks from the main C program
+
+We need to modify the main C program so as to call our producers instantiation code.
+
+### Opening the generated C project
+* From the **Project Explorer** view
+	* Open the [main.c](/STM32F429IDISCO-SNI_SP_FreeRTOS-CM4_ARMCC-bsp/Project/MicroEJ/src/main.c) source file
+	 * Add `#include "sni-producer-factory.h"` to the include directives
+	* In the `main()` function, insert a call to `SNI_PRODUCER_init_factory()` function just before the following line
+			xTaskCreate( xJavaTaskFunction, NULL, JAVA_TASK_STACK_SIZE, NULL, JAVA_TASK_PRIORITY, NULL );
+			
+## Building the updated C project
+### Adding the C source files to the generated C project
+
+#### Opening the generated C project
+* From the **Project Explorer** view
+	* Double-click on the [Project.uvproj](/STM32F429IDISCO-SNI_SP_FreeRTOS-CM4_ARMCC-bsp/Project/MicroEJ/MDK-ARM/Project.uvproj) file (this will open the BSP project in the MicroVision IDE)
+	
+#### Updating the include path
+* From the MicroVision IDE
+* Right-click on the root node of your project (the one called **STM32F429i-DISCO**)
+* Select **Options for Target STM32F429i-DISCO**
+	* Go to C/C++ tab
+	* Click on **...** next to the **Include Paths** field
+		* Click on the **New** button
+			* Click on **...** next to the newly created entry
+				* Navigate to the [ProducerConsumerData\src\main\c](ProducerConsumerData\src\main\c) folder
+ 		* Click on the **New** button
+			* Click on **...** next to the newly created entry
+				* Navigate to the [ProducerConsumerUsingSNIAndImmortals\src\main\c](ProducerConsumerUsingSNIAndImmortals\src\main\c) folder
+
+#### Adding the C files to the BSP IDE project structure
+* Select the root node of your project
+	* Right-Click and select **Add Group** this will add a group called "New Group"
+	* Select this group and hit **F2** key so as to rename it to "Production"
+	* Right-Click on the **Publication** group and select **Add Existing Files to group 'Production'...**
+	* Navigate to the [NativeQueueWrapper/src/main/c](/NativeQueueWrapper/src/main/c) folder
+		* Select all the .c source files in the folder
+		* Click **Add**
+		* Click **Close**
+	* Navigate to the [ProducerConsumerData/src/main/c](/ProducerConsumerData/src/main/c) folder
+		* Select all the .c source files in the folder
+		* Click **Add**
+		* Click **Close**
+	* Navigate to the [ProducerConsumerUsingSNIAndImmortals/src/main/c](/ProducerConsumerUsingSNIAndImmortals/src/main/c) folder
+		* Select all the .c source files in the folder
+		* Click **Add**
+		* Click **Close**
+
+# Testing
+
+## Building the binary
 * From the MicroVision IDE
 	* Select **Project > Build Target** menu item (or press F7 keyboard shortcut)
 
