@@ -52,7 +52,7 @@ public class MessengerDataConsumer implements Runnable{
 				}
 				else
 				{
-					//System.out.println("failure reading data" + readStatus);
+					System.out.println(this.getClass().getName() + " failure reading data " + readStatus);
 				}
 			}
 			catch ( IOException e)

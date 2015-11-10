@@ -18,7 +18,7 @@
 
 
 #define PRODUCER_ACCELEROMETER_QUEUE_ID					7 //this queue ID should not be reused for a message queue holding anything else than accelerometer data
-#define PRODUCER_ACCELEROMETER_QUEUE_MAX_ITEMS 	5
+#define PRODUCER_ACCELEROMETER_QUEUE_MAX_ITEMS 	20
 #define PRODUCER_ACCELEROMETER_QUEUE_ITEM_SIZE 	4
 
 
@@ -61,15 +61,14 @@ void SNI_PRODUCER_accelerometer_configure(SNI_PRODUCER_accelerometer_t* pProduce
 
 void SNI_PRODUCER_accelerometer_produce(SNI_PRODUCER_accelerometer_t* pProducer)
 {
-	//printf("%s\n",__PRETTY_FUNCTION__);
-
 	Accelerometer_data_t data = Accelerometer_data_generate_sample(pProducer->sensor_ID);
 
-	if ( QUEUE_WRITE_OK == LLQueue_write(PRODUCER_ACCELEROMETER_QUEUE_ID,(jbyte*)(&data)) ) //TODO error handling
+	if ( QUEUE_WRITE_OK == LLQueue_write(PRODUCER_ACCELEROMETER_QUEUE_ID,(jbyte*)(&data)) )
 	{
-		//char dataAsString[ACCELEROMETER_DATA_MAX_STRING_LENGTH];
-		//Accelerometer_data_toString(&data,dataAsString);
-		//printf("+%s\n",dataAsString);
+		char dataAsString[ACCELEROMETER_DATA_MAX_STRING_LENGTH];
+		Accelerometer_data_toString(&data,dataAsString);
+		printf("+%s\n",dataAsString);
+		fflush(stdout);
 	}
 	else
 	{

@@ -20,5 +20,6 @@ typedef struct Messenger_data_t{
 } Messenger_data_t;
 
 Messenger_data_t Messenger_data_get_next_line(int8_t senderID, int32_t* fileIndex, int32_t* lineIndex);
+void Messenger_data_toString(const Messenger_data_t* data, char * output);
 
 #endif // MESSENGER_DATA_H

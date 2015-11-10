@@ -95,3 +95,15 @@ Messenger_data_t Messenger_data_get_next_line(int8_t senderID, int32_t* fileInde
 	return result;
 }
 
+void Messenger_data_toString(const Messenger_data_t* data, char * output)
+{
+	if ( NULL != data )
+	{
+		snprintf(output,MESSENGER_DATA_MAX_STRING_LENGTH,"ID : %d {%s}",data->sender_ID, data->content);
+	}
+	else
+	{
+		snprintf(output,(unsigned)strlen(""),"");
+		printf("%s error : pointer to data is NULL !\n",__PRETTY_FUNCTION__);
+	}
+}

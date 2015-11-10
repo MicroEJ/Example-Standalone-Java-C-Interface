@@ -32,7 +32,14 @@ public class MessengerData {
 	
 	@Override
 	public String toString() {
-		return "ID : " + senderId + " {" + new String(this.content) + "}";
+		StringBuilder stringBuilder = new StringBuilder();
+		stringBuilder.append("ID : ");
+		stringBuilder.append(senderId);
+		stringBuilder.append(" {");
+		stringBuilder.append(new String(this.content));
+		stringBuilder.append("}");
+		//return "ID : " + senderId + " {" + new String(this.content) + "}";
+		return stringBuilder.toString();
 	}
 
 	//ShieldedPlug related IDs - see src/main/resources/database-definition.xml file for relevant values
