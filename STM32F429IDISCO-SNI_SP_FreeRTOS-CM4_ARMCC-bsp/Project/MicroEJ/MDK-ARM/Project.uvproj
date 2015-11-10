@@ -367,7 +367,7 @@
               <MiscControls>--c99 --apcs=/softfp</MiscControls>
               <Define>USE_STDPERIPH_DRIVER,STM32F429_439xx,USE_DEFAULT_TIMEOUT_CALLBACK</Define>
               <Undefine></Undefine>
-              <IncludePath>..\inc;..\includeAPIs;..\..\..\Libraries\CMSIS\Device\ST\STM32F4xx\Include;..\..\..\Libraries\STM32F4xx_StdPeriph_Driver\inc;..\..\..\Libraries\CMSIS\CM4\DeviceSupport\ST\STM32F4xx;..\..\..\Utilities\STM32F429I-Discovery;..\includeAPIs\intern;..\include;..\..\FreeRTOS\Source\include;..\..\FreeRTOS\Source\portable\RVDS\ARM_CM4F;..\..\SNI-SP\inc;..\..\..\..\ProducerConsumerUsingShieldedPlug\src\main\c</IncludePath>
+              <IncludePath>..\inc;..\includeAPIs;..\..\..\Libraries\CMSIS\Device\ST\STM32F4xx\Include;..\..\..\Libraries\STM32F4xx_StdPeriph_Driver\inc;..\..\..\Libraries\CMSIS\CM4\DeviceSupport\ST\STM32F4xx;..\..\..\Utilities\STM32F429I-Discovery;..\includeAPIs\intern;..\include;..\..\FreeRTOS\Source\include;..\..\FreeRTOS\Source\portable\RVDS\ARM_CM4F;..\..\SNI-SP\inc;..\..\..\..\ProducerConsumerData\src\main\c;..\..\..\..\ProducerConsumerUsingShieldedPlug\src\main\c;..\..\..\..\ProducerConsumerUsingSNIAndImmortals\src\main\c;..\..\..\..\NativeQueueWrapper\src\main\c</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -811,9 +811,19 @@
           <GroupName>Production</GroupName>
           <Files>
             <File>
+              <FileName>LLNativeQueueService.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\..\NativeQueueWrapper\src\main\c\LLNativeQueueService.c</FilePath>
+            </File>
+            <File>
               <FileName>accelerometer-data.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\..\ProducerConsumerUsingShieldedPlug\src\main\c\accelerometer-data.c</FilePath>
+              <FilePath>..\..\..\..\ProducerConsumerData\src\main\c\accelerometer-data.c</FilePath>
+            </File>
+            <File>
+              <FileName>messenger-data.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\..\ProducerConsumerData\src\main\c\messenger-data.c</FilePath>
             </File>
             <File>
               <FileName>sp-producer.c</FileName>
@@ -824,6 +834,31 @@
               <FileName>sp-producer-accelerometer.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\..\..\ProducerConsumerUsingShieldedPlug\src\main\c\sp-producer-accelerometer.c</FilePath>
+            </File>
+            <File>
+              <FileName>sp-producer-factory.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\..\ProducerConsumerUsingShieldedPlug\src\main\c\sp-producer-factory.c</FilePath>
+            </File>
+            <File>
+              <FileName>sni-producer.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\..\ProducerConsumerUsingSNIAndImmortals\src\main\c\sni-producer.c</FilePath>
+            </File>
+            <File>
+              <FileName>sni-producer-accelerometer.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\..\ProducerConsumerUsingSNIAndImmortals\src\main\c\sni-producer-accelerometer.c</FilePath>
+            </File>
+            <File>
+              <FileName>sni-producer-factory.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\..\ProducerConsumerUsingSNIAndImmortals\src\main\c\sni-producer-factory.c</FilePath>
+            </File>
+            <File>
+              <FileName>sni-producer-messenger.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\..\ProducerConsumerUsingSNIAndImmortals\src\main\c\sni-producer-messenger.c</FilePath>
             </File>
           </Files>
         </Group>
