@@ -15,7 +15,7 @@ There is one consumer (written in Java) and two producers (written in C) for eac
 Data is exchanged via message queues. A Java wrapper has been created to access the C message queues API. This wrapper is defined in the [NativeQueueWrapper](/NativeQueueWrapper) project.
 
 * The producers send data at a fixed period if space is available in the relevant queue.
-* The consumer gets new data from the database as soon as it is available. If no data is available immediately, the queue wrapper will block until some becomes available.
+* The consumer gets new data from the message queue as soon as it is available. If no data is available immediately, the queue wrapper will block until some becomes available.
 
 
 The following steps will be taken :
