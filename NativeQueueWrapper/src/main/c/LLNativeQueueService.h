@@ -29,6 +29,7 @@ typedef struct queue_registry_entry_t {
 static queue_registry_entry_t queue_registry[MAX_QUEUES_IN_REGISTRY];
 
 //== regular queue API
+jint LLQueue_createQueue(jint queueId, jint itemSize, jint maxItems);
 jint LLQueue_registerQueue(jint queueId, xQueueHandle queueHandle, jint itemSize, jint maxItems);
 jint LLQueue_unregisterQueue(jint queueId, xQueueHandle queueHandle);
 jint LLQueue_getItemSize(jint queueId, jint* result);
@@ -37,6 +38,7 @@ jint LLQueue_read(jint fromQueueId, jbyte* itemDataAsByteArray);
 jint LLQueue_write(jint toQueueId, jbyte* itemDataAsByteArray);
 
 //== SNI wrappers
+jint Java_com_microej_examples_nativequeue_api_NativeQueueService_createQueue(jint queueId, jint itemSize, jint maxItems);
 jint Java_com_microej_examples_nativequeue_api_NativeQueueService_getItemSize(jint queueId, jint* result);
 jint Java_com_microej_examples_nativequeue_api_NativeQueueService_getMaxItems(jint queueId, jint* result);
 jint Java_com_microej_examples_nativequeue_api_NativeQueueService_read(jint fromQueueId, jbyte* itemDataAsByteArray);

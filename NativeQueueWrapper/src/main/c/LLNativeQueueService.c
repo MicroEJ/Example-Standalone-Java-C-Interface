@@ -16,12 +16,15 @@ jint _LLQueue_read(jint fromQueueId, jbyte* itemDataAsByteArray, jboolean fromJa
 jint _LLQueue_write(jint toQueueId, jbyte* itemDataAsByteArray, jboolean fromJava);
 
 //== regular queue API
+jint LLQueue_createQueue(jint queueId, jint itemSize, jint maxItems)
+{
+	xQueueHandle newQueue = xQueueCreate(maxItems,itemSize);
+	LLQueue_registerQueue(queueId,newQueue,itemSize,maxItems);
+	return 0;
+}
+
 jint LLQueue_registerQueue(jint queueId, xQueueHandle queueHandle, jint itemSize, jint maxItems)
 {
-	printf("%s queueId : %d\n",__PRETTY_FUNCTION__,queueId);
-	printf("%s itemSize : %d\n",__PRETTY_FUNCTION__,itemSize);
-	printf("%s maxItems : %d\n",__PRETTY_FUNCTION__,maxItems);
-
 	jint result = QUEUE_UNREGISTERED;
 
 	if ( queueId > MAX_QUEUES_IN_REGISTRY )
@@ -167,7 +170,8 @@ jint _LLQueue_write(jint toQueueId, jbyte* itemDataAsByteArray, jboolean fromJav
 		jboolean sizeCheckPassed = JFALSE;
 		if ( JTRUE == fromJava)
 		{
-			if ( SNI_getArrayLength(itemDataAsByteArray) ==  queue_registry[toQueueId].itemSize )
+			jint arrayLength =  SNI_getArrayLength(itemDataAsByteArray); 
+			if ( arrayLength == queue_registry[toQueueId].itemSize )
 			{
 				sizeCheckPassed = JTRUE;
 			}
@@ -194,6 +198,11 @@ jint _LLQueue_write(jint toQueueId, jbyte* itemDataAsByteArray, jboolean fromJav
 }
 
 //== SNI wrappers
+jint Java_com_microej_examples_nativequeue_api_NativeQueueService_createQueue(jint queueId, jint itemSize, jint maxItems)
+{
+	return LLQueue_createQueue(queueId,itemSize,maxItems);
+}
+
 jint Java_com_microej_examples_nativequeue_api_NativeQueueService_getItemSize(jint queueId,  jint* result)
 {
 	return LLQueue_getItemSize(queueId,result);

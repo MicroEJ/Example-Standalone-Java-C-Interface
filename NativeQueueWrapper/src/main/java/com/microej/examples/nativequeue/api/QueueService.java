@@ -10,6 +10,11 @@ public class QueueService {
 		super();
 		this.queueId = queueId;
 	}
+	
+	synchronized public void createQueue(int itemSize, int maxItems)
+	{
+		NativeQueueService.createQueue(this.queueId, itemSize, maxItems);
+	}
 
 	synchronized public int read(byte[] output) throws IOException{
 		int errorCode = NativeQueueService.read(queueId, output);

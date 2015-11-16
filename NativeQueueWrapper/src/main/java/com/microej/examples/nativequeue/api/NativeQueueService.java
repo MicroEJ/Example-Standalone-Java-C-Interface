@@ -8,11 +8,14 @@ package com.microej.examples.nativequeue.api;
 
 class NativeQueueService {
 
+	public static native int createQueue(int queueId, int itemSize, int maxItems);
+
 	/**
 	 * 
 	 * @param fromQueueId the queue ID
 	 * @return the ItemSize of the queue, {@link QueueOperationReturnCode#QUEUE_INVALID_ID} if queue does not exist
 	 */
+//!!!!!!!!! return code should not be mixed with return value
 	public static native int getItemSize(int queueId);
 
 	/**
@@ -20,6 +23,7 @@ class NativeQueueService {
 	 * @param fromQueueId the queue ID
 	 * @return the max Items in the queue, {@link QueueOperationReturnCode#QUEUE_INVALID_ID} if queue does not exist
 	 */
+	//!!!!!!!!! return code should not be mixed with return value
 	public static native int getMaxItems(int fromQueueId);
 
 	/**
