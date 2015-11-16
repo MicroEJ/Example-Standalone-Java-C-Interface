@@ -26,9 +26,9 @@ public class MessengerDataConsumer implements Runnable{
 	private final byte[] data;
 
 	
-	public MessengerDataConsumer(int queueId, int dataSize) {
+	public MessengerDataConsumer(int queueId) {
 		this.queueId = queueId;
-		this.dataSize = dataSize;
+		this.dataSize = MessengerData.MESSENGER_MAX_DATA_SIZE;
 
 		this.queueService = new QueueService(this.queueId);
 

@@ -8,8 +8,6 @@
  */
 package com.microej.examples.java2c;
 
-import java.lang.Byte;
-
 public class MessengerData {
 
 	public static final int MESSENGER_MAX_DATA_SIZE = 255;

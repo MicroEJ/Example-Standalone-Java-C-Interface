@@ -26,9 +26,9 @@ public class AccelerometerDataConsumer implements Runnable{
 	private final byte[] data;
 
 	
-	public AccelerometerDataConsumer(int queueId, int dataSize) {
+	public AccelerometerDataConsumer(int queueId) {
 		this.queueId = queueId;
-		this.dataSize = dataSize;
+		this.dataSize = AccelerometerData.ACCELEROMETER_DATA_SIZE;
 
 		this.queueService = new QueueService(this.queueId);
 
