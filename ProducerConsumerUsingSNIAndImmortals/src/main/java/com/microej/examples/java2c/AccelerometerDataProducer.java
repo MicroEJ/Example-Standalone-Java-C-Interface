@@ -49,6 +49,34 @@ public class AccelerometerDataProducer implements Runnable{
 
 	@Override
 	public void run() {
+
+		//passing elements by reference is not possible in Java
+		//we use a workaround by wrapping the reference elements into arrays of size 1
+		int[] itemSizeReferenceHolder 	= {0};
+		int[] itemsCountReferenceHolder = {0};
+		int[] maxItemsReferenceHolder 	= {0};
+		//using Immortals API to bypass SNI API constraints
+		Immortals.setImmortal(itemSizeReferenceHolder);
+		Immortals.setImmortal(itemsCountReferenceHolder);
+		Immortals.setImmortal(maxItemsReferenceHolder);
+
+		Integer returnCode = 0;
+		
+		try {
+			returnCode = this.queueService.getItemSize(itemSizeReferenceHolder);
+			System.out.println("Return Code : " + QueueOperationReturnCode.toString(returnCode));
+			System.out.println("ItemSize : " + itemSizeReferenceHolder[0] );
+			returnCode = this.queueService.getItemsCount(itemsCountReferenceHolder);
+			System.out.println("Return Code : " + QueueOperationReturnCode.toString(returnCode));
+			System.out.println("ItemsCount : " + itemsCountReferenceHolder[0]);
+			returnCode = this.queueService.getMaxItems(maxItemsReferenceHolder);
+			System.out.println("Return Code : " + QueueOperationReturnCode.toString(returnCode));
+			System.out.println("MaxItems : " + maxItemsReferenceHolder[0]);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
 		while(true)
 		{
 			//use the QueueService to post data
@@ -62,7 +90,7 @@ public class AccelerometerDataProducer implements Runnable{
 				}
 				else
 				{
-					//System.out.println(this.getClass().getName() + " failure writing data " + writeStatus);
+					System.out.println(this.getClass().getName() + " failure writing data " + QueueOperationReturnCode.toString(writeStatus));
 				}
 			}
 			catch ( IOException e)

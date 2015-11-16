@@ -10,20 +10,26 @@ There are two kinds of data produced :
 - fixed size (cf [AccelerometerData.java](/ProducerConsumerData/src/main/java/com/microej/examples/java2c/AccelerometerData.java) source file)
 - variable size (cf [MessengerData.java](/ProducerConsumerData/src/main/java/com/microej/examples/java2c/MessengerData.java) source file)
 
-There is one consumer (written in Java) and two producers (written in C) for each kind of data.
+For fixed size data, there is one consumer (written in Java) and three producers (one written in Java, two written in C).
+For variable size data, there is one consumer (written in Java) and two producers (written in C).
 
 Data is exchanged via message queues. A Java wrapper has been created to access the C message queues API. This wrapper is defined in the [NativeQueueWrapper](/NativeQueueWrapper) project.
 
 * The producers send data at a fixed period if space is available in the relevant queue.
-* The consumer gets new data from the message queue as soon as it is available. If no data is available immediately, the queue wrapper will block until some becomes available.
+* The consumers gets new data from the message queue as soon as it is available. If no data is available immediately, the queue wrapper will block until some becomes available.
 
 
 The following steps will be taken :
 
 * Project setup
 * Java design
-	* Java data classes
-	* Java consumer classes
+	* Fixed size data exchange
+		* Java data class
+		* Java producer class
+		* Java consumer class
+	* Variable size data exchange
+		* Java data class
+		* Java consumer class
 * C design
 	* C data structs
 	* C producer tasks
@@ -37,16 +43,92 @@ These steps have already been done in this workspace and you do not need to repe
 
 # Java design
 
-## Java data classes
+## Fixed size data exchange
 
-In this section, we shall create classes to represent the data being exchanged between producer(s) and consumer(s).
+Note that we create both a consumer and a producer class in Java, but "force" them to communicate via our native message queue API wrapper instead of using regular Java APIs for cross-thread data exchange. We create an AccelerometerData producer/consumer ecosystem in Java so as to test the native message queue API wrapper.
+
+### Java data class
+
+In this section, we shall create a class to represent the data being exchanged between producer(s) and consumer(s).
 
 For fixed size data, the source code is in the [AccelerometerData.java](/ProducerConsumerData/src/main/java/com/microej/examples/java2c/AccelerometerData.java) file.
 
+### Java producer class
+
+In this section, we shall create a class to produce data sporadically.
+
+Each producer :
+
+* runs on a dedicated thread
+* posts data through delegation to a QueueService instance
+
+In pseudocode, the thread body roughly looks like this
+
+	queueService = createQueueuService(QUEUE_ID)
+	while (true)
+	{
+		data = generateData()
+		queueService.write(data)
+		wait(production_period)
+	}
+	
+ The actual source code is in the [AccelerometerDataProducer.java](/ProducerConsumerUsingSNIAndImmortals/src/main/java/com/microej/examples/java2c/AccelerometerDataProducer.java) file.
+
+#### Starting the producer thread
+
+* Open the [ProducerConsumerExample.java](/ProducerConsumerUsingSNIAndImmortals/src/main/java/com/microej/examples/java2c/ProducerConsumerExample.java) source file
+
+* Update the main() method using the code below
+	
+		public static void main(String[] args) {	
+				AccelerometerDataProducer accelerometerDataProducer = new AccelerometerDataProducer(ACCELEROMETER_DATA_QUEUE_ID, 1100, 3);
+				new Thread(accelerometerDataProducer).start();		
+		}
+
+### Java consumer class
+
+In this section, we shall create a class to consume data as soon as it is available.
+
+Each consumer :
+* runs on a dedicated thread
+* retrieves data through delegation to a QueueService instance
+
+In pseudocode, the thread body roughly looks like this
+
+	queueService = createQueueuService(QUEUE_ID)
+	while (true)
+	{
+		data = queueService.read() //blocking call until some data is available
+	}
+
+The source code is in the following files :
+* [AccelerometerDataConsumer.java](/ProducerConsumerUsingSNIAndImmortals/src/main/java/com/microej/examples/java2c/AccelerometerDataConsumer.java) file.
+
+#### Starting the consumer thread
+
+* Open the [ProducerConsumerExample.java](/ProducerConsumerUsingSNIAndImmortals/src/main/java/com/microej/examples/java2c/ProducerConsumerExample.java) source file
+
+* Update the main() method using the code below
+	
+		public static void main(String[] args) {	
+				AccelerometerDataProducer accelerometerDataProducer = new AccelerometerDataProducer(ACCELEROMETER_DATA_QUEUE_ID, 1100, 3);
+				new Thread(accelerometerDataProducer).start();
+		
+				AccelerometerDataConsumer accelerometerDataConsumer = new AccelerometerDataConsumer(ACCELEROMETER_DATA_QUEUE_ID);
+				new Thread(accelerometerDataConsumer).start();
+		}
+
+## Variable size data exchange
+
+Note that we do not create a producer in Java for MessengerData, we will do that later using C. The goal here is to be able to create an AccelerometerData producer/consumer ecosystem in Java so as to test the native message queue API wrapper as independently as possible from C production code.
+
+### Java data class
+
+In this section, we shall create classes to represent the data being exchanged between producer(s) and consumer(s).
+
 For variable size data, the source code is in the [MessengerDataConsumer.java](/ProducerConsumerData/src/main/java/com/microej/examples/java2c/MessengerData.java) file.
 
-
-# Java consumer classes
+### Java consumer class
 
 In this section, we shall create classes to consume data as soon as it is available.
 
@@ -59,25 +141,27 @@ In pseudocode, the thread body roughly looks like this
 	queueService = createQueueuService(QUEUE_ID)
 	while (true)
 	{
-		data = queueService.getNextAvailableData() //blocking call until some data is available
+		data = queueService.read() //blocking call until some data is available
 	}
 
 The source code is in the following files :
-* [AccelerometerDataConsumer.java](/ProducerConsumerUsingSNIAndImmortals/src/main/java/com/microej/examples/java2c/AccelerometerDataConsumer.java) file.
 * [MessengerDataConsumer.java](/ProducerConsumerUsingSNIAndImmortals/src/main/java/com/microej/examples/java2c/MessengerDataConsumer.java) file.
 
-## Starting the consumer thread
+#### Starting the consumer thread
 
 * Open the [ProducerConsumerExample.java](/ProducerConsumerUsingSNIAndImmortals/src/main/java/com/microej/examples/java2c/ProducerConsumerExample.java) source file
 
 * Update the main() method using the code below
 	
 		public static void main(String[] args) {
-			AccelerometerDataConsumer accelerometerDataConsumer = new AccelerometerDataConsumer(ACCELEROMETER_DATA_QUEUE_ID,ACCELEROMETER_DATA_SIZE);
-			new Thread(accelerometerDataConsumer).start();
-	
-			MessengerDataConsumer messengerConsumer = new MessengerDataConsumer(MESSENGER_DATA_QUEUE_ID,MESSENGER_DATA_SIZE);
-			new Thread(messengerConsumer).start();
+				AccelerometerDataProducer accelerometerDataProducer = new AccelerometerDataProducer(ACCELEROMETER_DATA_QUEUE_ID, 1100, 3);
+				new Thread(accelerometerDataProducer).start();
+		
+				AccelerometerDataConsumer accelerometerDataConsumer = new AccelerometerDataConsumer(ACCELEROMETER_DATA_QUEUE_ID);
+				new Thread(accelerometerDataConsumer).start();
+		
+				MessengerDataConsumer messengerConsumer = new MessengerDataConsumer(MESSENGER_DATA_QUEUE_ID);
+				new Thread(messengerConsumer).start();
 		}
 
 
@@ -181,73 +265,66 @@ uncomment the call to `SNI_PRODUCER_init_factory` in the [main.c](/STM32F429IDIS
 ## Checking the behavior
 * After flashing the board, set up a terminal on the board serial port and press the reset input. You shall get an output similar to the one below :
 
-		+ID : 2 {x : -110, y : 125, z : 85}
-		-ID : 2 {x : -110, y : 125, z : 85}
-		+ID : 11 {2.1. File #2 has different lines, some of wID : 11hich are lo {2.1. Filnger}
-		e #2 has different lines, some of which are longer}
-		+ID : 22 {2.1. File #2 has different lines-ID : 2, some of 2 {2.1. Fiwhich are lle #2 has onger}
-		different lines, some of which are longer}
-		+ID : 1 {x : -124, y : 80, z : 99}
-		-ID : 1 {x : -124, y : 80, z : 99}
-		+ID : 2 {x : 67, y : -38, z : -18}
-		-ID : 2 {x : 67, y : -38, z : -18}
+		-ID : 2 {x : 103, y : 46, z : -78}
+		+ID : 1 {x : 29, y : 117, z : 36}
+		-ID : 1 {x : 29, y : 117, z : 36}
 		+ID : 11 {2.2. But it only has two lines}
 		ID : 11 {2.2. But it only has two lines}
-		+ID : 22 {2.2. But it only has two lines}
-		-ID : 22 {2.2. But it only has two lines}
-		+ID : 2 {x : -87, y : 17, z : -112}
-		-ID : 2 {x : -87, y : 17, z : -112}
-		+ID : 1 {x : 108, y : 79, z : -65}
-		-ID : 1 {x : 108, y : 79, z : -65}
-		+ID : 2 {x : -90, y : -54, z : 85}
-		-ID : 2 {x : -90, y : -54, z : 85}
-		+ID : 1 {x : 77, y : 28, z : 8}
-		-ID : 1 {x : 77, y : 28, z : 8}
+		+ID : 3 {x : 75, y : 79, z : 46}
+		-ID : 3 {x : 75, y : 79, z : 46}
+		+ID : 2 {x : 112, y : 3, z : 99}
+		-ID : 2 {x : 112, y : 3, z : 99}
+		+ID : 3 {x : 96, y : 37, z : -57}
+		-ID : 3 {x : 96, y : 37, z : -57}
+		+ID : 1 {x : 122, y : 14, z : 73}
+		-ID : 1 {x : 122, y : 14, z : 73}
+		+ID : 3 {x : 125, y : -6, z : -84}
+		-ID : 3 {x : 125, y : -6, z : -84}
+		+ID : 22 {2.1. File #2 has different lines, some of wID : 2hich are l+ID : 2 {xonger}
+		 : 49, y : 48, z : -116}2 {2.1. Fil
+		e #2 has different lines, some of which are longer}
+		-ID : 2 {x : 49, y : 48, z : -116}
+		+ID : 1 {x : -17, y : -33, z : 70}
+		-ID : 1 {x : -17, y : -33, z : 70}
 		+ID : 11 {1.1. This is the first line}
 		-ID : 11 {1.1. This is the first line}
-		+ID : 2 {x : -69, y : -69, z : -14}
-		-ID : 2 {x : -69, y : -69, z : -14}
+		+ID : 3 {x : -38, y : -13, z : -50}
+		-ID : 3 {x : -38, y : -13, z : -50}
+		+ID : 2 {x : -22, y : -11, z : 109}
+		-ID : 2 {x : -22, y : -11, z : 109}
+		+ID : 22 {2.2. But it only has two lines}
+		-ID : 22 {2.2. But it only has two lines}
 		+ID : 11 {1.2. This is the next line}
 		-ID : 11 {1.2. This is the next line}
-		+ID : 1 {x : 38, y : -127, z : 9}
-		-ID : 1 {x : 38, y : -127, z : 9}
+		+ID : 3 {x : 27, y : 98, z : -34}
+		-ID : 3 {x : 27, y : 98, z : -34}
+		+ID : 1 {x : -68, y : 40, z : 91}
+		-ID : 1 {x : -68, y : 40, z : 91}
+		+ID : 2 {x : -37, y : -110, z : 70}
+		-ID : 2 {x : -37, y : -110, z : 70}
 		+ID : 11 {1.3. This is the final line}
 		-ID : 11 {1.3. This is the final line}
-		+ID : 2 {x : 40, y : 36, z : -89}
-		-ID : 2 {x : 40, y : 36, z : -89}
-		+ID : 1 {x : 55, y : -66, z : 2}
-		-ID : 1 {x : 55, y : -66, z : 2}
-		+ID : 22 {1.1. This is the first line}
-		-ID : 22 {1.1. This is the first line}
-		+ID : 2 {x : 45, y : 69, z : -76}
-		-ID : 2 {x : 45, y : 69, z : -76}
-		+ID : 11 {2.1. File #2 has different lines-ID : , some of w11 {2.1. Fihich are lle #2 has onger}
+		+ID : 3 {x : -94, y : -36, z : 84}
+		-ID : 3 {x : -94, y : -36, z : 84}
+		+ID : 1 {x : 33, y : 41, z : -56}
+		-ID : 1 {x : 33, y : 41, z : -56}
+		+ID : 3 {x : -12, y : 5, z : 10}
+		-ID : 3 {x : -12, y : 5, z : 10}
+		+ID : 2 {x : 68, y : 71, z : 87}
+		-ID : 2 {x : 68, y : 71, z : 87}
+		+ID : 11 {2.1. File #2 has different linesID : 1, some of w1 {2.1. Fihich are lole #2 has nger}
 		different lines, some of which are longer}
-		+ID : 1 {x : -64, y : 19, z : 51}
-		-ID : 1 {x : -64, y : 19, z : 51}
-		+ID : 22 {1.2. This is the next line}
-		-ID : 22 {1.2. This is the next line}
-		+ID : 2 {x : 10, y : 94, z : 89}
-		-ID : 2 {x : 10, y : 94, z : 89}
-		+ID : 11 {2.2. But it only has two lines}
-		ID : 11 {2.2. But it only has two lines}
-		+ID : 1 {x : 1, y : -64, z : -36}
-		-ID : 1 {x : 1, y : -64, z : -36}
-		+ID : 22 {1.3. This is the final line}
-		-ID : 22 {1.3. This is the final line}
-		+ID : 2 {x : -1, y : -81, z : -42}
-		-ID : 2 {x : -1, y : -81, z : -42}
-		+ID : 1 {x : 58, y : 5, z : 61}
-		-ID : 1 {x : 58, y : 5, z : 61}
-		+ID : 2 {x : 76, y : 120, z : 107}
-		-ID : 2 {x : 76, y : 120, z : 107}
+		+ID : 3 {x : 95, y : -39, z : -43}
+		-ID : 3 {x : 95, y : -39, z : -43}
+		+ID : 1 {x : 94, y : 34, z : -51}
+		-ID : 1 {x : 94, y : 34, z : -51}
 
 
 
 * The '-' prefix indicates data consumption
 * The '+' prefix indicates data production
-* The number right after the ID indicates which sensor or sender the data originates from. The 4 different IDs in the trace show us that data from our 4 different producers get consumed.
-* Note that the trace for long messages from both producer and consumer sometimes get mixed up in the output because the producer outputs after successfully posting the data, not before. Therefore between the posting time and the flushing of the producer trace, the consumer has time to output some trace of its own on the shared output stream.  
+* The number right after the ID indicates which sensor or sender the data originates from. The 5 different IDs in the trace {{1,2} : C Accelerometers, 3 : Java Accelerometer, {11,22} C Messengers} show us that data from our 5 different producers get consumed.
+* Note that the trace for long messages from both producer and consumer sometimes get mixed up in the output because the producer outputs after successfully posting the data, not before. Therefore, between the posting time and the flushing of the producer trace, the consumer has time to output some trace of its own on the shared output stream.  
 
 
 # Advanced use cases

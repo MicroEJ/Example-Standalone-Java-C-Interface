@@ -78,6 +78,33 @@ jint LLQueue_getItemSize(jint queueId,  jint* result)
 	return errorCode;
 }
 
+jint LLQueue_getItemsCount(jint queueId,  jint* result)
+{
+	jint errorCode = QUEUE_READ_FAILED;
+	if ( NULL != result )
+	{
+		*result = 0;
+		//check that queueId in [0,MAX_QUEUES_IN_REGISTRY]
+		if ( queueId >= 0 && queueId < MAX_QUEUES_IN_REGISTRY )
+		{
+			if ( NULL != queue_registry[queueId].queueHandle )
+			{
+				*result = uxQueueMessagesWaiting(queue_registry[queueId].queueHandle);
+			}
+			errorCode = QUEUE_READ_OK;
+		}
+		else
+		{
+			errorCode = QUEUE_INVALID_ID;
+		}
+	}
+	else
+	{
+		printf("%s result == NULL \n",__PRETTY_FUNCTION__);
+	}
+	return errorCode;
+}
+
 jint LLQueue_getMaxItems(jint queueId, jint* result)
 {
 	jint errorCode = QUEUE_READ_FAILED;
@@ -206,6 +233,11 @@ jint Java_com_microej_examples_nativequeue_api_NativeQueueService_createQueue(ji
 jint Java_com_microej_examples_nativequeue_api_NativeQueueService_getItemSize(jint queueId,  jint* result)
 {
 	return LLQueue_getItemSize(queueId,result);
+}
+
+jint Java_com_microej_examples_nativequeue_api_NativeQueueService_getItemsCount(jint queueId, jint* result)
+{
+	return LLQueue_getItemsCount(queueId,result);
 }
 
 jint Java_com_microej_examples_nativequeue_api_NativeQueueService_getMaxItems(jint queueId, jint* result)

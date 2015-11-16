@@ -10,7 +10,6 @@ package com.microej.examples.java2c;
 
 import java.io.IOException;
 
-import com.microej.examples.java2c.AccelerometerData;
 import com.microej.examples.nativequeue.api.QueueOperationReturnCode;
 import com.microej.examples.nativequeue.api.QueueService;
 
@@ -52,7 +51,7 @@ public class MessengerDataConsumer implements Runnable{
 				}
 				else
 				{
-					System.out.println(this.getClass().getName() + " failure reading data " + readStatus);
+					System.out.println(this.getClass().getName() + " failure reading data " + QueueOperationReturnCode.toString(readStatus));
 				}
 			}
 			catch ( IOException e)

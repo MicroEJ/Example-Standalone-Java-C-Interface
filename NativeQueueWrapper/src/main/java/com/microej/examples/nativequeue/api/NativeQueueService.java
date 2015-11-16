@@ -13,18 +13,26 @@ class NativeQueueService {
 	/**
 	 * 
 	 * @param fromQueueId the queue ID
-	 * @return the ItemSize of the queue, {@link QueueOperationReturnCode#QUEUE_INVALID_ID} if queue does not exist
+	 * @param result the ItemSize of the queue (0 if error happened)
+	 * @return {@link QueueOperationReturnCode#QUEUE_INVALID_ID} if queue does not exist
 	 */
-//!!!!!!!!! return code should not be mixed with return value
-	public static native int getItemSize(int queueId);
+	public static native int getItemSize(int queueId, int[] result);
 
 	/**
 	 * 
 	 * @param fromQueueId the queue ID
-	 * @return the max Items in the queue, {@link QueueOperationReturnCode#QUEUE_INVALID_ID} if queue does not exist
+	 * @param result the number of Items in the queue (0 if error happened)
+	 * @return {@link QueueOperationReturnCode#QUEUE_INVALID_ID} if queue does not exist
 	 */
-	//!!!!!!!!! return code should not be mixed with return value
-	public static native int getMaxItems(int fromQueueId);
+	public static native int getItemsCount(int fromQueueId, int[] result);
+
+	/**
+	 * 
+	 * @param fromQueueId the queue ID
+	 * @param result the max number of Items in the queue (0 if error happened)
+	 * @return {@link QueueOperationReturnCode#QUEUE_INVALID_ID} if queue does not exist
+	 */
+	public static native int getMaxItems(int fromQueueId, int[] result);
 
 	/**
 	 * 

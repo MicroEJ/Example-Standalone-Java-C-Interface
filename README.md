@@ -1,5 +1,7 @@
 # Overview
 
+Although MicroEJ lets you leverage Java in an embedded context, there are still some cases where your Java threads need to synchronize and exchange data with OS tasks written in C/C++.
+
 This repository contains examples showing how to enable communication between programs written in C and programs written in Java using MicroEJ APIs
 
 ## Importing projects from Git
@@ -7,35 +9,35 @@ This repository contains examples showing how to enable communication between pr
 Those examples are MicroEJ projects that can be directly imported from github.
 
 From a MicroEJ workspace :
-* File > Import > Git > Projects from Git
+* Select **File > Import > Git > Projects from Git** import wizard
+	* Click on "Next"
 * Select "Clone URI"
-* Click on "Next"
+	* Click on "Next"
 * Set the "URI" field to http://github.com/MicroEJ/Example-Java-SNI-ShieldedPlug.git
-* Click on "Next"
+	* Click on "Next"
 * Select the "master" branch
-* Click on "Next"
+	* Click on "Next"
 * Set up the destination directory
-* Click on "Next"
+	* Click on "Next"
 * Select "Import existing projects"
-* Click on "Next"
+	* Click on "Next"
 * Click on "Finish"
 
 ## Available examples
 
-Although MicroEJ lets you leverage Java in an embedded context, there are still some cases where your Java threads need to synchronize and exchange data with OS tasks written in C/C++.
-
 For tasks/threads synchronisation via function calls and callbacks, MicroEJ provides the SNI API.
-For data exchange issues between tasks/threads, MicroEJ provides a few options.
+For data exchange issues between tasks/threads, MicroEJ provides a few options :
 * Shielded Plug API (suitable for read/write accesses to structured data, with built-in wait/release synchronisation APIs)
 * Immortals API and SNI API (suitable for sharing access to raw data, but you need to provide your own synchronisation mechanism)
 
-The following examples illustrate how to use those APIs :
+The following examples, most of them based on the consumer/producer problem, illustrate how to use those APIs :
 * [Making synchronous C functions calls from Java](/CallingCFromJava) using SNI
 * [Producer Consumer problem with ShieldedPlug](/ProducerConsumerUsingShieldedPlug) using Shielded Plug API as the delivery mechanism
-* [Producer Consumer problem with SNI](/ProducerConsumerUsingSNIAndImmortals) using SNI and Immortals APIs to wrap the FreeRTOS native queue API as the delivery mechanism
+* [Producer Consumer problem with SNI and Immortals](/ProducerConsumerUsingSNIAndImmortals) using SNI and Immortals APIs to wrap the native FreeRTOS message queue API as the delivery mechanism
 
 ## API Selection Criterion
 
+* ShieldedPlug DB Access is forbidden in interrupt context ! (How is this enforced ? Is it ?)
 * Need to share big memory area ?
 * Resource access contention ?
 * ...
@@ -46,7 +48,7 @@ The following examples illustrate how to use those APIs :
 |--|--|
 |SNI|[Making synchronous C functions calls from Java](/CallingCFromJava)|
 |Shielded Plug|[Producer Consumer problem](/ProducerConsumerUsingShieldedPlug) using Shielded Plug API as the delivery|
-|SNI,Shielded Plug|(TODO)|
+|SNI,Immortals|[Producer Consumer problem with SNI and Immortals](/ProducerConsumerUsingSNIAndImmortals)|
 
 -->
 

@@ -32,6 +32,7 @@ Add this project to your project build Path :
 * Data must be posted using the LLQueue_write API
 
 For sample API usage, refer to the following source files :
+* [AccelerometerDataProducer.java](/ProducerConsumerUsingSNIAndImmortals/src/main/java/com/microej/examples/java2c/AccelerometerDataProducer.java)
 * [sni-producer-accelerometer.c](/ProducerConsumerUsingSNIAndImmortals/src/main/c/sni-producer-accelerometer.c)
 * [sni-producer-messenger.c](/ProducerConsumerUsingSNIAndImmortals/src/main/c/sni-producer-messenger.c)
 

@@ -16,6 +16,21 @@ public class QueueService {
 		NativeQueueService.createQueue(this.queueId, itemSize, maxItems);
 	}
 
+	synchronized public int getItemsCount(int[] itemsCountReferenceHolder) throws IOException{
+		int errorCode = NativeQueueService.getItemsCount(this.queueId, itemsCountReferenceHolder);
+		return errorCode;
+	}
+
+	synchronized public int getItemSize(int[] itemSizeReferenceHolder) throws IOException{
+		int errorCode = NativeQueueService.getItemSize(this.queueId, itemSizeReferenceHolder);
+		return errorCode;
+	}
+
+	synchronized public int getMaxItems(int[] maxItemsReferenceHolder) throws IOException{
+		int errorCode = NativeQueueService.getMaxItems(this.queueId, maxItemsReferenceHolder);
+		return errorCode;
+	}
+
 	synchronized public int read(byte[] output) throws IOException{
 		int errorCode = NativeQueueService.read(queueId, output);
 		if( QueueOperationReturnCode.QUEUE_READ_FAILED == errorCode ){
