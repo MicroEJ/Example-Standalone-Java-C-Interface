@@ -42,6 +42,26 @@ jint LLQueue_registerQueue(jint queueId, xQueueHandle queueHandle, jint itemSize
 	return result;
 }
 
+jint LLQueue_destroyQueue(jint queueId)
+{
+	jint errorCode = QUEUE_DELETE_FAILED;
+	//check that queueId in [0,MAX_QUEUES_IN_REGISTRY]
+	if ( queueId >= 0 && queueId < MAX_QUEUES_IN_REGISTRY )
+	{
+		if ( NULL != queue_registry[queueId].queueHandle )
+		{
+			//xQueueReset(queue_registry[queueId].queueHandle);
+			vQueueDelete(queue_registry[queueId].queueHandle);
+		}
+		errorCode = QUEUE_DELETE_OK;
+	}
+	else
+	{
+		errorCode = QUEUE_INVALID_ID;
+	}
+	return errorCode;
+}
+
 jint LLQueue_unregisterQueue(jint queueId, xQueueHandle queueHandle)
 {
 	jint  result = QUEUE_REGISTERED;
@@ -228,6 +248,11 @@ jint _LLQueue_write(jint toQueueId, jbyte* itemDataAsByteArray, jboolean fromJav
 jint Java_com_microej_examples_nativequeue_api_NativeQueueService_createQueue(jint queueId, jint itemSize, jint maxItems)
 {
 	return LLQueue_createQueue(queueId,itemSize,maxItems);
+}
+
+jint Java_com_microej_examples_nativequeue_api_NativeQueueService_destroyQueue(jint queueId)
+{
+	return LLQueue_destroyQueue(queueId);
 }
 
 jint Java_com_microej_examples_nativequeue_api_NativeQueueService_getItemSize(jint queueId,  jint* result)

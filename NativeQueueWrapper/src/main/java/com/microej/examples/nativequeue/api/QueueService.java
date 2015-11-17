@@ -11,9 +11,16 @@ public class QueueService {
 		this.queueId = queueId;
 	}
 	
-	synchronized public void createQueue(int itemSize, int maxItems)
+	synchronized public int createQueue(int itemSize, int maxItems)
 	{
-		NativeQueueService.createQueue(this.queueId, itemSize, maxItems);
+		int errorCode = NativeQueueService.createQueue(this.queueId, itemSize, maxItems);
+		return errorCode;
+	}
+
+	synchronized public int destroyQueue()
+	{
+		int errorCode = NativeQueueService.destroyQueue(this.queueId);
+		return errorCode;
 	}
 
 	synchronized public int getItemsCount(int[] itemsCountReferenceHolder) throws IOException{

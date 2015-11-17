@@ -120,17 +120,17 @@ The source code is in the following files :
 
 ## Variable size data exchange
 
-Note that we do not create a producer in Java for MessengerData, we will do that later using C. The goal here is to be able to create an AccelerometerData producer/consumer ecosystem in Java so as to test the native message queue API wrapper as independently as possible from C production code.
+Note that we do not create a producer in Java for MessengerData, we will do that later using C.
 
 ### Java data class
 
-In this section, we shall create classes to represent the data being exchanged between producer(s) and consumer(s).
+In this section, we shall create a class to represent the data being exchanged between producer(s) and consumer(s).
 
 For variable size data, the source code is in the [MessengerDataConsumer.java](/ProducerConsumerData/src/main/java/com/microej/examples/java2c/MessengerData.java) file.
 
 ### Java consumer class
 
-In this section, we shall create classes to consume data as soon as it is available.
+In this section, we shall create a class to consume data as soon as it is available.
 
 Each consumer :
 * runs on a dedicated thread
@@ -172,9 +172,9 @@ We shall now design a way to generate data from the C world, since the actual da
 ## C data structs
 
 Let us define some
-* struct to hold the data **Accelerometer_data_t** and **Messenger_data_t**
-* method to generate/retrieve the data (and trace where it comes from - that is what the **Accelerometer_data_t::sensor_ID** and **Messenger_data_t::sender_ID** fields are for)
-* debug helper function (the **print** function)
+* structs to hold the data **Accelerometer_data_t** and **Messenger_data_t**
+* methods to generate/retrieve the data (and trace where it comes from - that is what the **Accelerometer_data_t::sensor_ID** and **Messenger_data_t::sender_ID** fields are for)
+* debug helper functions (the **print** functions)
 
 The source code is available in the following files :
 * [accelerometer-data.h](/ProducerConsumerData/src/main/c/accelerometer-data.h)

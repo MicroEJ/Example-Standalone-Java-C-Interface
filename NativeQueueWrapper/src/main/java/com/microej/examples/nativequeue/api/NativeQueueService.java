@@ -10,6 +10,8 @@ class NativeQueueService {
 
 	public static native int createQueue(int queueId, int itemSize, int maxItems);
 
+	public static native int destroyQueue(int queueId);
+
 	/**
 	 * 
 	 * @param fromQueueId the queue ID
