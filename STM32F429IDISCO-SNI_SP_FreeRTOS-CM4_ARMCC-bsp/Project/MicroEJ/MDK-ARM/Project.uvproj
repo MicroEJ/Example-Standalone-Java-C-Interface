@@ -801,9 +801,14 @@
               <FilePath>..\..\FreeRTOS\Source\portable\RVDS\ARM_CM4F\port.c</FilePath>
             </File>
             <File>
-              <FileName>heap_1.c</FileName>
+              <FileName>heap_2.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\FreeRTOS\Source\portable\MemMang\heap_1.c</FilePath>
+              <FilePath>..\..\FreeRTOS\Source\portable\MemMang\heap_2.c</FilePath>
+            </File>
+            <File>
+              <FileName>event_groups.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\FreeRTOS\Source\event_groups.c</FilePath>
             </File>
           </Files>
         </Group>

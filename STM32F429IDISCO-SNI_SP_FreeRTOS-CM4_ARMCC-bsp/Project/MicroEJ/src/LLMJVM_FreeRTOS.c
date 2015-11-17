@@ -15,6 +15,7 @@
 #include <stdio.h>
 
 #include "FreeRTOS.h"
+#include "portmacro.h"
 #include "timers.h"
 #include "task.h"
 #include "semphr.h"
@@ -183,7 +184,7 @@ int32_t LLMJVM_IMPL_wakeupVM()
 		res = xSemaphoreGiveFromISR(LLMJVM_FREERTOS_Semaphore, &xHigherPriorityTaskWoken);
 		if( xHigherPriorityTaskWoken != pdFALSE ){
 			// Force a context switch here.
-			vPortYieldFromISR();
+			portYIELD_FROM_ISR(pdTRUE);
 		}
 	}
 	else {
