@@ -35,7 +35,7 @@ The following examples, most of them based on the consumer/producer problem, ill
 * [Producer Consumer problem with ShieldedPlug](/ProducerConsumerUsingShieldedPlug) using Shielded Plug API as the delivery mechanism
 * [Producer Consumer problem with SNI and Immortals](/ProducerConsumerUsingSNIAndImmortals) using SNI and Immortals APIs to wrap the native FreeRTOS message queue API as the delivery mechanism
 
-## API Selection Criterion
+## [TODO] API Selection Criterion
 
 * ShieldedPlug DB Access is forbidden in interrupt context ! (How is this enforced ? Is it ?)
 * Need to share big memory area ?
