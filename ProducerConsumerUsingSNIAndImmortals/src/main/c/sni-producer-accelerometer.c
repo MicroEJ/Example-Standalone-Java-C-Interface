@@ -33,12 +33,14 @@ void SNI_PRODUCER_accelerometer_init(SNI_PRODUCER_accelerometer_t* pAcceleromete
 }
 
 //== functions adapters
-void SNI_PRODUCER_accelerometer_configure_adapter(SNI_PRODUCER_t* pProducer)
+jboolean SNI_PRODUCER_accelerometer_configure_adapter(SNI_PRODUCER_t* pProducer)
 {
+	jboolean result = JFALSE;
 	if ( NULL != pProducer )
 	{
-		SNI_PRODUCER_accelerometer_configure((SNI_PRODUCER_accelerometer_t*) pProducer);
+		result = SNI_PRODUCER_accelerometer_configure((SNI_PRODUCER_accelerometer_t*) pProducer);
 	}
+	return result;
 }
 
 void SNI_PRODUCER_accelerometer_produce_adapter(SNI_PRODUCER_t* pProducer)
@@ -50,12 +52,16 @@ void SNI_PRODUCER_accelerometer_produce_adapter(SNI_PRODUCER_t* pProducer)
 }
 
 //== functions implementations
-void SNI_PRODUCER_accelerometer_configure(SNI_PRODUCER_accelerometer_t* pProducer)
+jboolean SNI_PRODUCER_accelerometer_configure(SNI_PRODUCER_accelerometer_t* pProducer)
 {
+	jboolean succeeded = JFALSE;
 	printf("%s\n",__PRETTY_FUNCTION__);
 
-	//TODO catch return value from this
-	LLQueue_createQueue(PRODUCER_ACCELEROMETER_QUEUE_ID, PRODUCER_ACCELEROMETER_QUEUE_ITEM_SIZE, PRODUCER_ACCELEROMETER_QUEUE_MAX_ITEMS);
+	if ( QUEUE_CREATE_OK == LLQueue_createQueue(PRODUCER_ACCELEROMETER_QUEUE_ID, PRODUCER_ACCELEROMETER_QUEUE_ITEM_SIZE, PRODUCER_ACCELEROMETER_QUEUE_MAX_ITEMS) )
+	{
+		succeeded = JTRUE;
+	}
+	return succeeded;
 }
 
 void SNI_PRODUCER_accelerometer_produce(SNI_PRODUCER_accelerometer_t* pProducer)

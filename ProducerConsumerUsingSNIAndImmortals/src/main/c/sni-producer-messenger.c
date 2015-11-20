@@ -33,12 +33,14 @@ void SNI_PRODUCER_messenger_init(SNI_PRODUCER_messenger_t* pAccelerometer)
 }
 
 //== functions adapters
-void SNI_PRODUCER_messenger_configure_adapter(SNI_PRODUCER_t* pProducer)
+jboolean SNI_PRODUCER_messenger_configure_adapter(SNI_PRODUCER_t* pProducer)
 {
+	jboolean result = JFALSE;
 	if ( NULL != pProducer )
 	{
-		SNI_PRODUCER_messenger_configure((SNI_PRODUCER_messenger_t*) pProducer);
+		result = SNI_PRODUCER_messenger_configure((SNI_PRODUCER_messenger_t*) pProducer);
 	}
+	return result;
 }
 
 void SNI_PRODUCER_messenger_produce_adapter(SNI_PRODUCER_t* pProducer)
@@ -50,12 +52,18 @@ void SNI_PRODUCER_messenger_produce_adapter(SNI_PRODUCER_t* pProducer)
 }
 
 //== functions implementations
-void SNI_PRODUCER_messenger_configure(SNI_PRODUCER_messenger_t* pProducer)
+jboolean SNI_PRODUCER_messenger_configure(SNI_PRODUCER_messenger_t* pProducer)
 {
 	printf("%s\n",__PRETTY_FUNCTION__);
 
-	//TODO catch return value from this
-	LLQueue_createQueue(PRODUCER_MESSENGER_QUEUE_ID, PRODUCER_MESSENGER_QUEUE_ITEM_SIZE, PRODUCER_MESSENGER_QUEUE_MAX_ITEMS);
+	jboolean succeeded = JFALSE;
+	printf("%s\n",__PRETTY_FUNCTION__);
+
+	if ( QUEUE_CREATE_OK == LLQueue_createQueue(PRODUCER_MESSENGER_QUEUE_ID, PRODUCER_MESSENGER_QUEUE_ITEM_SIZE, PRODUCER_MESSENGER_QUEUE_MAX_ITEMS) )
+	{
+		succeeded = JTRUE;
+	}
+	return succeeded;
 }
 
 void SNI_PRODUCER_messenger_produce(SNI_PRODUCER_messenger_t* pProducer)

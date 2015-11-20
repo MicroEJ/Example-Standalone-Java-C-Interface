@@ -10,6 +10,7 @@
 
 #include "sni-producer.h"
 
+#include "sni.h"
 #include "FreeRTOS.h"
 #include "task.h"
 #include <stdio.h>
@@ -53,23 +54,28 @@ void _SNI_PRODUCER_taskBody(void* arg)
 
 		const portTickType xDelay = pProducer->productionPeriodInMS / portTICK_RATE_MS;
 
+		jboolean configurationSucceeded = JFALSE;
+		
 		if ( NULL != pProducer->configurationFunction )
 		{
-			pProducer->configurationFunction(pProducer);
+			configurationSucceeded = pProducer->configurationFunction(pProducer);
 		}
 
-		if ( NULL != pProducer->productionFunction )
+		if ( configurationSucceeded )
 		{
-
-			for(;;)
+			if ( NULL != pProducer->productionFunction )
 			{
-				vTaskDelay(xDelay);
-				pProducer->productionFunction(pProducer);
+
+				for(;;)
+				{
+					vTaskDelay(xDelay);
+					pProducer->productionFunction(pProducer);
+				}
 			}
-		}
-		else
-		{
-			printf("%s error : pointer to productionFunction is NULL !\n",__PRETTY_FUNCTION__);
+			else
+			{
+				printf("%s error : pointer to productionFunction is NULL !\n",__PRETTY_FUNCTION__);
+			}
 		}
 	}
 	else

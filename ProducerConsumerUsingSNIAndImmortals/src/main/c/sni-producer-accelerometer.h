@@ -23,11 +23,11 @@ typedef struct SNI_PRODUCER_accelerometer_t{
 void SNI_PRODUCER_accelerometer_init(SNI_PRODUCER_accelerometer_t* accelerometer);
 
 //== functions adapters
-void SNI_PRODUCER_accelerometer_configure_adapter(SNI_PRODUCER_t* pProducer);
+jboolean SNI_PRODUCER_accelerometer_configure_adapter(SNI_PRODUCER_t* pProducer);
 void SNI_PRODUCER_accelerometer_produce_adapter(SNI_PRODUCER_t* pProducer);
 
 //== functions implementations
-void SNI_PRODUCER_accelerometer_configure(SNI_PRODUCER_accelerometer_t* pProducer);
+jboolean SNI_PRODUCER_accelerometer_configure(SNI_PRODUCER_accelerometer_t* pProducer);
 void SNI_PRODUCER_accelerometer_produce(SNI_PRODUCER_accelerometer_t* pProducer);
 
 #endif // SP_PRODUCER_ACCELEROMETER_H

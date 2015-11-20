@@ -23,11 +23,11 @@ typedef struct SNI_PRODUCER_messenger_t{
 void SNI_PRODUCER_messenger_init(SNI_PRODUCER_messenger_t* messenger);
 
 //== functions adapters
-void SNI_PRODUCER_messenger_configure_adapter(SNI_PRODUCER_t* pProducer);
+jboolean SNI_PRODUCER_messenger_configure_adapter(SNI_PRODUCER_t* pProducer);
 void SNI_PRODUCER_messenger_produce_adapter(SNI_PRODUCER_t* pProducer);
 
 //== functions implementations
-void SNI_PRODUCER_messenger_configure(SNI_PRODUCER_messenger_t* pProducer);
+jboolean SNI_PRODUCER_messenger_configure(SNI_PRODUCER_messenger_t* pProducer);
 void SNI_PRODUCER_messenger_produce(SNI_PRODUCER_messenger_t* pProducer);
 
 #endif // SP_PRODUCER_MESSENGER_H
