@@ -28,7 +28,7 @@ Add this project to your project build Path :
 
 ### Producer
 
-* After creation, OS Queues have to be registered using the LLQueue_registerQueue API.
+* Producer shall start by creating a message queue using the LLQueue_createQueue API.
 * Data must be posted using the LLQueue_write API
 
 For sample API usage, refer to the following source files :
@@ -43,4 +43,5 @@ For sample API usage, refer to the following source files :
 
 For sample API usage, refer to the following source files :
 * [AccelerometerDataConsumer.java](/ProducerConsumerUsingSNIAndImmortals/src/main/java/com/microej/examples/java2c/AccelerometerDataConsumer.java)
+* [MessengerDataConsumer.java](/ProducerConsumerUsingSNIAndImmortals/src/main/java/com/microej/examples/java2c/MessengerDataConsumer.java)
 * [ProducerConsumerExample.java](/ProducerConsumerUsingSNIAndImmortals/src/main/java/com/microej/examples/java2c/ProducerConsumerExample.java)
