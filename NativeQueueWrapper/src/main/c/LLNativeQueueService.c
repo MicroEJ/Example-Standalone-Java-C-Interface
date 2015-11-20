@@ -1,6 +1,7 @@
 #include "LLNativeQueueService.h"
 #include <stdio.h>
 #include "FreeRTOS.h"
+#include "semphr.h"
 #include "queue.h"
 
 typedef struct queue_registry_entry_t {
@@ -20,25 +21,55 @@ const struct queue_registry_entry_t UNINITIALIZED_registry_entry =
 
 static queue_registry_entry_t queue_registry[MAX_QUEUES_IN_REGISTRY];
 
+static xSemaphoreHandle queue_registry_mutex;
+
 //== helper methods declarations
+jboolean _LLQueue_init(void);
 inline jboolean _LLQueue_isValidQueueId(jint QueueId);
 void _LLQueue_pauseCurrentJavaThread(jint fromQueueId);
 void _LLQueue_resumePendingJavaThread(jint fromQueueId);
+jint _LLQueue_isRegistered(jint queueId, jint itemSize, jint maxItems);
 jint _LLQueue_read(jint fromQueueId, jbyte* itemDataAsByteArray, jboolean fromJava);
 jint _LLQueue_write(jint toQueueId, jbyte* itemDataAsByteArray, jboolean fromJava);
 jint _LLQueue_registerQueue(jint queueId, xQueueHandle queueHandle, jint itemSize, jint maxItems);
 jint _LLQueue_unregisterQueue(jint queueId, xQueueHandle queueHandle);
-
+static void _LLQueue_queue_registry_mutex_lock(void);
+static void _LLQueue_queue_registry_mutex_unlock(void);
 
 //== regular queue API
+jboolean _LLQueue_init(void)
+{
+	jboolean succeeded = JFALSE;
+	//may have already been called before
+	if ( NULL == queue_registry_mutex )
+	{
+		queue_registry_mutex = xSemaphoreCreateMutex();
+		if ( NULL == queue_registry_mutex )
+		{
+			printf("%s failed to create queue_registry_mutex",__PRETTY_FUNCTION__);
+		}
+		else
+		{
+			succeeded = JTRUE;
+		}
+	}
+	return succeeded;
+}
+
 // each function shall check queueId parameter
 jint LLQueue_createQueue(jint queueId, jint itemSize, jint maxItems)
 {
 	jint result = QUEUE_CREATE_FAILED;
 	if ( _LLQueue_isValidQueueId(queueId) )
 	{
-		xQueueHandle newQueue = xQueueCreate(maxItems,itemSize);
-		_LLQueue_registerQueue(queueId,newQueue,itemSize,maxItems);
+		_LLQueue_init();
+		_LLQueue_queue_registry_mutex_lock();
+		if ( QUEUE_REGISTERED != _LLQueue_isRegistered(queueId, itemSize, maxItems) )
+		{
+			xQueueHandle newQueue = xQueueCreate(maxItems,itemSize);
+			_LLQueue_registerQueue(queueId,newQueue,itemSize,maxItems);
+		}
+		_LLQueue_queue_registry_mutex_unlock();
 		result = QUEUE_CREATE_OK;
 	}
 	else
@@ -53,11 +84,13 @@ jint LLQueue_destroyQueue(jint queueId)
 	jint errorCode = QUEUE_DELETE_FAILED;
 	if ( _LLQueue_isValidQueueId(queueId) )
 	{
+		_LLQueue_queue_registry_mutex_lock();
 		if ( NULL != queue_registry[queueId].queueHandle )
 		{
 			vQueueDelete(queue_registry[queueId].queueHandle);
 			_LLQueue_unregisterQueue(queueId,queue_registry[queueId].queueHandle);
 		}
+		_LLQueue_queue_registry_mutex_unlock();
 		errorCode = QUEUE_DELETE_OK;
 	}
 	else
@@ -174,9 +207,25 @@ jint _LLQueue_registerQueue(jint queueId, xQueueHandle queueHandle, jint itemSiz
 {
 	jint result = QUEUE_UNREGISTERED;
 	queue_registry[queueId].queueHandle = queueHandle;
+	printf("%s queue_registry[queueId].queueHandle : %d\n",__PRETTY_FUNCTION__, (void*) queue_registry[queueId].queueHandle );
+
 	queue_registry[queueId].itemSize = itemSize;
 	queue_registry[queueId].maxItems = maxItems;
 	result = QUEUE_REGISTERED;
+	return result;
+}
+
+jint _LLQueue_isRegistered(jint queueId, jint itemSize, jint maxItems)
+{
+	jint result = QUEUE_UNREGISTERED;
+	if ( 
+		NULL != queue_registry[queueId].queueHandle &&
+		itemSize == queue_registry[queueId].itemSize &&
+		maxItems == queue_registry[queueId].maxItems
+	)
+	{
+		result = QUEUE_REGISTERED;
+	}
 	return result;
 }
 
@@ -263,13 +312,14 @@ jint _LLQueue_write(jint toQueueId, jbyte* itemDataAsByteArray, jboolean fromJav
 
 		if ( JTRUE == sizeCheckPassed )
 		{
-			if ( pdPASS == xQueueSend(currentQueue, itemDataAsByteArray, 10) )
+			portBASE_TYPE dataSent = xQueueSend(currentQueue, itemDataAsByteArray, 10);
+			if (!dataSent)
 			{
-				result = QUEUE_WRITE_OK;
+				result = QUEUE_WRITE_FAILED;
 			}
 			else
 			{
-				result = QUEUE_WRITE_FAILED;
+				result = QUEUE_WRITE_OK;
 			}
 		}
 	}
@@ -277,7 +327,22 @@ jint _LLQueue_write(jint toQueueId, jbyte* itemDataAsByteArray, jboolean fromJav
 	return result;
 }
 
+static void _LLQueue_queue_registry_mutex_lock(void)
+{
+	xSemaphoreTake(queue_registry_mutex, portMAX_DELAY);
+}
+
+static void _LLQueue_queue_registry_mutex_unlock(void)
+{
+	xSemaphoreGive(queue_registry_mutex);
+}
+
 //== SNI wrappers
+/*jboolean Java_com_microej_examples_nativequeue_api_NativeQueueService_init(void)
+{
+	return LLQueue_init();
+}*/
+
 jint Java_com_microej_examples_nativequeue_api_NativeQueueService_createQueue(jint queueId, jint itemSize, jint maxItems)
 {
 	return LLQueue_createQueue(queueId,itemSize,maxItems);
@@ -312,3 +377,4 @@ jint Java_com_microej_examples_nativequeue_api_NativeQueueService_write(jint toQ
 {
 	return _LLQueue_write(toQueueId,itemDataAsByteArray,JTRUE);
 }
+
