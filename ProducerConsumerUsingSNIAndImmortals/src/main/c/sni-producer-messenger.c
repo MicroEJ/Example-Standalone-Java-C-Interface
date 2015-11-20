@@ -54,9 +54,8 @@ void SNI_PRODUCER_messenger_configure(SNI_PRODUCER_messenger_t* pProducer)
 {
 	printf("%s\n",__PRETTY_FUNCTION__);
 
-	xQueueHandle producerQueue = xQueueCreate(PRODUCER_MESSENGER_QUEUE_MAX_ITEMS,PRODUCER_MESSENGER_QUEUE_ITEM_SIZE);
-	LLQueue_registerQueue(PRODUCER_MESSENGER_QUEUE_ID,producerQueue,PRODUCER_MESSENGER_QUEUE_ITEM_SIZE,PRODUCER_MESSENGER_QUEUE_MAX_ITEMS);
-
+	//TODO catch return value from this
+	LLQueue_createQueue(PRODUCER_MESSENGER_QUEUE_ID, PRODUCER_MESSENGER_QUEUE_ITEM_SIZE, PRODUCER_MESSENGER_QUEUE_MAX_ITEMS);
 }
 
 void SNI_PRODUCER_messenger_produce(SNI_PRODUCER_messenger_t* pProducer)

@@ -1,5 +1,14 @@
 #include "LLNativeQueueService.h"
 #include <stdio.h>
+#include "FreeRTOS.h"
+#include "queue.h"
+
+typedef struct queue_registry_entry_t {
+	xQueueHandle queueHandle;
+	jint itemSize;
+	jint maxItems;
+	jint javaThreadId;
+} queue_registry_entry_t;
 
 const struct queue_registry_entry_t UNINITIALIZED_registry_entry =
 {
@@ -9,12 +18,17 @@ const struct queue_registry_entry_t UNINITIALIZED_registry_entry =
 		0
 };
 
+static queue_registry_entry_t queue_registry[MAX_QUEUES_IN_REGISTRY];
+
 //== helper methods declarations
 inline jboolean _LLQueue_isValidQueueId(jint QueueId);
 void _LLQueue_pauseCurrentJavaThread(jint fromQueueId);
 void _LLQueue_resumePendingJavaThread(jint fromQueueId);
 jint _LLQueue_read(jint fromQueueId, jbyte* itemDataAsByteArray, jboolean fromJava);
 jint _LLQueue_write(jint toQueueId, jbyte* itemDataAsByteArray, jboolean fromJava);
+jint _LLQueue_registerQueue(jint queueId, xQueueHandle queueHandle, jint itemSize, jint maxItems);
+jint _LLQueue_unregisterQueue(jint queueId, xQueueHandle queueHandle);
+
 
 //== regular queue API
 // each function shall check queueId parameter
@@ -24,25 +38,8 @@ jint LLQueue_createQueue(jint queueId, jint itemSize, jint maxItems)
 	if ( _LLQueue_isValidQueueId(queueId) )
 	{
 		xQueueHandle newQueue = xQueueCreate(maxItems,itemSize);
-		LLQueue_registerQueue(queueId,newQueue,itemSize,maxItems);
+		_LLQueue_registerQueue(queueId,newQueue,itemSize,maxItems);
 		result = QUEUE_CREATE_OK;
-	}
-	else
-	{
-		result = QUEUE_INVALID_ID;
-	}
-	return result;
-}
-
-jint LLQueue_registerQueue(jint queueId, xQueueHandle queueHandle, jint itemSize, jint maxItems)
-{
-	jint result = QUEUE_UNREGISTERED;
-	if ( _LLQueue_isValidQueueId(queueId) )
-	{
-		queue_registry[queueId].queueHandle = queueHandle;
-		queue_registry[queueId].itemSize = itemSize;
-		queue_registry[queueId].maxItems = maxItems;
-		result = QUEUE_REGISTERED;
 	}
 	else
 	{
@@ -59,6 +56,7 @@ jint LLQueue_destroyQueue(jint queueId)
 		if ( NULL != queue_registry[queueId].queueHandle )
 		{
 			vQueueDelete(queue_registry[queueId].queueHandle);
+			_LLQueue_unregisterQueue(queueId,queue_registry[queueId].queueHandle);
 		}
 		errorCode = QUEUE_DELETE_OK;
 	}
@@ -67,21 +65,6 @@ jint LLQueue_destroyQueue(jint queueId)
 		errorCode = QUEUE_INVALID_ID;
 	}
 	return errorCode;
-}
-
-jint LLQueue_unregisterQueue(jint queueId, xQueueHandle queueHandle)
-{
-	jint  result = QUEUE_REGISTERED;
-	if ( _LLQueue_isValidQueueId(queueId) )
-	{
-		queue_registry[queueId] = UNINITIALIZED_registry_entry;
-		result = QUEUE_UNREGISTERED;
-	}
-	else
-	{
-		result = QUEUE_INVALID_ID;
-	}
-	return result;
 }
 
 jint LLQueue_getItemSize(jint queueId,  jint* result)
@@ -184,6 +167,24 @@ jboolean _LLQueue_isValidQueueId(jint queueId)
 {
 	//check that queueId in [0,MAX_QUEUES_IN_REGISTRY]
 	jboolean result = ( queueId >= 0 && queueId < MAX_QUEUES_IN_REGISTRY );
+	return result;
+}
+
+jint _LLQueue_registerQueue(jint queueId, xQueueHandle queueHandle, jint itemSize, jint maxItems)
+{
+	jint result = QUEUE_UNREGISTERED;
+	queue_registry[queueId].queueHandle = queueHandle;
+	queue_registry[queueId].itemSize = itemSize;
+	queue_registry[queueId].maxItems = maxItems;
+	result = QUEUE_REGISTERED;
+	return result;
+}
+
+jint _LLQueue_unregisterQueue(jint queueId, xQueueHandle queueHandle)
+{
+	jint result = QUEUE_REGISTERED;
+	queue_registry[queueId] = UNINITIALIZED_registry_entry;
+	result = QUEUE_UNREGISTERED;
 	return result;
 }
 

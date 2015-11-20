@@ -2,8 +2,6 @@
 #define LL_NATIVE_QUEUE_SERVICE_H
 
 #include <sni.h>
-#include "FreeRTOS.h"
-#include "queue.h"
 
 #define MAX_QUEUES_IN_REGISTRY 10
 
@@ -23,20 +21,9 @@ typedef enum queue_operation_return_code_t {
 	_QUEUE_FORCE_REPRESENTATION_AS_INT_32 = INT32_MAX // will force representation as int 32, which is typedef'ed by jint
 } queue_operation_return_code_t;
 
-typedef struct queue_registry_entry_t {
-	xQueueHandle queueHandle;
-	jint itemSize;
-	jint maxItems;
-	jint javaThreadId;
-} queue_registry_entry_t;
-
-static queue_registry_entry_t queue_registry[MAX_QUEUES_IN_REGISTRY];
-
 //== regular queue API
 jint LLQueue_createQueue(jint queueId, jint itemSize, jint maxItems);
-jint LLQueue_registerQueue(jint queueId, xQueueHandle queueHandle, jint itemSize, jint maxItems);
 jint LLQueue_destroyQueue(jint queueId);
-jint LLQueue_unregisterQueue(jint queueId, xQueueHandle queueHandle);
 jint LLQueue_getItemSize(jint queueId, jint* result);
 jint LLQueue_getItemsCount(jint queueId, jint* result);
 jint LLQueue_getMaxItems(jint queueId, jint* result);
