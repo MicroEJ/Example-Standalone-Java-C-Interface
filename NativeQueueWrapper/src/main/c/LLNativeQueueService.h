@@ -10,14 +10,16 @@
 //used for operations return value
 typedef enum queue_operation_return_code_t {
 	QUEUE_INVALID_ID = 0,
-	QUEUE_UNREGISTERED = 1,
-	QUEUE_REGISTERED = 2,
-	QUEUE_READ_OK = 3,
-	QUEUE_READ_FAILED = 4,
-	QUEUE_WRITE_OK = 5,
-	QUEUE_WRITE_FAILED = 6,
-	QUEUE_DELETE_OK = 7,
-	QUEUE_DELETE_FAILED = 8,
+	QUEUE_CREATE_OK = 1,
+	QUEUE_CREATE_FAILED = 2,
+	QUEUE_UNREGISTERED = 3,
+	QUEUE_REGISTERED = 4,
+	QUEUE_DELETE_OK = 5,
+	QUEUE_DELETE_FAILED = 6,
+	QUEUE_READ_OK = 7,
+	QUEUE_READ_FAILED = 8,
+	QUEUE_WRITE_OK = 9,
+	QUEUE_WRITE_FAILED = 10,
 	_QUEUE_FORCE_REPRESENTATION_AS_INT_32 = INT32_MAX // will force representation as int 32, which is typedef'ed by jint
 } queue_operation_return_code_t;
 

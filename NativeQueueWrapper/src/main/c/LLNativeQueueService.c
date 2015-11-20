@@ -10,34 +10,43 @@ const struct queue_registry_entry_t UNINITIALIZED_registry_entry =
 };
 
 //== helper methods declarations
+inline jboolean _LLQueue_isValidQueueId(jint QueueId);
 void _LLQueue_pauseCurrentJavaThread(jint fromQueueId);
 void _LLQueue_resumePendingJavaThread(jint fromQueueId);
 jint _LLQueue_read(jint fromQueueId, jbyte* itemDataAsByteArray, jboolean fromJava);
 jint _LLQueue_write(jint toQueueId, jbyte* itemDataAsByteArray, jboolean fromJava);
 
 //== regular queue API
+// each function shall check queueId parameter
 jint LLQueue_createQueue(jint queueId, jint itemSize, jint maxItems)
 {
-	xQueueHandle newQueue = xQueueCreate(maxItems,itemSize);
-	LLQueue_registerQueue(queueId,newQueue,itemSize,maxItems);
-	return 0;
+	jint result = QUEUE_CREATE_FAILED;
+	if ( _LLQueue_isValidQueueId(queueId) )
+	{
+		xQueueHandle newQueue = xQueueCreate(maxItems,itemSize);
+		LLQueue_registerQueue(queueId,newQueue,itemSize,maxItems);
+		result = QUEUE_CREATE_OK;
+	}
+	else
+	{
+		result = QUEUE_INVALID_ID;
+	}
+	return result;
 }
 
 jint LLQueue_registerQueue(jint queueId, xQueueHandle queueHandle, jint itemSize, jint maxItems)
 {
 	jint result = QUEUE_UNREGISTERED;
-
-	if ( queueId > MAX_QUEUES_IN_REGISTRY )
-	{
-		result = QUEUE_INVALID_ID;
-	}
-	else
+	if ( _LLQueue_isValidQueueId(queueId) )
 	{
 		queue_registry[queueId].queueHandle = queueHandle;
 		queue_registry[queueId].itemSize = itemSize;
 		queue_registry[queueId].maxItems = maxItems;
-
 		result = QUEUE_REGISTERED;
+	}
+	else
+	{
+		result = QUEUE_INVALID_ID;
 	}
 	return result;
 }
@@ -45,12 +54,10 @@ jint LLQueue_registerQueue(jint queueId, xQueueHandle queueHandle, jint itemSize
 jint LLQueue_destroyQueue(jint queueId)
 {
 	jint errorCode = QUEUE_DELETE_FAILED;
-	//check that queueId in [0,MAX_QUEUES_IN_REGISTRY]
-	if ( queueId >= 0 && queueId < MAX_QUEUES_IN_REGISTRY )
+	if ( _LLQueue_isValidQueueId(queueId) )
 	{
 		if ( NULL != queue_registry[queueId].queueHandle )
 		{
-			//xQueueReset(queue_registry[queueId].queueHandle);
 			vQueueDelete(queue_registry[queueId].queueHandle);
 		}
 		errorCode = QUEUE_DELETE_OK;
@@ -65,15 +72,14 @@ jint LLQueue_destroyQueue(jint queueId)
 jint LLQueue_unregisterQueue(jint queueId, xQueueHandle queueHandle)
 {
 	jint  result = QUEUE_REGISTERED;
-
-	if ( queueId > MAX_QUEUES_IN_REGISTRY )
-	{
-		result = QUEUE_INVALID_ID;
-	}
-	else
+	if ( _LLQueue_isValidQueueId(queueId) )
 	{
 		queue_registry[queueId] = UNINITIALIZED_registry_entry;
 		result = QUEUE_UNREGISTERED;
+	}
+	else
+	{
+		result = QUEUE_INVALID_ID;
 	}
 	return result;
 }
@@ -81,19 +87,18 @@ jint LLQueue_unregisterQueue(jint queueId, xQueueHandle queueHandle)
 jint LLQueue_getItemSize(jint queueId,  jint* result)
 {
 	jint errorCode = QUEUE_READ_FAILED;
-	if ( NULL != result )
+	if ( _LLQueue_isValidQueueId(queueId) )
 	{
-		*result = 0;
-		//check that queueId in [0,MAX_QUEUES_IN_REGISTRY]
-		if ( queueId >= 0 && queueId < MAX_QUEUES_IN_REGISTRY )
+		if ( NULL != result )
 		{
+			*result = 0;
 			*result = queue_registry[queueId].itemSize;
 			errorCode = QUEUE_READ_OK;
 		}
-		else
-		{
-			errorCode = QUEUE_INVALID_ID;
-		}
+	}
+	else
+	{
+		errorCode = QUEUE_INVALID_ID;
 	}
 	return errorCode;
 }
@@ -101,12 +106,11 @@ jint LLQueue_getItemSize(jint queueId,  jint* result)
 jint LLQueue_getItemsCount(jint queueId,  jint* result)
 {
 	jint errorCode = QUEUE_READ_FAILED;
-	if ( NULL != result )
+	if ( _LLQueue_isValidQueueId(queueId) )
 	{
-		*result = 0;
-		//check that queueId in [0,MAX_QUEUES_IN_REGISTRY]
-		if ( queueId >= 0 && queueId < MAX_QUEUES_IN_REGISTRY )
+		if ( NULL != result )
 		{
+			*result = 0;
 			if ( NULL != queue_registry[queueId].queueHandle )
 			{
 				*result = uxQueueMessagesWaiting(queue_registry[queueId].queueHandle);
@@ -115,46 +119,74 @@ jint LLQueue_getItemsCount(jint queueId,  jint* result)
 		}
 		else
 		{
-			errorCode = QUEUE_INVALID_ID;
+			printf("%s result == NULL \n",__PRETTY_FUNCTION__);
 		}
 	}
 	else
 	{
-		printf("%s result == NULL \n",__PRETTY_FUNCTION__);
+		errorCode = QUEUE_INVALID_ID;
 	}
+
 	return errorCode;
 }
 
 jint LLQueue_getMaxItems(jint queueId, jint* result)
 {
 	jint errorCode = QUEUE_READ_FAILED;
-	if ( NULL != result )
+	if ( _LLQueue_isValidQueueId(queueId) )
 	{
-		*result = 0;
-		//check that queueId in [0,MAX_QUEUES_IN_REGISTRY]
-		if ( queueId >= 0 && queueId < MAX_QUEUES_IN_REGISTRY )
+		if ( NULL != result )
 		{
+			*result = 0;
 			*result = queue_registry[queueId].maxItems;
 			errorCode = QUEUE_READ_OK;
 		}
-		else
-		{
-			errorCode = QUEUE_INVALID_ID;
-		}
 	}
+	else
+	{
+		errorCode = QUEUE_INVALID_ID;
+	}
+
 	return errorCode;
 }
 
 jint LLQueue_read(jint fromQueueId, jbyte* itemDataAsByteArray){
-	return _LLQueue_read(fromQueueId,itemDataAsByteArray,JFALSE);
+	jint errorCode = QUEUE_READ_FAILED;
+	if ( _LLQueue_isValidQueueId(fromQueueId) )
+	{
+		errorCode =_LLQueue_read(fromQueueId,itemDataAsByteArray,JFALSE);
+	}
+	else
+	{
+		errorCode = QUEUE_INVALID_ID;
+	}
+
+	return errorCode;
 }
 
 jint LLQueue_write(jint toQueueId, jbyte* itemDataAsByteArray)
 {
- return _LLQueue_write(toQueueId, itemDataAsByteArray, JFALSE);
+	jint errorCode = QUEUE_WRITE_FAILED;
+	if ( _LLQueue_isValidQueueId(toQueueId) )
+	{
+		errorCode = _LLQueue_write(toQueueId, itemDataAsByteArray, JFALSE);
+	}
+	else
+	{
+		errorCode = QUEUE_INVALID_ID;
+	}
+
+	return errorCode;		
 }
 
 //== helper methods implementations
+jboolean _LLQueue_isValidQueueId(jint queueId)
+{
+	//check that queueId in [0,MAX_QUEUES_IN_REGISTRY]
+	jboolean result = ( queueId >= 0 && queueId < MAX_QUEUES_IN_REGISTRY );
+	return result;
+}
+
 void _LLQueue_pauseCurrentJavaThread(jint fromQueueId)
 {
 	xQueueHandle currentQueue = queue_registry[fromQueueId].queueHandle;
@@ -203,7 +235,6 @@ jint _LLQueue_read(jint fromQueueId, jbyte* itemDataAsByteArray, jboolean fromJa
 				result = QUEUE_READ_OK;
 			}
 		}
-		
 	}
 	return result;
 }
@@ -211,13 +242,14 @@ jint _LLQueue_read(jint fromQueueId, jbyte* itemDataAsByteArray, jboolean fromJa
 jint _LLQueue_write(jint toQueueId, jbyte* itemDataAsByteArray, jboolean fromJava)
 {
 	jint result = QUEUE_WRITE_FAILED;
+
 	xQueueHandle currentQueue = queue_registry[toQueueId].queueHandle;
 	if ( NULL != currentQueue )
 	{
 		jboolean sizeCheckPassed = JFALSE;
 		if ( JTRUE == fromJava)
 		{
-			jint arrayLength =  SNI_getArrayLength(itemDataAsByteArray); 
+			jint arrayLength =  SNI_getArrayLength(itemDataAsByteArray);
 			if ( arrayLength == queue_registry[toQueueId].itemSize )
 			{
 				sizeCheckPassed = JTRUE;
