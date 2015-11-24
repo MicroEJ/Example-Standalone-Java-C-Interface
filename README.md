@@ -10,18 +10,18 @@ Those examples are MicroEJ projects that can be directly imported from github.
 
 From a MicroEJ workspace :
 * Select **File > Import > Git > Projects from Git** import wizard
-	* Click on "Next"
-* Select "Clone URI"
-	* Click on "Next"
-* Set the "URI" field to http://github.com/MicroEJ/Example-Java-SNI-ShieldedPlug.git
-	* Click on "Next"
-* Select the "master" branch
-	* Click on "Next"
+	* Click on **Next**
+* Select **Clone URI**
+	* Click on **Next**
+* Set the **URI** field to **"http://github.com/MicroEJ/Example-Java-SNI-ShieldedPlug.git"**
+	* Click on **Next**
+* Select the **master** branch
+	* Click on **Next**
 * Set up the destination directory
-	* Click on "Next"
-* Select "Import existing projects"
-	* Click on "Next"
-* Click on "Finish"
+	* Click on **Next**
+* Select **Import existing projects**
+	* Click on **Next**
+* Click on **Finish**
 
 ## Available examples
 
@@ -55,8 +55,8 @@ The following examples, most of them based on the consumer/producer problem, ill
 ## Additional references
 
 Additional examples can be found at the following locations :
-* [Java/C Data Sharing Using SNI](http://www.microej.com/download/application_notes/TLT-0709-AN-MICROEJ-DataSharing-A.zip)
-* [Synchronizing a Java thread with C task(s)](http://www.microej.com/download/application_notes/TLT-0633-AN-MICROEJ-JavaCSync-B.zip)
+* [Java/C Data Sharing Using SNI](http://www.microej.com/download/application_notes/TLT-0709-AN-MICROEJ-DataSharing-A.zip) application note on www.microej.com.
+* [Synchronizing a Java thread with C task(s)](http://www.microej.com/download/application_notes/TLT-0633-AN-MICROEJ-JavaCSync-B.zip) application note on www.microej.com.
 
 ### B-ON Library Specification
 
