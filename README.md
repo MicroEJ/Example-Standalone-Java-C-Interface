@@ -55,15 +55,21 @@ The following examples, most of them based on the consumer/producer problem, ill
 ## Additional references
 
 Additional examples can be found at the following locations :
-* Shared memory areas via the use of the Immutables API (TODO)
+* [Java/C Data Sharing Using SNI](http://www.microej.com/download/application_notes/TLT-0709-AN-MICROEJ-DataSharing-A.zip)
+* [Synchronizing a Java thread with C task(s)](http://www.microej.com/download/application_notes/TLT-0633-AN-MICROEJ-JavaCSync-B.zip)
 
-<!--
+### B-ON Library Specification
 
-|APIs|Example
-|--|--|
-|Immutables|[Shared memory areas via the use of the Immutables API(TODO)|
+Among other things, the **Beyond Profile Specification** document contains detailed information on :
 
--->
+* sharing memory areas between Java and C/C++ using **immortal objects**
+
+**immortal objects** : such objects are never garbage collected and are useful for specifying shared memory areas between 
+
+To access the document from MicroEJ :
+
+* Select **Help > MicroEJ Resource Center** menu item
+	* Select **Library Specification > BON 1.2**
 
 ### SNI Library Specification
 
@@ -72,27 +78,13 @@ The **Simple Native Interface for GreenThread Context Profile Specification** do
 * how to map Java primitive types to portable C types for methods/functions parameters and return types
 * naming conventions for C functions implementing Java SNI native implementations
 	* these have to be followed to generate valid linker configuration files
-* sharing memory areas between Java and C/C++
+* sharing memory areas between Java and C/C++ using **immortal objects**
 * controlling (as in suspend and resume) Java Thread execution from C code
 
 To access the document from MicroEJ :
 
 * Select **Help > MicroEJ Resource Center** menu item
 	* Select **Library Specification > SNI_GT 1.2**
-
-### B-ON Library Specification
-
-Among other things, the **Beyond Profile Specification** document contains detailed information on :
-
-* sharing memory areas between Java and C/C++ using **immortal objects**
-
-**immortal objects** such objects are never garbage collected and are useful for specifying shared memory areas between 
-
-To access the document from MicroEJ :
-
-* Select **Help > MicroEJ Resource Center** menu item
-	* Select **Library Specification > BON 1.2**
-	
 	
 ### Shielded Plug Library Specification
 
