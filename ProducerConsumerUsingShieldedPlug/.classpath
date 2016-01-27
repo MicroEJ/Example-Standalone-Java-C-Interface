@@ -3,7 +3,6 @@
 	<classpathentry kind="var" path="EDC-1.2"/>
 	<classpathentry kind="var" path="SP-1.0"/>
 	<classpathentry kind="src" path="src/main/java"/>
-	<classpathentry kind="src" path="src/main/c"/>
 	<classpathentry kind="src" path="src/main/resources"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/ProducerConsumerData"/>
 	<classpathentry kind="output" path="bin"/>
