@@ -37,8 +37,16 @@ Before interfacing with the C world, we shall design a Java-only system that exc
 
 ## Java data class
 
-In this section, we shall create a class to represent the data being exchanged between producer(s) and consumer(s). The source code is in the [AccelerometerData.java](/ProducerConsumerData/src/main/java/com/microej/examples/java2c/AccelerometerData.java) file.
+In this section, we shall create a class to represent the data being exchanged between producer(s) and consumer(s). The source code is in the following files :
+* [AccelerometerData.java](/ProducerConsumerData/src/main/java/com/microej/examples/java2c/AccelerometerData.java)
+* [database-definition.xml](/ProducerConsumerUsingShieldedPlug/src/main/resources/database-definition.xml)
 
+The following constants are noteworthy:
+- the `DATABASE_ID` constant value in **AccelerometerData.java** matches the `id` value of the AccelerometerDataDB element in **database-definition.xml**
+- the `DATABASE_FIELD_ID_ACCELEROMETER` constant value in **AccelerometerData.java** matches the `id` value of the AccelerometerDataDB::AccelerometerData element in **database-definition.xml**
+- the `ACCELEROMETER_DATA_SIZE` constant value in **AccelerometerData.java** matches the `length` value of the AccelerometerDataDB::AccelerometerData element in **database-definition.xml**
+
+Those constants are useful to data producers/consumers when calling Shielded Plug APIs to retrieve the relevant database and database fields before writing/reading data from it.
 
 # Java producer class
 
@@ -62,7 +70,7 @@ Because of the fixed periodic nature of the task and of its short execution time
 
 ## Starting the producer threads
 
-* Open the [DataConsumerExample.java](/ProducerConsumerUsingShieldedPlug/src/main/java/com/microej/examples/java2c/DataConsumerExample.java) source file
+* Open the [ProducerConsumerExample.java](/ProducerConsumerUsingShieldedPlug/src/main/java/com/microej/examples/java2c/ProducerConsumerExample.java) source file
 * Replace the main() method by the code below
 	
 		public static void main(String[] args) {
@@ -86,11 +94,13 @@ Each consumer runs on a dedicated thread. In pseudocode, the thread body roughly
 		data = getNextAvailableData() //blocking call until some data is available
 	}
 
-The source code is in the [AccelerometerDataConsumer.java](/ProducerConsumerUsingShieldedPlug/src/main/java/com/microej/examples/java2c/AccelerometerDataConsumer.java) file.
+The source code is available in the following files:
+* [AccelerometerDataConsumer.java](/ProducerConsumerUsingShieldedPlug/src/main/java/com/microej/examples/java2c/AccelerometerDataConsumer.java)
+* [AccelerometerDataUnmarshaller.java](/ProducerConsumerUsingShieldedPlug/src/main/java/com/microej/examples/java2c/AccelerometerDataUnmarshaller.java) (helper class for easy conversion from a shielded plug data block to a readily usable application domain object via a copy of byte array elements into a Java object )
 
 ## Starting the consumer thread
 
-* Open the [DataConsumerExample.java](/ProducerConsumerUsingShieldedPlug/src/main/java/com/microej/examples/java2c/DataConsumerExample.java) source file
+* Open the [ProducerConsumerExample.java](/ProducerConsumerUsingShieldedPlug/src/main/java/com/microej/examples/java2c/ProducerConsumerExample.java) source file
 * Update the main() method using the code below
 	
 		public static void main(String[] args) {
@@ -176,7 +186,8 @@ The source code is available in the following files.
 
 # Integration
 
-For reference, BSP toolchain integration related instructions are described in the [Producer Consumer Using Shielded Plug Integration](/STM32F429IDISCO-SNI_SP_FreeRTOS-CM4_ARMCC-configuration/README.md#producer-consumer-integration-using-shielded-plug-integration) section of the [STM32F429IDISCO-SNI_SP_FreeRTOS-CM4_ARMCC-configuration/README.md](/STM32F429IDISCO-SNI_SP_FreeRTOS-CM4_ARMCC-configuration/README.md) file.
+
+For reference, BSP toolchain integration related instructions are described in the [Producer Consumer Using Shielded Plug Integration](/STM32F429IDISCO-SNI_SP_FreeRTOS-CM4_ARMCC-configuration/README.md#producer-consumer-using-shielded-plug-integration) section of the [STM32F429IDISCO-SNI_SP_FreeRTOS-CM4_ARMCC-configuration/README.md](/STM32F429IDISCO-SNI_SP_FreeRTOS-CM4_ARMCC-configuration/README.md) file.
 
 These steps have already been done in this workspace and you do not need to repeat them.
 

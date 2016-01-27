@@ -273,7 +273,7 @@ The source code for that file is available here :
 
 You then have to update your MicroEJ launch configuration to specify the location of this database definition :
 * Select **Run Configurations...**
-* Select the **ProducerConsumerUsingShieldedPlug_Build** confiiguration
+* Select the **ProducerConsumerUsingShieldedPlug_Build** configuration
 * Go to the **Configuration** tab
 * Select the **Shielded Plug** node
 * Click on the **Browse** button to the right of the **Database definition** field

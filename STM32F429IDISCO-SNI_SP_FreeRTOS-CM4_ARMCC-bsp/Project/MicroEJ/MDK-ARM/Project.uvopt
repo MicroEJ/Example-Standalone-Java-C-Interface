@@ -196,25 +196,9 @@
         <Bp>
           <Number>0</Number>
           <Type>0</Type>
-          <LineNumber>54</LineNumber>
-          <EnabledFlag>1</EnabledFlag>
-          <Address>134252132</Address>
-          <ByteObject>0</ByteObject>
-          <HtxType>0</HtxType>
-          <ManyObjects>0</ManyObjects>
-          <SizeOfObject>0</SizeOfObject>
-          <BreakByAccess>0</BreakByAccess>
-          <BreakIfRCount>1</BreakIfRCount>
-          <Filename>..\..\..\..\NativeQueueWrapper\src\main\c\LLNativeQueueService.c</Filename>
-          <ExecCommand></ExecCommand>
-          <Expression>\\STM32429I_DISCO\../../../../NativeQueueWrapper/src/main/c/LLNativeQueueService.c\54</Expression>
-        </Bp>
-        <Bp>
-          <Number>1</Number>
-          <Type>0</Type>
           <LineNumber>186</LineNumber>
           <EnabledFlag>1</EnabledFlag>
-          <Address>134251432</Address>
+          <Address>134249192</Address>
           <ByteObject>0</ByteObject>
           <HtxType>0</HtxType>
           <ManyObjects>0</ManyObjects>
@@ -256,6 +240,11 @@
           <count>5</count>
           <WinNumber>1</WinNumber>
           <ItemText>xReturn</ItemText>
+        </Ww>
+        <Ww>
+          <count>6</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>queue_registry[queueId]</ItemText>
         </Ww>
       </WatchWindow1>
       <MemoryWindow1>
@@ -684,7 +673,7 @@
 
   <Group>
     <GroupName>MDK-ARM</GroupName>
-    <tvExp>0</tvExp>
+    <tvExp>1</tvExp>
     <tvExpOptDlg>0</tvExpOptDlg>
     <cbSel>0</cbSel>
     <RteFlg>0</RteFlg>
@@ -882,7 +871,7 @@
 
   <Group>
     <GroupName>libs</GroupName>
-    <tvExp>0</tvExp>
+    <tvExp>1</tvExp>
     <tvExpOptDlg>0</tvExpOptDlg>
     <cbSel>0</cbSel>
     <RteFlg>0</RteFlg>
@@ -894,7 +883,7 @@
       <Focus>0</Focus>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>C:\Users\Xavier Sautejeau\Documents\workspaces-MicroEJ-DEV-3.1.1\Example-Java-C-Interface\STM32F429IDISCO-SNI_SP_FreeRTOS-CM4_ARMCC-1.0.0\source\lib\javaruntime.lib</PathWithFileName>
+      <PathWithFileName>..\..\..\..\STM32F429IDISCO-SNI_SP_FreeRTOS-CM4_ARMCC-1.0.0\source\lib\javaruntime.lib</PathWithFileName>
       <FilenameWithoutPath>javaruntime.lib</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
@@ -907,7 +896,7 @@
       <Focus>0</Focus>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>C:\Users\Xavier Sautejeau\Documents\workspaces-MicroEJ-DEV-3.1.1\Example-Java-C-Interface\.microej\CM4_ARMCC\application\javaapp.o</PathWithFileName>
+      <PathWithFileName>..\..\..\..\.microej\CM4_ARMCC\application\javaapp.o</PathWithFileName>
       <FilenameWithoutPath>javaapp.o</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
@@ -916,7 +905,7 @@
 
   <Group>
     <GroupName>STM32F4-Discovery</GroupName>
-    <tvExp>0</tvExp>
+    <tvExp>1</tvExp>
     <tvExpOptDlg>0</tvExpOptDlg>
     <cbSel>0</cbSel>
     <RteFlg>0</RteFlg>

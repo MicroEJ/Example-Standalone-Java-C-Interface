@@ -10,16 +10,15 @@ package com.microej.examples.java2c;
 
 import com.is2t.sp.EmptyBlockException;
 import com.is2t.sp.ShieldedPlug;
-import com.microej.examples.java2c.AccelerometerData;
 
 public class AccelerometerDataConsumer implements Runnable{
 
 	@Override
 	public void run() {
-		byte[] accelerometerDataAsByteArray = new byte[AccelerometerData.ACCELEROMETER_DATA_SIZE];
 		
 		ShieldedPlug database = ShieldedPlug.getDatabase(AccelerometerData.DATABASE_ID);
-		
+		database.setReader(AccelerometerData.DATABASE_FIELD_ID_ACCELEROMETER, new AccelerometerDataUnmarshaller());	
+
 		while (true) {
 			try {
 				// wait for a change on accelerometer data
@@ -28,16 +27,14 @@ public class AccelerometerDataConsumer implements Runnable{
 				e.printStackTrace();
 			}
 			try {
-				// read the data
-				database.read(AccelerometerData.DATABASE_FIELD_ID_ACCELEROMETER, accelerometerDataAsByteArray);
-				// convert to 
-				AccelerometerData accelerometerData = new AccelerometerData(accelerometerDataAsByteArray);
+				// read the AccelerometerData
+				AccelerometerData accelerometerData = (AccelerometerData) database.readObject(AccelerometerData.DATABASE_FIELD_ID_ACCELEROMETER);
 				System.out.println("-" + accelerometerData.toString());
 			} catch (EmptyBlockException e) {
 				e.printStackTrace();
 			}
 
-		}		
+		}
 	}
 
 }

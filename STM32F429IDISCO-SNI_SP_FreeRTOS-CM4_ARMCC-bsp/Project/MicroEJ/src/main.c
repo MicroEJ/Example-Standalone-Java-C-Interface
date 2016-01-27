@@ -48,12 +48,6 @@ int main(void)
     SCB->SHCSR |= SCB_SHCSR_BUSFAULTENA_Msk;
     SCB->SHCSR |= SCB_SHCSR_USGFAULTENA_Msk;
 
-    // Disable write buffer feature when needing to debug imprecise bus faults
-    // SCnSCB->ACTLR |= SCnSCB_ACTLR_DISDEFWBUF_Msk;
-
-//    volatile uint32_t* p_err = 0xFFFFFFFF;
-//    *p_err = 9;
-
 	SNI_PRODUCER_init_factory();
 	//SP_PRODUCER_init_factory();	
 
