@@ -12,9 +12,9 @@ public class MessengerData {
 
 	public static final int MESSENGER_MAX_DATA_SIZE = 255;
 
-	byte senderId;
-	byte contentLength;
-	byte [] content = new byte [MESSENGER_MAX_DATA_SIZE];
+	private byte senderId;
+	private byte contentLength;
+	private byte [] content = new byte [MESSENGER_MAX_DATA_SIZE];
 	
 	public MessengerData(byte[] data) {
 		this.senderId = data[0];

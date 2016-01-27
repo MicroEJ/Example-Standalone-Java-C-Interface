@@ -11,14 +11,14 @@ package com.microej.examples.java2c;
 import java.util.Random;
 public class AccelerometerData {
 
-	static Random generator = new Random();
+	private static Random generator = new Random();
 
 	public static final int ACCELEROMETER_DATA_SIZE = 4;
 
-	byte sensorID;
-	byte x;
-	byte y;
-	byte z;
+	private byte sensorID;
+	private byte x;
+	private byte y;
+	private byte z;
 
 	public AccelerometerData(byte[] accelerometerDataAsByteArray) {
 		sensorID = accelerometerDataAsByteArray[0];
