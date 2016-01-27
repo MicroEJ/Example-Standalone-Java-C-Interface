@@ -1,3 +1,6 @@
+[](Markdown)
+[](Copyright 2016 IS2T. All rights reserved.)
+[](IS2T PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.)
 # Overview
 
 Although MicroEJ lets you leverage Java in an embedded context, there are still some cases where your Java threads need to synchronize and exchange data with OS tasks written in C/C++.
@@ -26,8 +29,8 @@ From a MicroEJ workspace :
 ## Available examples
 
 For tasks/threads synchronisation via function calls and callbacks, MicroEJ provides the SNI API.
-For data exchange issues between tasks/threads, MicroEJ provides a few options :
-* Shielded Plug API (suitable for read/write accesses to structured data, with built-in wait/release synchronisation APIs)
+For data exchange issues between tasks/threads, MicroEJ provides a few options:
+* Shielded Plug API (suitable for sharing structured data, with built-in wait/release synchronisation APIs)
 * Immortals API and SNI API (suitable for sharing access to raw data, but you need to provide your own synchronisation mechanism)
 
 The following examples, most of them based on the consumer/producer problem, illustrate how to use those APIs :
@@ -54,19 +57,19 @@ The following examples, most of them based on the consumer/producer problem, ill
 
 ## Additional references
 
-Additional examples can be found at the following locations :
+Additional examples can be found at the following locations:
 * [Java/C Data Sharing Using SNI](http://www.microej.com/download/application_notes/TLT-0709-AN-MICROEJ-DataSharing-A.zip) application note on www.microej.com.
 * [Synchronizing a Java thread with C task(s)](http://www.microej.com/download/application_notes/TLT-0633-AN-MICROEJ-JavaCSync-B.zip) application note on www.microej.com.
 
 ### B-ON Library Specification
 
-Among other things, the **Beyond Profile Specification** document contains detailed information on :
+Among other things, the **Beyond Profile Specification** document contains detailed information on:
 
 * sharing memory areas between Java and C/C++ using **immortal objects**
 
-**immortal objects** : such objects are never garbage collected and are useful for specifying shared memory areas between 
+**immortal objects** : such objects are never garbage collected and keep the same physical memory location forever. This makes them useful for specifying shared memory areas between C and Java.
 
-To access the document from MicroEJ :
+To access the document from MicroEJ:
 
 * Select **Help > MicroEJ Resource Center** menu item
 	* Select **Library Specification > BON 1.2**
@@ -81,7 +84,7 @@ The **Simple Native Interface for GreenThread Context Profile Specification** do
 * sharing memory areas between Java and C/C++ using **immortal objects**
 * controlling (as in suspend and resume) Java Thread execution from C code
 
-To access the document from MicroEJ :
+To access the document from MicroEJ:
 
 * Select **Help > MicroEJ Resource Center** menu item
 	* Select **Library Specification > SNI_GT 1.2**
@@ -95,7 +98,7 @@ The **Shielded Plug Profile Specification** document contains detailed informati
 * how to create dedicated readers/writers that can translate Shielded Plug Blocks into Java Objects
 * the reference API for both C and Java languages
 
-To access the document from MicroEJ :
+To access the document from MicroEJ:
 
 * Select **Help > MicroEJ Resource Center** menu item
 	* Select **Library Specification > SP 1.0**

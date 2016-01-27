@@ -1,3 +1,6 @@
+[](Markdown)
+[](Copyright 2016 IS2T. All rights reserved.)
+[](IS2T PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.)
 # Overview
 
 This project implements a wrapper service around OS Queue API.
