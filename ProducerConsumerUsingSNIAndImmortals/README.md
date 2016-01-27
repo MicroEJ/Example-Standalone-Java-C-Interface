@@ -1,5 +1,5 @@
 [](Markdown)
-[](Copyright 2015 IS2T. All rights reserved.)
+[](Copyright 2016 IS2T. All rights reserved.)
 [](IS2T PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.)
 
 # Overview
@@ -16,7 +16,7 @@ For variable size data, there is one consumer (written in Java) and two producer
 Data is exchanged via message queues. A Java wrapper has been created to access the C message queues API. This wrapper is defined in the [NativeQueueWrapper](/NativeQueueWrapper) project.
 
 * The producers send data at a fixed period if space is available in the relevant queue.
-* The consumers gets new data from the message queue as soon as it is available. If no data is available immediately, the queue wrapper will block until some becomes available.
+* The consumers get new data from the message queue as soon as it is available. If no data is available immediately, the queue wrapper will block until some becomes available.
 
 
 The following steps will be taken :

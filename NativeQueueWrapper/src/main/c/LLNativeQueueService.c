@@ -1,3 +1,11 @@
+/*
+ * C
+ *
+ * Copyright 2016 IS2T. All rights reserved.
+ * For demonstration purpose only.
+ * IS2T PROPRIETARY. Use is subject to license terms.
+ *
+ */
 #include "LLNativeQueueService.h"
 #include <stdio.h>
 #include "FreeRTOS.h"

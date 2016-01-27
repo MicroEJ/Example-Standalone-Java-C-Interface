@@ -1,4 +1,14 @@
+/*
+ * C
+ *
+ * Copyright 2016 IS2T. All rights reserved.
+ * For demonstration purpose only.
+ * IS2T PROPRIETARY. Use is subject to license terms.
+ *
+ */
 #include "LLNativeQueueService.h"
+
+#include <string.h> //for memcmp()
 
 //TODO implement tests for each API
 
@@ -53,10 +63,12 @@ void testLLQueue_getMaxItems()
 void testLLQueue_read()
 {
 	//check valid ranges for input params
+	// QUEUE_READ_FAILED if ( queueId ! in [0,MAX_QUEUES_IN_REGISTRY] )
+	// QUEUE_READ_FAILED if ( NULL == itemDataAsByteArray )
 	//check QUEUE_INVALID_ID == result for non-existing queue
 	//check result for empty queue
 	//check result for itemDataAsByteArray { < | > | == } testLLQueue_getItemSize()
-	//check result == relevant value use when calling write before using byte-wise comparison
+	//check result == relevant value use when calling write before using byte-wise comparison (memcmp)
 }
 
 //jint LLQueue_write(jint toQueueId, jbyte* itemDataAsByteArray);

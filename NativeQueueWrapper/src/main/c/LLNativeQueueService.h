@@ -1,3 +1,11 @@
+/*
+ * C
+ *
+ * Copyright 2016 IS2T. All rights reserved.
+ * For demonstration purpose only.
+ * IS2T PROPRIETARY. Use is subject to license terms.
+ *
+ */
 #ifndef LL_NATIVE_QUEUE_SERVICE_H
 #define LL_NATIVE_QUEUE_SERVICE_H
 
