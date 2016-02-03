@@ -7,25 +7,6 @@ Although MicroEJ lets you leverage Java in an embedded context, there are still 
 
 This repository contains examples showing how to enable communication between programs written in C and programs written in Java using MicroEJ APIs
 
-## Importing projects from Git
-
-Those examples are MicroEJ projects that can be directly imported from github.
-
-From a MicroEJ workspace :
-* Select **File > Import > Git > Projects from Git** import wizard
-	* Click on **Next**
-* Select **Clone URI**
-	* Click on **Next**
-* Set the **URI** field to **"http://github.com/MicroEJ/Example-Java-SNI-ShieldedPlug.git"**
-	* Click on **Next**
-* Select the **master** branch
-	* Click on **Next**
-* Set up the destination directory
-	* Click on **Next**
-* Select **Import existing projects**
-	* Click on **Next**
-* Click on **Finish**
-
 ## Available examples
 
 For tasks/threads synchronisation via function calls and callbacks, MicroEJ provides the SNI API.
