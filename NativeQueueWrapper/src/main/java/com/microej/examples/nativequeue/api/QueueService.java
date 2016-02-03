@@ -6,10 +6,10 @@ import ej.bon.Immortals;
 
 public class QueueService {
 
-	private final int queuePtr;
-	int[] itemSizeReferenceHolder = new int[1];
-	int[] maxItemsReferenceHolder = new int[1];
-	int[] itemsCountReferenceHolder = new int[1];
+	private final int queuePtr; //store pointer to queue as a java int
+	private int[] itemSizeReferenceHolder = new int[1];
+	private int[] maxItemsReferenceHolder = new int[1];
+	private int[] itemsCountReferenceHolder = new int[1];
 	
 	public QueueService(int queuePtr) {
 		super();

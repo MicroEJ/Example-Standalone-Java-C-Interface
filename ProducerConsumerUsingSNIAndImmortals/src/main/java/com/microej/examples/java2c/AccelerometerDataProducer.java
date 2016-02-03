@@ -18,26 +18,22 @@ import ej.bon.Immortals;
 
 public class AccelerometerDataProducer implements Runnable{
 
-	public static final int MAX_ITEMS_IN_QUEUE = 10;
-
 	//ensure no one else accesses this
 	private final QueueService queueService;
-	private final int dataSize;			//TODO redundant with queueService.getItemSize()
-	private final byte[] data;
 
 	private final byte sensorID;
 	private final int productionPeriodInMilliseconds;
 
-	public AccelerometerDataProducer(QueueService queueService, int productionPeriodInMilliseconds, int sensorID) {
-		this.dataSize = AccelerometerData.ACCELEROMETER_DATA_SIZE;
+	private final byte[] data;
+
+	public AccelerometerDataProducer(QueueService queueService, int sensorID, int productionPeriodInMilliseconds) {
+		this.queueService = queueService;
 		this.sensorID = (byte)sensorID;
 		this.productionPeriodInMilliseconds = productionPeriodInMilliseconds;
-
-		this.queueService = queueService;
 		
 		//need to make the byte [] immortal to bypass SNI API constraints on parameters that specify that
 		//"the native functions cannot access Java objects field nor methods"
-		this.data = (byte[]) Immortals.setImmortal(new byte[this.dataSize]);
+		this.data = (byte[]) Immortals.setImmortal(new byte[AccelerometerData.ACCELEROMETER_DATA_SIZE]);
 	}
 
 
@@ -58,7 +54,7 @@ public class AccelerometerDataProducer implements Runnable{
 			//use the QueueService to post data
 			try {
 				AccelerometerData accelerometerData = AccelerometerData.generateRandomData(sensorID);
-				System.arraycopy(accelerometerData.toByteArray(), 0, this.data, 0, this.dataSize);	
+				System.arraycopy(accelerometerData.toByteArray(), 0, this.data, 0, AccelerometerData.ACCELEROMETER_DATA_SIZE);	
 				this.queueService.write(this.data);
 			}
 			catch ( IOException e)

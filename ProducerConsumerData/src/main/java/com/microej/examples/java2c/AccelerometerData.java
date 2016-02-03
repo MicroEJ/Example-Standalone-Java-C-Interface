@@ -64,7 +64,7 @@ public class AccelerometerData {
 	public static final int DATABASE_ID = 0;
 	public static final int DATABASE_FIELD_ID_ACCELEROMETER = 0;
 
-	//SNI related native
+	//SNI related native - retrieves pointer to queue
 	native public static int getQueuePtr();
 
 }

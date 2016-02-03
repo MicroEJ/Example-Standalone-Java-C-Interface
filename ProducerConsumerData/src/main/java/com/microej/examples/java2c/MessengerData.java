@@ -44,7 +44,7 @@ public class MessengerData {
 	public static final int DATABASE_ID = 1;
 	public static final int DATABASE_FIELD_ID_MESSAGE = 0;
 
-	//SNI related native
+	//SNI related native - retrieves pointer to queue
 	native public static int getQueuePtr();
 
 }
