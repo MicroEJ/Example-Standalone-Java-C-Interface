@@ -13,12 +13,12 @@
 #include "FreeRTOS.h"
 #include "queue.h"
 
-typedef struct queue_registry_entry_t {
+typedef struct queue_service_descriptor_t {
 	xQueueHandle queueHandle;
 	jint itemSize;
 	jint maxItems;
-	jint javaThreadId;
-} queue_registry_entry_t;
+	jint pendingJavaThreadId;
+} queue_service_descriptor_t;
 
 //Used for operations return value
 //WARNING: keep these values synchronized with the constants defined in
@@ -33,12 +33,12 @@ typedef enum queue_operation_return_code_t {
 
 
 //== regular queue API
-jboolean LLQueue_init(queue_registry_entry_t* queue, xQueueHandle queueHandle, jint itemSize, jint maxItems );
-jint LLQueue_getItemSize(queue_registry_entry_t* queue, jint* result);
-jint LLQueue_getItemsCount(queue_registry_entry_t* queue, jint* result);
-jint LLQueue_getMaxItems(queue_registry_entry_t* queue, jint* result);
-jint LLQueue_read(queue_registry_entry_t* fromQueue, jbyte* itemDataAsByteArray);
-jint LLQueue_write(queue_registry_entry_t* toQueue, jbyte* itemDataAsByteArray);
+jboolean LLQueue_init(queue_service_descriptor_t* queue, xQueueHandle queueHandle, jint itemSize, jint maxItems );
+jint LLQueue_getItemSize(queue_service_descriptor_t* queue, jint* result);
+jint LLQueue_getItemsCount(queue_service_descriptor_t* queue, jint* result);
+jint LLQueue_getMaxItems(queue_service_descriptor_t* queue, jint* result);
+jint LLQueue_read(queue_service_descriptor_t* fromQueue, jbyte* itemDataAsByteArray);
+jint LLQueue_write(queue_service_descriptor_t* toQueue, jbyte* itemDataAsByteArray);
 
 
 //== SNI wrappers

@@ -24,7 +24,7 @@
 
 
 xQueueHandle accelerometerQueueHandle;
-queue_registry_entry_t accelerometerQueue = {0};
+queue_service_descriptor_t accelerometerQueue = {0};
 
 //== constructor
 void SNI_PRODUCER_accelerometer_init(SNI_PRODUCER_accelerometer_t* pAccelerometer)
@@ -90,8 +90,8 @@ void SNI_PRODUCER_accelerometer_produce(SNI_PRODUCER_accelerometer_t* pProducer)
 	{
 		char dataAsString[ACCELEROMETER_DATA_MAX_STRING_LENGTH];
 		Accelerometer_data_toString(&data,dataAsString);
-		printf("+%s\n",dataAsString);
-		fflush(stdout);
+		//printf("+%s\n",dataAsString);
+		//fflush(stdout);
 	}
 	else
 	{

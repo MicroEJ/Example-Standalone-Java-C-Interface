@@ -22,7 +22,7 @@
 #define PRODUCER_MESSENGER_QUEUE_ITEM_SIZE 	255
 
 xQueueHandle messengerQueueHandle;
-queue_registry_entry_t messengerQueue = {0};
+queue_service_descriptor_t messengerQueue = {0};
 
 //== constructor
 void SNI_PRODUCER_messenger_init(SNI_PRODUCER_messenger_t* pAccelerometer)
@@ -86,10 +86,10 @@ void SNI_PRODUCER_messenger_produce(SNI_PRODUCER_messenger_t* pProducer)
 	{
 		if ( QUEUE_SERVICE_OK == LLQueue_write(&messengerQueue,(jbyte*)(&data)) )
 		{
-			char dataAsString[MESSENGER_DATA_MAX_STRING_LENGTH];
-			Messenger_data_toString(&data,dataAsString);
-			printf("+%s\n",dataAsString);
-			fflush(stdout);
+			//char dataAsString[MESSENGER_DATA_MAX_STRING_LENGTH];
+			//Messenger_data_toString(&data,dataAsString);
+			//printf("+%s\n",dataAsString);
+			//fflush(stdout);
 		}
 		else
 		{

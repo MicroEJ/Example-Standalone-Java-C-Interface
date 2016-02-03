@@ -11,7 +11,7 @@
 #include "FreeRTOS.h"
 #include "queue.h"
 
-const struct queue_registry_entry_t UNINITIALIZED_registry_entry =
+const struct queue_service_descriptor_t UNINITIALIZED_registry_entry =
 {
 		NULL,
 		0,
@@ -20,14 +20,14 @@ const struct queue_registry_entry_t UNINITIALIZED_registry_entry =
 };
 
 //== helper methods declarations
-void _LLQueue_pauseCurrentJavaThread(queue_registry_entry_t* fromQueue);
-void _LLQueue_resumePendingJavaThread(queue_registry_entry_t* fromQueue);
-jint _LLQueue_read(queue_registry_entry_t* fromQueue, jbyte* itemDataAsByteArray, jboolean fromJava);
-jint _LLQueue_write(queue_registry_entry_t* toQueue, jbyte* itemDataAsByteArray, jboolean fromJava);
+void _LLQueue_pauseCurrentJavaThread(queue_service_descriptor_t* fromQueue);
+void _LLQueue_resumePendingJavaThread(queue_service_descriptor_t* fromQueue);
+jint _LLQueue_read(queue_service_descriptor_t* fromQueue, jbyte* itemDataAsByteArray, jboolean fromJava);
+jint _LLQueue_write(queue_service_descriptor_t* toQueue, jbyte* itemDataAsByteArray, jboolean fromJava);
 
 
 //== regular queue API
-jboolean LLQueue_init(queue_registry_entry_t* queue, xQueueHandle queueHandle, jint itemSize, jint maxItems )
+jboolean LLQueue_init(queue_service_descriptor_t* queue, xQueueHandle queueHandle, jint itemSize, jint maxItems )
 {
 	jboolean result = JFALSE;
 	if ( NULL != queue )
@@ -37,7 +37,7 @@ jboolean LLQueue_init(queue_registry_entry_t* queue, xQueueHandle queueHandle, j
 			queue->queueHandle = queueHandle;
 			queue->itemSize = itemSize;
 			queue->maxItems = maxItems;
-			queue->javaThreadId = 0;
+			queue->pendingJavaThreadId = 0;
 			result = JTRUE;
 		}
 		else
@@ -53,7 +53,7 @@ jboolean LLQueue_init(queue_registry_entry_t* queue, xQueueHandle queueHandle, j
 //--------------------
 // each function shall check queue parameter
 
-jint LLQueue_getItemSize(queue_registry_entry_t* queue,  jint* result)
+jint LLQueue_getItemSize(queue_service_descriptor_t* queue,  jint* result)
 {
 	jint errorCode = QUEUE_READ_FAILED;
 	if ( NULL != queue )
@@ -69,7 +69,7 @@ jint LLQueue_getItemSize(queue_registry_entry_t* queue,  jint* result)
 	return errorCode;
 }
 
-jint LLQueue_getItemsCount(queue_registry_entry_t* queue, jint* result)
+jint LLQueue_getItemsCount(queue_service_descriptor_t* queue, jint* result)
 {
 	jint errorCode = QUEUE_READ_FAILED;
 	if ( NULL != queue )
@@ -89,7 +89,7 @@ jint LLQueue_getItemsCount(queue_registry_entry_t* queue, jint* result)
 	return errorCode;
 }
 
-jint LLQueue_getMaxItems(queue_registry_entry_t* queue, jint* result)
+jint LLQueue_getMaxItems(queue_service_descriptor_t* queue, jint* result)
 {
 	jint errorCode = QUEUE_READ_FAILED;
 	if ( NULL != queue )
@@ -105,43 +105,43 @@ jint LLQueue_getMaxItems(queue_registry_entry_t* queue, jint* result)
 	return errorCode;
 }
 
-jint LLQueue_read(queue_registry_entry_t* fromQueue, jbyte* itemDataAsByteArray){
+jint LLQueue_read(queue_service_descriptor_t* fromQueue, jbyte* itemDataAsByteArray){
 	return _LLQueue_read(fromQueue,itemDataAsByteArray,JFALSE);
 }
 
-jint LLQueue_write(queue_registry_entry_t* toQueue, jbyte* itemDataAsByteArray)
+jint LLQueue_write(queue_service_descriptor_t* toQueue, jbyte* itemDataAsByteArray)
 {
 	return _LLQueue_write(toQueue, itemDataAsByteArray, JFALSE);
 }
 
 
 //== helper methods implementations
-void _LLQueue_pauseCurrentJavaThread(queue_registry_entry_t* fromQueue)
+void _LLQueue_pauseCurrentJavaThread(queue_service_descriptor_t* fromQueue)
 {
 	if ( NULL != fromQueue )
 	{
 		xQueueHandle currentQueue = fromQueue->queueHandle;
 		if ( NULL != currentQueue )
 		{
-			fromQueue->javaThreadId = SNI_getCurrentJavaThreadID();
-			SNI_suspendCurrentJavaThread(fromQueue->javaThreadId);
+			fromQueue->pendingJavaThreadId = SNI_getCurrentJavaThreadID();
+			SNI_suspendCurrentJavaThread(fromQueue->pendingJavaThreadId);
 		}
 	}
 }
 
-void _LLQueue_resumePendingJavaThread(queue_registry_entry_t* fromQueue)
+void _LLQueue_resumePendingJavaThread(queue_service_descriptor_t* fromQueue)
 {
 	if ( NULL != fromQueue )
 	{
 		xQueueHandle currentQueue = fromQueue->queueHandle;
 		if ( NULL != currentQueue )
 		{
-			SNI_resumeJavaThread(fromQueue->javaThreadId );
+			SNI_resumeJavaThread(fromQueue->pendingJavaThreadId );
 		}
 	}
 }
 
-jint _LLQueue_read(queue_registry_entry_t* fromQueue, jbyte* itemDataAsByteArray, jboolean fromJava)
+jint _LLQueue_read(queue_service_descriptor_t* fromQueue, jbyte* itemDataAsByteArray, jboolean fromJava)
 {
 	jint result = QUEUE_READ_FAILED;
 	if ( NULL != fromQueue )
@@ -182,7 +182,7 @@ jint _LLQueue_read(queue_registry_entry_t* fromQueue, jbyte* itemDataAsByteArray
 	return result;
 }
 
-jint _LLQueue_write(queue_registry_entry_t* toQueue, jbyte* itemDataAsByteArray, jboolean fromJava)
+jint _LLQueue_write(queue_service_descriptor_t* toQueue, jbyte* itemDataAsByteArray, jboolean fromJava)
 {
 	jint result = QUEUE_WRITE_FAILED;
 	if ( NULL != toQueue )
@@ -229,25 +229,25 @@ jint _LLQueue_write(queue_registry_entry_t* toQueue, jbyte* itemDataAsByteArray,
 //== SNI wrappers
 jint Java_com_microej_examples_nativequeue_api_NativeQueueService_getItemSize(jint queueId,  jint* result)
 {
-	return LLQueue_getItemSize((queue_registry_entry_t*)queueId,result);
+	return LLQueue_getItemSize((queue_service_descriptor_t*)queueId,result);
 }
 
 jint Java_com_microej_examples_nativequeue_api_NativeQueueService_getItemsCount(jint queueId, jint* result)
 {
-	return LLQueue_getItemsCount((queue_registry_entry_t*)queueId,result);
+	return LLQueue_getItemsCount((queue_service_descriptor_t*)queueId,result);
 }
 
 jint Java_com_microej_examples_nativequeue_api_NativeQueueService_getMaxItems(jint queueId, jint* result)
 {
-	return LLQueue_getMaxItems((queue_registry_entry_t*)queueId,result);
+	return LLQueue_getMaxItems((queue_service_descriptor_t*)queueId,result);
 }
 
 jint Java_com_microej_examples_nativequeue_api_NativeQueueService_read(jint fromQueueId, jbyte* itemDataAsByteArray)
 {	
-	return _LLQueue_read((queue_registry_entry_t*)fromQueueId,itemDataAsByteArray,JTRUE);
+	return _LLQueue_read((queue_service_descriptor_t*)fromQueueId,itemDataAsByteArray,JTRUE);
 }
 
 jint Java_com_microej_examples_nativequeue_api_NativeQueueService_write(jint toQueueId, jbyte* itemDataAsByteArray)
 {
-	return _LLQueue_write((queue_registry_entry_t*)toQueueId,itemDataAsByteArray,JTRUE);
+	return _LLQueue_write((queue_service_descriptor_t*)toQueueId,itemDataAsByteArray,JTRUE);
 }
