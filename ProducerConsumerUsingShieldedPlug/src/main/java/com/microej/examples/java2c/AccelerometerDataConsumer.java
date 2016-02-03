@@ -17,7 +17,7 @@ public class AccelerometerDataConsumer implements Runnable{
 	public void run() {
 		
 		ShieldedPlug database = ShieldedPlug.getDatabase(AccelerometerData.DATABASE_ID);
-		database.setReader(AccelerometerData.DATABASE_FIELD_ID_ACCELEROMETER, new AccelerometerDataUnmarshaller());	
+		database.setReader(AccelerometerData.DATABASE_FIELD_ID_ACCELEROMETER, new AccelerometerDataUnmarshaller());
 
 		while (true) {
 			try {

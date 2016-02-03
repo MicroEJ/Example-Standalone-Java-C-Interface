@@ -2,56 +2,67 @@ package com.microej.examples.nativequeue.api;
 
 import java.io.IOException;
 
+import ej.bon.Immortals;
+
 public class QueueService {
 
-	private int queueId;
+	private final int queuePtr;
+	int[] itemSizeReferenceHolder = new int[1];
+	int[] maxItemsReferenceHolder = new int[1];
+	int[] itemsCountReferenceHolder = new int[1];
 	
-	public QueueService(int queueId) {
+	public QueueService(int queuePtr) {
 		super();
-		this.queueId = queueId;
-	}
-	
-	synchronized public int createQueue(int itemSize, int maxItems)
-	{
-		int errorCode = NativeQueueService.createQueue(this.queueId, itemSize, maxItems);
-		return errorCode;
+		this.queuePtr = queuePtr;
+
+		Immortals.setImmortal( this.queuePtr);
+		Immortals.setImmortal(itemSizeReferenceHolder);
+		Immortals.setImmortal(maxItemsReferenceHolder);
+		Immortals.setImmortal(itemsCountReferenceHolder);
 	}
 
-	synchronized public int destroyQueue()
-	{
-		int errorCode = NativeQueueService.destroyQueue(this.queueId);
-		return errorCode;
-	}
-
-	synchronized public int getItemsCount(int[] itemsCountReferenceHolder) throws IOException{
-		int errorCode = NativeQueueService.getItemsCount(this.queueId, itemsCountReferenceHolder);
-		return errorCode;
-	}
-
-	synchronized public int getItemSize(int[] itemSizeReferenceHolder) throws IOException{
-		int errorCode = NativeQueueService.getItemSize(this.queueId, itemSizeReferenceHolder);
-		return errorCode;
-	}
-
-	synchronized public int getMaxItems(int[] maxItemsReferenceHolder) throws IOException{
-		int errorCode = NativeQueueService.getMaxItems(this.queueId, maxItemsReferenceHolder);
-		return errorCode;
-	}
-
-	synchronized public int read(byte[] output) throws IOException{
-		int errorCode = NativeQueueService.read(queueId, output);
-		if( QueueOperationReturnCode.QUEUE_READ_FAILED == errorCode ){
-			errorCode = NativeQueueService.read(queueId, output);
+	synchronized public int getItemsCount() throws IOException{
+		int errorCode = NativeQueueService.getItemsCount(this.queuePtr, itemsCountReferenceHolder);
+		if( errorCode != NativeQueueService.QUEUE_SERVICE_OK ) {
+			throw new IOException(NativeQueueService.toStringError(errorCode));
 		}
-		return errorCode;
+		return itemsCountReferenceHolder[0];
 	}
 
-	synchronized public int write(byte[] input) throws IOException{
-		int errorCode = NativeQueueService.write(queueId, input);
-		if( QueueOperationReturnCode.QUEUE_WRITE_FAILED == errorCode ){
-			errorCode = NativeQueueService.write(queueId, input);
+	synchronized public int getItemSize() throws IOException{
+		int errorCode = NativeQueueService.getItemSize(this.queuePtr, itemSizeReferenceHolder);
+		if( errorCode != NativeQueueService.QUEUE_SERVICE_OK ) {
+			throw new IOException(NativeQueueService.toStringError(errorCode));
 		}
-		return errorCode;
+		return itemSizeReferenceHolder[0];
+	}
+
+	synchronized public int getMaxItems() throws IOException{
+		int errorCode = NativeQueueService.getMaxItems(this.queuePtr, maxItemsReferenceHolder);
+		if( errorCode != NativeQueueService.QUEUE_SERVICE_OK ) {
+			throw new IOException(NativeQueueService.toStringError(errorCode));
+		}
+		return maxItemsReferenceHolder[0];
+	}
+
+	synchronized public void read(byte[] output) throws IOException{
+		int errorCode = NativeQueueService.read(queuePtr, output);
+		if( errorCode == NativeQueueService.QUEUE_READ_FAILED ){
+			errorCode = NativeQueueService.read(queuePtr, output);
+		}
+		if( errorCode != NativeQueueService.QUEUE_SERVICE_OK ) {
+			throw new IOException(NativeQueueService.toStringError(errorCode));
+		}
+	}
+
+	synchronized public void write(byte[] input) throws IOException{
+		int errorCode = NativeQueueService.write(queuePtr, input);
+		if( errorCode == NativeQueueService.QUEUE_WRITE_FAILED ){
+			errorCode = NativeQueueService.write(queuePtr, input);
+		}
+		if( errorCode != NativeQueueService.QUEUE_SERVICE_OK ) {
+			throw new IOException(NativeQueueService.toStringError(errorCode));
+		}
 	}
 
 }

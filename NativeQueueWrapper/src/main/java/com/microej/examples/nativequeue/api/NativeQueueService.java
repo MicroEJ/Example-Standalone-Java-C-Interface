@@ -8,15 +8,29 @@ package com.microej.examples.nativequeue.api;
 
 class NativeQueueService {
 
-	public static native int createQueue(int queueId, int itemSize, int maxItems);
+	//WARNING: keep these values synchronized with constants defined in LLNativeQueueService.h C header file.
+	public final static int QUEUE_SERVICE_OK = 0;
+	public final static int QUEUE_INVALID_QUEUE = 1;
+	public final static int QUEUE_READ_FAILED = 2;
+	public final static int QUEUE_WRITE_FAILED = 3;
 
-	public static native int destroyQueue(int queueId);
+	static public String toStringError(int returnCode){
+		String result = "UNKNOWN_CODE";
+		switch (returnCode)
+		{
+			case QUEUE_SERVICE_OK 		: result = "QUEUE_SUCCESS"; break;
+			case QUEUE_INVALID_QUEUE 	: result = "QUEUE_INVALID_QUEUE"; break;
+			case QUEUE_READ_FAILED 		: result = "QUEUE_READ_FAILED"; break;
+			case QUEUE_WRITE_FAILED 	: result = "QUEUE_WRITE_FAILED"; break;
+		}
+		return result;
+	}
 
 	/**
 	 * 
 	 * @param fromQueueId the queue ID
 	 * @param result the ItemSize of the queue (0 if error happened)
-	 * @return {@link QueueOperationReturnCode#QUEUE_INVALID_ID} if queue does not exist
+	 * @return {@link NativeQueueService#QUEUE_INVALID_QUEUE} if queue does not exist
 	 */
 	public static native int getItemSize(int queueId, int[] result);
 
@@ -24,7 +38,7 @@ class NativeQueueService {
 	 * 
 	 * @param fromQueueId the queue ID
 	 * @param result the number of Items in the queue (0 if error happened)
-	 * @return {@link QueueOperationReturnCode#QUEUE_INVALID_ID} if queue does not exist
+	 * @return {@link NativeQueueService#QUEUE_INVALID_QUEUE} if queue does not exist
 	 */
 	public static native int getItemsCount(int fromQueueId, int[] result);
 
@@ -32,7 +46,7 @@ class NativeQueueService {
 	 * 
 	 * @param fromQueueId the queue ID
 	 * @param result the max number of Items in the queue (0 if error happened)
-	 * @return {@link QueueOperationReturnCode#QUEUE_INVALID_ID} if queue does not exist
+	 * @return {@link NativeQueueService#QUEUE_INVALID_QUEUE} if queue does not exist
 	 */
 	public static native int getMaxItems(int fromQueueId, int[] result);
 

@@ -8,26 +8,28 @@
  */
 package com.microej.examples.java2c;
 
+import com.microej.examples.nativequeue.api.QueueService;
+
 
 public class ProducerConsumerExample {
 
-	final static int ACCELEROMETER_DATA_QUEUE_ID = 7;
-
-	final static int MESSENGER_DATA_QUEUE_ID = 8;
 	/**
 	 * @param args
 	 */
 	public static void main(String[] args) {
 
-		AccelerometerDataProducer accelerometerDataProducer = new AccelerometerDataProducer(ACCELEROMETER_DATA_QUEUE_ID, 1100, 3);
+		QueueService accelerometerQueue = new QueueService(AccelerometerData.getQueuePtr());
+		QueueService messengerQueue = new QueueService(MessengerData.getQueuePtr());
+
+		AccelerometerDataProducer accelerometerDataProducer = new AccelerometerDataProducer(accelerometerQueue, 1100, 3);
 		new Thread(accelerometerDataProducer).start();
 
-		AccelerometerDataConsumer accelerometerDataConsumer = new AccelerometerDataConsumer(ACCELEROMETER_DATA_QUEUE_ID);
+		AccelerometerDataConsumer accelerometerDataConsumer = new AccelerometerDataConsumer(accelerometerQueue);
 		new Thread(accelerometerDataConsumer).start();
 
-		MessengerDataConsumer messengerConsumer = new MessengerDataConsumer(MESSENGER_DATA_QUEUE_ID);
+		MessengerDataConsumer messengerConsumer = new MessengerDataConsumer(messengerQueue);
 		new Thread(messengerConsumer).start();
 
 	}
-	
+
 }

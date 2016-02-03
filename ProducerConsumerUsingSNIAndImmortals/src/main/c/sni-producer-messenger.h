@@ -31,4 +31,6 @@ void SNI_PRODUCER_messenger_produce_adapter(SNI_PRODUCER_t* pProducer);
 jboolean SNI_PRODUCER_messenger_configure(SNI_PRODUCER_messenger_t* pProducer);
 void SNI_PRODUCER_messenger_produce(SNI_PRODUCER_messenger_t* pProducer);
 
+jint Java_com_microej_examples_java2c_MessengerData_getQueuePtr(void);
+
 #endif // SP_PRODUCER_MESSENGER_H

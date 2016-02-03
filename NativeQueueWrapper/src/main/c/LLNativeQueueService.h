@@ -10,37 +10,38 @@
 #define LL_NATIVE_QUEUE_SERVICE_H
 
 #include <sni.h>
+#include "FreeRTOS.h"
+#include "queue.h"
 
-#define MAX_QUEUES_IN_REGISTRY 10
+typedef struct queue_registry_entry_t {
+	xQueueHandle queueHandle;
+	jint itemSize;
+	jint maxItems;
+	jint javaThreadId;
+} queue_registry_entry_t;
 
-//used for operations return value
+//Used for operations return value
+//WARNING: keep these values synchronized with the constants defined in
+//com.microej.examples.nativequeue.api.QueueOperationReturnCode Java class.
 typedef enum queue_operation_return_code_t {
-	QUEUE_INVALID_ID = 0,
-	QUEUE_CREATE_OK = 1,
-	QUEUE_CREATE_FAILED = 2,
-	QUEUE_UNREGISTERED = 3,
-	QUEUE_REGISTERED = 4,
-	QUEUE_DELETE_OK = 5,
-	QUEUE_DELETE_FAILED = 6,
-	QUEUE_READ_OK = 7,
-	QUEUE_READ_FAILED = 8,
-	QUEUE_WRITE_OK = 9,
-	QUEUE_WRITE_FAILED = 10,
+	QUEUE_SERVICE_OK = 0,
+	QUEUE_INVALID_QUEUE = 1,
+	QUEUE_READ_FAILED = 2,
+	QUEUE_WRITE_FAILED = 3,
 	_QUEUE_FORCE_REPRESENTATION_AS_INT_32 = INT32_MAX // will force representation as int 32, which is typedef'ed by jint
 } queue_operation_return_code_t;
 
+
 //== regular queue API
-jint LLQueue_createQueue(jint queueId, jint itemSize, jint maxItems);
-jint LLQueue_destroyQueue(jint queueId);
-jint LLQueue_getItemSize(jint queueId, jint* result);
-jint LLQueue_getItemsCount(jint queueId, jint* result);
-jint LLQueue_getMaxItems(jint queueId, jint* result);
-jint LLQueue_read(jint fromQueueId, jbyte* itemDataAsByteArray);
-jint LLQueue_write(jint toQueueId, jbyte* itemDataAsByteArray);
+jboolean LLQueue_init(queue_registry_entry_t* queue, xQueueHandle queueHandle, jint itemSize, jint maxItems );
+jint LLQueue_getItemSize(queue_registry_entry_t* queue, jint* result);
+jint LLQueue_getItemsCount(queue_registry_entry_t* queue, jint* result);
+jint LLQueue_getMaxItems(queue_registry_entry_t* queue, jint* result);
+jint LLQueue_read(queue_registry_entry_t* fromQueue, jbyte* itemDataAsByteArray);
+jint LLQueue_write(queue_registry_entry_t* toQueue, jbyte* itemDataAsByteArray);
+
 
 //== SNI wrappers
-jint Java_com_microej_examples_nativequeue_api_NativeQueueService_createQueue(jint queueId, jint itemSize, jint maxItems);
-jint Java_com_microej_examples_nativequeue_api_NativeQueueService_destroyQueue(jint queueId);
 jint Java_com_microej_examples_nativequeue_api_NativeQueueService_getItemSize(jint queueId, jint* result);
 jint Java_com_microej_examples_nativequeue_api_NativeQueueService_getItemsCount(jint queueId, jint* result);
 jint Java_com_microej_examples_nativequeue_api_NativeQueueService_getMaxItems(jint queueId, jint* result);

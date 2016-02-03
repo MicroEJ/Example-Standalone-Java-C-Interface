@@ -78,6 +78,10 @@ void _SNI_PRODUCER_taskBody(void* arg)
 				printf("%s error : pointer to productionFunction is NULL !\n",__PRETTY_FUNCTION__);
 			}
 		}
+		else
+		{
+			printf("%s error : producer configuration failed !\n",__PRETTY_FUNCTION__);
+		}
 	}
 	else
 	{

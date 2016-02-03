@@ -18,10 +18,11 @@
 #include <stdlib.h>
 
 
-#define PRODUCER_MESSENGER_QUEUE_ID					8 //this queue ID should not be reused for a message queue holding anything else than messenger data
 #define PRODUCER_MESSENGER_QUEUE_MAX_ITEMS 	10
 #define PRODUCER_MESSENGER_QUEUE_ITEM_SIZE 	255
 
+xQueueHandle messengerQueueHandle;
+queue_registry_entry_t messengerQueue = {0};
 
 //== constructor
 void SNI_PRODUCER_messenger_init(SNI_PRODUCER_messenger_t* pAccelerometer)
@@ -57,14 +58,25 @@ jboolean SNI_PRODUCER_messenger_configure(SNI_PRODUCER_messenger_t* pProducer)
 {
 	printf("%s\n",__PRETTY_FUNCTION__);
 
-	jboolean succeeded = JFALSE;
-	printf("%s\n",__PRETTY_FUNCTION__);
-
-	if ( QUEUE_CREATE_OK == LLQueue_createQueue(PRODUCER_MESSENGER_QUEUE_ID, PRODUCER_MESSENGER_QUEUE_ITEM_SIZE, PRODUCER_MESSENGER_QUEUE_MAX_ITEMS) )
+	jboolean result = JFALSE;
+	if( 0 == messengerQueueHandle )
 	{
-		succeeded = JTRUE;
+		messengerQueueHandle = xQueueCreate(PRODUCER_MESSENGER_QUEUE_MAX_ITEMS, PRODUCER_MESSENGER_QUEUE_ITEM_SIZE);
+		if( 0 == messengerQueueHandle )
+		{
+			// Queue was not created and must not be used.
+		}
+		else
+		{
+			result = LLQueue_init(&messengerQueue, messengerQueueHandle, PRODUCER_MESSENGER_QUEUE_ITEM_SIZE, PRODUCER_MESSENGER_QUEUE_MAX_ITEMS);
+		}
 	}
-	return succeeded;
+	else
+	{
+		//assume the queue has already been initialized by another producer ?
+		result = JTRUE;
+	}
+	return result;
 }
 
 void SNI_PRODUCER_messenger_produce(SNI_PRODUCER_messenger_t* pProducer)
@@ -72,7 +84,7 @@ void SNI_PRODUCER_messenger_produce(SNI_PRODUCER_messenger_t* pProducer)
 	Messenger_data_t data = Messenger_data_get_next_line(pProducer->sender_ID,&(pProducer->file_index), &(pProducer->line_index));
 	if ( 0 != data.content_Length )
 	{
-		if ( QUEUE_WRITE_OK == LLQueue_write(PRODUCER_MESSENGER_QUEUE_ID,(jbyte*)(&data)) )
+		if ( QUEUE_SERVICE_OK == LLQueue_write(&messengerQueue,(jbyte*)(&data)) )
 		{
 			char dataAsString[MESSENGER_DATA_MAX_STRING_LENGTH];
 			Messenger_data_toString(&data,dataAsString);
@@ -84,4 +96,9 @@ void SNI_PRODUCER_messenger_produce(SNI_PRODUCER_messenger_t* pProducer)
 			printf("%s error writing data \n",__PRETTY_FUNCTION__);
 		}
 	}
+}
+
+jint Java_com_microej_examples_java2c_MessengerData_getQueuePtr(void)
+{
+	return (jint)&messengerQueue;
 }

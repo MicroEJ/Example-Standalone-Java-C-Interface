@@ -31,4 +31,6 @@ void SNI_PRODUCER_accelerometer_produce_adapter(SNI_PRODUCER_t* pProducer);
 jboolean SNI_PRODUCER_accelerometer_configure(SNI_PRODUCER_accelerometer_t* pProducer);
 void SNI_PRODUCER_accelerometer_produce(SNI_PRODUCER_accelerometer_t* pProducer);
 
+jint Java_com_microej_examples_java2c_AccelerometerData_getQueuePtr(void);
+
 #endif // SP_PRODUCER_ACCELEROMETER_H
