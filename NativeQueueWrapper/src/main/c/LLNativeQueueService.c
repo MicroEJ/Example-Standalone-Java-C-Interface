@@ -136,7 +136,10 @@ void _LLQueue_resumePendingJavaThread(queue_service_descriptor_t* fromQueue)
 		xQueueHandle currentQueue = fromQueue->queueHandle;
 		if ( NULL != currentQueue )
 		{
-			SNI_resumeJavaThread(fromQueue->pendingJavaThreadId );
+			if ( 0 != fromQueue->pendingJavaThreadId )
+			{
+				SNI_resumeJavaThread(fromQueue->pendingJavaThreadId );
+			}
 		}
 	}
 }
@@ -167,7 +170,10 @@ jint _LLQueue_read(queue_service_descriptor_t* fromQueue, jbyte* itemDataAsByteA
 			{
 				portBASE_TYPE dataReceived = xQueueReceive(currentQueue, itemDataAsByteArray, 0);
 				if(!dataReceived){
-					_LLQueue_pauseCurrentJavaThread(fromQueue);
+					if ( JTRUE == fromJava )
+					{
+						_LLQueue_pauseCurrentJavaThread(fromQueue);
+					}
 				}
 				else {
 					result = QUEUE_SERVICE_OK;
