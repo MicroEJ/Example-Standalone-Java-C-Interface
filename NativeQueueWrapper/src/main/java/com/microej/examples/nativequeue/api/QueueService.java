@@ -11,6 +11,9 @@ public class QueueService {
 	private int[] maxItemsReferenceHolder = new int[1];
 	private int[] itemsCountReferenceHolder = new int[1];
 	
+	private Object readMonitor = new Object();
+	private Object writeMonitor = new Object();
+	
 	public QueueService(int queuePtr) {
 		super();
 		this.queuePtr = queuePtr;
@@ -45,23 +48,28 @@ public class QueueService {
 		return maxItemsReferenceHolder[0];
 	}
 
-	synchronized public void read(byte[] output) throws IOException{
-		int errorCode = NativeQueueService.read(queuePtr, output);
-		if( errorCode == NativeQueueService.QUEUE_READ_FAILED ){
-			errorCode = NativeQueueService.read(queuePtr, output);
-		}
-		if( errorCode != NativeQueueService.QUEUE_SERVICE_OK ) {
-			throw new IOException(NativeQueueService.toStringError(errorCode));
+	public void read(byte[] output) throws IOException{
+		synchronized (readMonitor) {
+			int errorCode = NativeQueueService.read(queuePtr, output);
+			if( errorCode == NativeQueueService.QUEUE_READ_FAILED ){
+				errorCode = NativeQueueService.read(queuePtr, output);
+			}
+			if( errorCode != NativeQueueService.QUEUE_SERVICE_OK ) {
+				throw new IOException(NativeQueueService.toStringError(errorCode));
+			}
 		}
 	}
 
-	synchronized public void write(byte[] input) throws IOException{
+	public void write(byte[] input) throws IOException{
+		synchronized (writeMonitor) {
+			
 		int errorCode = NativeQueueService.write(queuePtr, input);
 		if( errorCode == NativeQueueService.QUEUE_WRITE_FAILED ){
 			errorCode = NativeQueueService.write(queuePtr, input);
 		}
 		if( errorCode != NativeQueueService.QUEUE_SERVICE_OK ) {
 			throw new IOException(NativeQueueService.toStringError(errorCode));
+		}
 		}
 	}
 
