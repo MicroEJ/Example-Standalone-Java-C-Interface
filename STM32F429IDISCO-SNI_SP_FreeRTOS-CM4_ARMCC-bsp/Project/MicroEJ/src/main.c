@@ -39,6 +39,9 @@ void xJavaTaskFunction(void * pvParameters)
 
 int main(void)
 {
+	//disable buffering on stdout
+	setbuf(stdout,NULL);
+
 	printf("START\n");
 
 	SDRAM_Init();
@@ -48,7 +51,8 @@ int main(void)
     SCB->SHCSR |= SCB_SHCSR_BUSFAULTENA_Msk;
     SCB->SHCSR |= SCB_SHCSR_USGFAULTENA_Msk;
 
-	SNI_PRODUCER_init_factory();
+	//SNI_PRODUCER_init_factory_accelerometer();
+	SNI_PRODUCER_init_factory_messenger();
 	//SP_PRODUCER_init_factory();	
 
 	// start the main task

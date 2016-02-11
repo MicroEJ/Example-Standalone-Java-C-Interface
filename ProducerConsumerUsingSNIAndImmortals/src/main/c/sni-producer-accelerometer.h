@@ -14,21 +14,19 @@
 
 typedef struct SNI_PRODUCER_accelerometer_t{
 	SNI_PRODUCER_t super;						//a SNI_PRODUCER_accelerometer_t "Is-a" SNI_PRODUCER_t
-
 	int8_t sensor_ID;
-
-
 }SNI_PRODUCER_accelerometer_t;
+
+//== static service initialization method, must be called once before production begins
+jboolean SNI_PRODUCER_accelerometer_queue_init(void);
 
 //== constructor
 void SNI_PRODUCER_accelerometer_init(SNI_PRODUCER_accelerometer_t* accelerometer);
 
 //== functions adapters
-jboolean SNI_PRODUCER_accelerometer_configure_adapter(SNI_PRODUCER_t* pProducer);
 void SNI_PRODUCER_accelerometer_produce_adapter(SNI_PRODUCER_t* pProducer);
 
 //== functions implementations
-jboolean SNI_PRODUCER_accelerometer_configure(SNI_PRODUCER_accelerometer_t* pProducer);
 void SNI_PRODUCER_accelerometer_produce(SNI_PRODUCER_accelerometer_t* pProducer);
 
 jint Java_com_microej_examples_java2c_AccelerometerData_getQueuePtr(void);

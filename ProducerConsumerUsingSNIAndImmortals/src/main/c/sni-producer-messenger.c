@@ -24,37 +24,8 @@
 xQueueHandle messengerQueueHandle;
 queue_service_descriptor_t messengerQueue = {0};
 
-//== constructor
-void SNI_PRODUCER_messenger_init(SNI_PRODUCER_messenger_t* pAccelerometer)
-{
-	if ( NULL != pAccelerometer )
-	{
-		SNI_PRODUCER_init(&pAccelerometer->super);
-		printf("%s\n",__PRETTY_FUNCTION__);
-	}
-}
-
-//== functions adapters
-jboolean SNI_PRODUCER_messenger_configure_adapter(SNI_PRODUCER_t* pProducer)
-{
-	jboolean result = JFALSE;
-	if ( NULL != pProducer )
-	{
-		result = SNI_PRODUCER_messenger_configure((SNI_PRODUCER_messenger_t*) pProducer);
-	}
-	return result;
-}
-
-void SNI_PRODUCER_messenger_produce_adapter(SNI_PRODUCER_t* pProducer)
-{
-	if ( NULL != pProducer )
-	{
-		SNI_PRODUCER_messenger_produce((SNI_PRODUCER_messenger_t*) pProducer);
-	}
-}
-
-//== functions implementations
-jboolean SNI_PRODUCER_messenger_configure(SNI_PRODUCER_messenger_t* pProducer)
+//== service initialization
+jboolean SNI_PRODUCER_messenger_queue_init(void)
 {
 	printf("%s\n",__PRETTY_FUNCTION__);
 
@@ -73,12 +44,32 @@ jboolean SNI_PRODUCER_messenger_configure(SNI_PRODUCER_messenger_t* pProducer)
 	}
 	else
 	{
-		//assume the queue has already been initialized by another producer ?
+		//assume the queue has already been initialized ?
 		result = JTRUE;
 	}
 	return result;
 }
 
+//== constructor
+void SNI_PRODUCER_messenger_init(SNI_PRODUCER_messenger_t* pAccelerometer)
+{
+	if ( NULL != pAccelerometer )
+	{
+		SNI_PRODUCER_init(&pAccelerometer->super);
+		printf("%s\n",__PRETTY_FUNCTION__);
+	}
+}
+
+//== functions adapters
+void SNI_PRODUCER_messenger_produce_adapter(SNI_PRODUCER_t* pProducer)
+{
+	if ( NULL != pProducer )
+	{
+		SNI_PRODUCER_messenger_produce((SNI_PRODUCER_messenger_t*) pProducer);
+	}
+}
+
+//== functions implementations
 void SNI_PRODUCER_messenger_produce(SNI_PRODUCER_messenger_t* pProducer)
 {
 	Messenger_data_t data = Messenger_data_get_next_line(pProducer->sender_ID,&(pProducer->file_index), &(pProducer->line_index));
@@ -86,10 +77,9 @@ void SNI_PRODUCER_messenger_produce(SNI_PRODUCER_messenger_t* pProducer)
 	{
 		if ( QUEUE_SERVICE_OK == LLQueue_write(&messengerQueue,(jbyte*)(&data)) )
 		{
-			//char dataAsString[MESSENGER_DATA_MAX_STRING_LENGTH];
-			//Messenger_data_toString(&data,dataAsString);
-			//printf("+%s\n",dataAsString);
-			//fflush(stdout);
+			char dataAsString[MESSENGER_DATA_MAX_STRING_LENGTH];
+			Messenger_data_toString(&data,dataAsString);
+			printf("+%s\n",dataAsString);
 		}
 		else
 		{

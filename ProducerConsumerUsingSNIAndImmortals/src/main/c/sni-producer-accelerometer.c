@@ -26,41 +26,13 @@
 xQueueHandle accelerometerQueueHandle;
 queue_service_descriptor_t accelerometerQueue = {0};
 
-//== constructor
-void SNI_PRODUCER_accelerometer_init(SNI_PRODUCER_accelerometer_t* pAccelerometer)
-{
-	if ( NULL != pAccelerometer )
-	{
-		SNI_PRODUCER_init(&pAccelerometer->super);
-		printf("%s sensor_ID : %d\n",__PRETTY_FUNCTION__,pAccelerometer->sensor_ID);
-	}
-}
-
-//== functions adapters
-jboolean SNI_PRODUCER_accelerometer_configure_adapter(SNI_PRODUCER_t* pProducer)
-{
-	jboolean result = JFALSE;
-	if ( NULL != pProducer )
-	{
-		result = SNI_PRODUCER_accelerometer_configure((SNI_PRODUCER_accelerometer_t*) pProducer);
-	}
-	return result;
-}
-
-void SNI_PRODUCER_accelerometer_produce_adapter(SNI_PRODUCER_t* pProducer)
-{
-	if ( NULL != pProducer )
-	{
-		SNI_PRODUCER_accelerometer_produce((SNI_PRODUCER_accelerometer_t*) pProducer);
-	}
-}
-
-//== functions implementations
-jboolean SNI_PRODUCER_accelerometer_configure(SNI_PRODUCER_accelerometer_t* pProducer)
+//== service initialization
+jboolean SNI_PRODUCER_accelerometer_queue_init(void)
 {
 	printf("%s\n",__PRETTY_FUNCTION__);
 
 	jboolean result = JFALSE;
+
 	if ( 0 == accelerometerQueueHandle )
 	{
 		accelerometerQueueHandle = xQueueCreate(PRODUCER_ACCELEROMETER_QUEUE_MAX_ITEMS, PRODUCER_ACCELEROMETER_QUEUE_ITEM_SIZE);
@@ -79,9 +51,28 @@ jboolean SNI_PRODUCER_accelerometer_configure(SNI_PRODUCER_accelerometer_t* pPro
 		result = JTRUE;
 	}
 	return result;
-
 }
 
+//== constructor
+void SNI_PRODUCER_accelerometer_init(SNI_PRODUCER_accelerometer_t* pAccelerometer)
+{
+	if ( NULL != pAccelerometer )
+	{
+		SNI_PRODUCER_init(&pAccelerometer->super);
+		printf("%s sensor_ID : %d\n",__PRETTY_FUNCTION__,pAccelerometer->sensor_ID);
+	}
+}
+
+//== functions adapters
+void SNI_PRODUCER_accelerometer_produce_adapter(SNI_PRODUCER_t* pProducer)
+{
+	if ( NULL != pProducer )
+	{
+		SNI_PRODUCER_accelerometer_produce((SNI_PRODUCER_accelerometer_t*) pProducer);
+	}
+}
+
+//== functions implementations
 void SNI_PRODUCER_accelerometer_produce(SNI_PRODUCER_accelerometer_t* pProducer)
 {
 	Accelerometer_data_t data = Accelerometer_data_generate_sample(pProducer->sensor_ID);
@@ -90,8 +81,7 @@ void SNI_PRODUCER_accelerometer_produce(SNI_PRODUCER_accelerometer_t* pProducer)
 	{
 		char dataAsString[ACCELEROMETER_DATA_MAX_STRING_LENGTH];
 		Accelerometer_data_toString(&data,dataAsString);
-		//printf("+%s\n",dataAsString);
-		//fflush(stdout);
+		printf("+%s\n",dataAsString);
 	}
 	else
 	{

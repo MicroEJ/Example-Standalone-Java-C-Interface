@@ -20,15 +20,16 @@ typedef struct SNI_PRODUCER_messenger_t{
 	int32_t line_index;
 }SNI_PRODUCER_messenger_t;
 
+//== static service initialization method, must be called once before production begins
+jboolean SNI_PRODUCER_messenger_queue_init(void);
+
 //== constructor
 void SNI_PRODUCER_messenger_init(SNI_PRODUCER_messenger_t* messenger);
 
 //== functions adapters
-jboolean SNI_PRODUCER_messenger_configure_adapter(SNI_PRODUCER_t* pProducer);
 void SNI_PRODUCER_messenger_produce_adapter(SNI_PRODUCER_t* pProducer);
 
 //== functions implementations
-jboolean SNI_PRODUCER_messenger_configure(SNI_PRODUCER_messenger_t* pProducer);
 void SNI_PRODUCER_messenger_produce(SNI_PRODUCER_messenger_t* pProducer);
 
 jint Java_com_microej_examples_java2c_MessengerData_getQueuePtr(void);

@@ -55,32 +55,20 @@ void _SNI_PRODUCER_taskBody(void* arg)
 
 		const portTickType xDelay = pProducer->productionPeriodInMS / portTICK_RATE_MS;
 
-		jboolean configurationSucceeded = JFALSE;
-		
-		if ( NULL != pProducer->configurationFunction )
+		if ( NULL != pProducer->productionFunction )
 		{
-			configurationSucceeded = pProducer->configurationFunction(pProducer);
-		}
+			//disable buffering on stdout
+			setbuf(stdout,NULL);
 
-		if ( configurationSucceeded )
-		{
-			if ( NULL != pProducer->productionFunction )
+			for(;;)
 			{
-
-				for(;;)
-				{
-					vTaskDelay(xDelay);
-					pProducer->productionFunction(pProducer);
-				}
-			}
-			else
-			{
-				printf("%s error : pointer to productionFunction is NULL !\n",__PRETTY_FUNCTION__);
+				vTaskDelay(xDelay);
+				pProducer->productionFunction(pProducer);
 			}
 		}
 		else
 		{
-			printf("%s error : producer configuration failed !\n",__PRETTY_FUNCTION__);
+			printf("%s error : pointer to productionFunction is NULL !\n",__PRETTY_FUNCTION__);
 		}
 	}
 	else

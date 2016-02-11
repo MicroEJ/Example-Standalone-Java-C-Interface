@@ -9,6 +9,7 @@
 #ifndef SNI_PRODUCER_FACTORY_H
 #define SNI_PRODUCER_FACTORY_H
 
-void SNI_PRODUCER_init_factory(void);
+void SNI_PRODUCER_init_factory_accelerometer(void);
+void SNI_PRODUCER_init_factory_messenger(void);
 
 #endif // SP_PRODUCER_FACTORY_H
