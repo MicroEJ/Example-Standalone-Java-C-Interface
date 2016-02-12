@@ -22,6 +22,7 @@ The following examples, most of them based on the consumer/producer problem, ill
 ## [TODO] API Selection Criterion
 
 * ShieldedPlug DB Access is forbidden in interrupt context ! (How is this enforced ? Is it ?)
+* ShieldedPlug more suitable for short-lived structured small data transfer (because shielded plug copies data) ?
 * Need to share big memory area ?
 * Resource access contention ?
 * ...
