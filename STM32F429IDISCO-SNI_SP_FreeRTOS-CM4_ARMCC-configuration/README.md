@@ -181,17 +181,19 @@ This project will host the application specific code
 	* Click on **Finish**
 
 #### Java Class creation
+
+##### Fixed size example
 * Select **File > New > Source Folder** menu item
 	* Set the **Folder name** field to /src/main/java
 * Select **File > New > Class** menu item
 	* Set the **Source folder** field to "ProducerConsumerUsingSNIAndImmortals/src/main/java"
 	* Set the **Package** field to "com.is2t.examples.java2c"
-	* Set the **Name** field to "DataConsumerExample"
+	* Set the **Name** field to "SNIAndImmortalsFixedSizeExample"
 	* Click on **Finish**
-	* Copy and paste the following code inside the generated [ProducerConsumerExample.java](ProducerConsumerUsingSNIAndImmortals/src/main/java/com/is2t/examples/java2c/ProducerConsumerExample.java) file 
+	* Copy and paste the following code inside the generated [SNIAndImmortalsFixedSizeExample.java](ProducerConsumerUsingSNIAndImmortals/src/main/java/com/is2t/examples/java2c/SNIAndImmortalsFixedSizeExample.java) file 
 
 			package com.microej.examples.java2c;
-			public class ProducerConsumerExample {
+			public class SNIAndImmortalsFixedSizeExample {
 			
 					public static void main(String[] args) {
 						while (true) {
@@ -206,9 +208,35 @@ This project will host the application specific code
 				
 			}
 
+##### Variable size example
+* Select **File > New > Source Folder** menu item
+	* Set the **Folder name** field to /src/main/java
+* Select **File > New > Class** menu item
+	* Set the **Source folder** field to "ProducerConsumerUsingSNIAndImmortals/src/main/java"
+	* Set the **Package** field to "com.is2t.examples.java2c"
+	* Set the **Name** field to "SNIAndImmortalsVariableSizeExample"
+	* Click on **Finish**
+	* Copy and paste the following code inside the generated [SNIAndImmortalsVariableSizeExample.java](ProducerConsumerUsingSNIAndImmortals/src/main/java/com/is2t/examples/java2c/SNIAndImmortalsVariableSizeExample.java) file 
+
+			package com.microej.examples.java2c;
+			public class SNIAndImmortalsVariableSizeExample {
+			
+					public static void main(String[] args) {
+						while (true) {
+							System.out.println("-- main alive --");
+							try {
+									Thread.sleep(2000);
+							} catch (InterruptedException e) {
+									// It is OK to ignore because this is just a basic example
+							}
+						}
+					}
+				
+			}
 
 #### Compiling the Java code for the target
 
+##### Fixed size example
 Here, we will create a MicroEJ "Run Configuration" that will compile the Java code we just created for the JPF we created previously
 
 * Select **File > New > Folder** menu item
@@ -216,10 +244,10 @@ Here, we will create a MicroEJ "Run Configuration" that will compile the Java co
 	* Set the **Folder Name** field to "launches"
 * Select **Run Configurations...** from the **Run configurations** drop down list (or Press Ctrl+Shift+3 and type "Run Configurations...")
 * Select **MicroEJ Application** group and click **New**
-	* Set **Name** field to "ProducerConsumerUsingSNIAndImmortals_Build"
+	* Set **Name** field to "SNI_And_Immortals_Fixed_Size_Example_Build"
 	* In **Main** tab
 		* Set the **Project** field to "ProducerConsumerUsingSNIAndImmortals"
-		* Click on **Select Main type...** and type ProducerConsumerExample
+		* Click on **Select Main type...** and type "SNIAndImmortalsFixedSizeExample"
 	* In **Execution** tab
 		* In **Target** frame
 			* Click the **Browse** button next to the JPF Field and select your platform
@@ -227,7 +255,34 @@ Here, we will create a MicroEJ "Run Configuration" that will compile the Java co
 			* Select **Execute on EmbJPF** radio button
 			* Leave the **Output Folder** field set to "${project_loc:ProducerConsumerUsingSNIAndImmortals}"
 	* In **Configuration** tab
-		* Select the **Target > Deploy** Node
+		* Select the **Target > Deploy** node
+			* Set the **Means** field to "Copy at a location known by BSP Project"
+	* In **Common** tab
+		* In **Save as** frame
+			* Select the **Shared file** radio button
+			* Click on **Browse** and select [ProducerConsumerUsingSNIAndImmortals/launches](ProducerConsumerUsingSNIAndImmortals/launches) folder	
+	* Click on "Run"
+	
+##### Variable size example
+Here, we will create a MicroEJ "Run Configuration" that will compile the Java code we just created for the JPF we created previously
+
+* Select **File > New > Folder** menu item
+	* Set the **Enter or select the parent folder** field to "ProducerConsumerUsingSNIAndImmortals" (Project root)
+	* Set the **Folder Name** field to "launches"
+* Select **Run Configurations...** from the **Run configurations** drop down list (or Press Ctrl+Shift+3 and type "Run Configurations...")
+* Select **MicroEJ Application** group and click **New**
+	* Set **Name** field to "SNI_And_Immortals_Variable_Size_Example_Build"
+	* In **Main** tab
+		* Set the **Project** field to "ProducerConsumerUsingSNIAndImmortals"
+		* Click on **Select Main type...** and type "SNIAndImmortalsVariableSizeExample"
+	* In **Execution** tab
+		* In **Target** frame
+			* Click the **Browse** button next to the JPF Field and select your platform
+		* In **Execution** frame
+			* Select **Execute on EmbJPF** radio button
+			* Leave the **Output Folder** field set to "${project_loc:ProducerConsumerUsingSNIAndImmortals}"
+	* In **Configuration** tab
+		* Select the **Target > Deploy** node
 			* Set the **Means** field to "Copy at a location known by BSP Project"
 	* In **Common** tab
 		* In **Save as** frame

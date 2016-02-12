@@ -56,6 +56,7 @@ public class AccelerometerDataProducer implements Runnable{
 				AccelerometerData accelerometerData = AccelerometerData.generateRandomData(sensorID);
 				System.arraycopy(accelerometerData.toByteArray(), 0, this.data, 0, AccelerometerData.ACCELEROMETER_DATA_SIZE);	
 				this.queueService.write(this.data);
+				System.out.println("+" + accelerometerData.toString());
 			}
 			catch ( IOException e)
 			{

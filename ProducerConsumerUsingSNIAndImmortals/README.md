@@ -7,8 +7,8 @@
 This example shows an implementation of the producer consumer pattern.
 
 There are two kinds of data produced :
-- fixed size (cf [AccelerometerData.java](/ProducerConsumerData/src/main/java/com/microej/examples/java2c/AccelerometerData.java) source file)
-- variable size (cf [MessengerData.java](/ProducerConsumerData/src/main/java/com/microej/examples/java2c/MessengerData.java) source file)
+- fixed size (cf [AccelerometerData.java](/ProducerConsumerData/src/main/java/com/microej/examples/java2c/AccelerometerData.java) source file).
+- variable size (cf [MessengerData.java](/ProducerConsumerData/src/main/java/com/microej/examples/java2c/MessengerData.java) source file). 
 
 For fixed size data, there is one consumer (written in Java) and three producers (one written in Java, two written in C).
 For variable size data, there is one consumer (written in Java) and two producers (written in C).
@@ -76,14 +76,17 @@ In pseudocode, the thread body roughly looks like this
 
 #### Starting the producer thread
 
-* Open the [ProducerConsumerExample.java](/ProducerConsumerUsingSNIAndImmortals/src/main/java/com/microej/examples/java2c/ProducerConsumerExample.java) source file
+* Open the [SNIAndImmortalsFixedSizeExample.java](/ProducerConsumerUsingSNIAndImmortals/src/main/java/com/microej/examples/java2c/SNIAndImmortalsFixedSizeExample.java) source file
 
 * Update the main() method using the code below
 	
-		public static void main(String[] args) {	
+		public static void main(String[] args) {
+				QueueService accelerometerQueue = new QueueService(AccelerometerData.getQueuePtr());
+
 				AccelerometerDataProducer accelerometerDataProducer = new AccelerometerDataProducer(ACCELEROMETER_DATA_QUEUE_ID, 1100, 3);
-				new Thread(accelerometerDataProducer).start();		
+				new Thread(accelerometerDataProducer).start();
 		}
+
 
 ### Java consumer class
 
@@ -106,11 +109,13 @@ The source code is in the following files :
 
 #### Starting the consumer thread
 
-* Open the [ProducerConsumerExample.java](/ProducerConsumerUsingSNIAndImmortals/src/main/java/com/microej/examples/java2c/ProducerConsumerExample.java) source file
+* Open the [SNIAndImmortalsFixedSizeExample.java](/ProducerConsumerUsingSNIAndImmortals/src/main/java/com/microej/examples/java2c/SNIAndImmortalsFixedSizeExample.java) source file
 
 * Update the main() method using the code below
 	
-		public static void main(String[] args) {	
+		public static void main(String[] args) {
+				QueueService accelerometerQueue = new QueueService(AccelerometerData.getQueuePtr());
+
 				AccelerometerDataProducer accelerometerDataProducer = new AccelerometerDataProducer(ACCELEROMETER_DATA_QUEUE_ID, 1100, 3);
 				new Thread(accelerometerDataProducer).start();
 		
@@ -149,19 +154,15 @@ The source code is in the following files :
 
 #### Starting the consumer thread
 
-* Open the [ProducerConsumerExample.java](/ProducerConsumerUsingSNIAndImmortals/src/main/java/com/microej/examples/java2c/ProducerConsumerExample.java) source file
+* Open the [SNIAndImmortalsVariableSizeExample.java](/ProducerConsumerUsingSNIAndImmortals/src/main/java/com/microej/examples/java2c/SNIAndImmortalsVariableSizeExample.java) source file
 
 * Update the main() method using the code below
 	
 		public static void main(String[] args) {
-				AccelerometerDataProducer accelerometerDataProducer = new AccelerometerDataProducer(ACCELEROMETER_DATA_QUEUE_ID, 1100, 3);
-				new Thread(accelerometerDataProducer).start();
-		
-				AccelerometerDataConsumer accelerometerDataConsumer = new AccelerometerDataConsumer(ACCELEROMETER_DATA_QUEUE_ID);
-				new Thread(accelerometerDataConsumer).start();
-		
-				MessengerDataConsumer messengerConsumer = new MessengerDataConsumer(MESSENGER_DATA_QUEUE_ID);
-				new Thread(messengerConsumer).start();
+			QueueService messengerQueue = new QueueService(MessengerData.getQueuePtr());
+			
+			MessengerDataConsumer messengerConsumer = new MessengerDataConsumer(messengerQueue);
+			new Thread(messengerConsumer).start();
 		}
 
 
@@ -245,7 +246,7 @@ Here we shall define the relevant "classes" :
 
 ### Instantiation code
 
-The `SNI_PRODUCER_init_factory` function instantiates two producers with different IDs and production periods for each kind of data
+The `SNI_PRODUCER_init_factory` function delegates to `SNI_PRODUCER_init_factory_accelerometer` and `SNI_PRODUCER_init_factory_messenger` which both instantiate two producers with different IDs and production periods for each kind of data.
 
 The source code is available in the following files.
 * [sni-producer-factory.h](/ProducerConsumerUsingSNIAndImmortals/src/main/c/sni-producer-factory.h)
@@ -258,74 +259,101 @@ For reference, BSP toolchain integration related instructions are described in t
 
 These steps have already been done in this workspace and you do not need to repeat them.
 
-However, you still need to perform the following operation :
-uncomment the call to `SNI_PRODUCER_init_factory` in the [main.c](/STM32F429IDISCO-SNI_SP_FreeRTOS-CM4_ARMCC-bsp/Project/MicroEJ/src/main.c) source file
-
 	
-## Checking the behavior
+## Checking the behavior for fixed size example
+
+* You still need to perform the following operation :
+	uncomment the call to `	SNI_PRODUCER_init_factory_accelerometer()` in the [main.c](/STM32F429IDISCO-SNI_SP_FreeRTOS-CM4_ARMCC-bsp/Project/MicroEJ/src/main.c) source file
+
 * After flashing the board, set up a terminal on the board serial port and press the reset input. You shall get an output similar to the one below :
 
-		-ID : 2 {x : 103, y : 46, z : -78}
-		+ID : 1 {x : 29, y : 117, z : 36}
-		-ID : 1 {x : 29, y : 117, z : 36}
-		+ID : 11 {2.2. But it only has two lines}
-		ID : 11 {2.2. But it only has two lines}
-		+ID : 3 {x : 75, y : 79, z : 46}
-		-ID : 3 {x : 75, y : 79, z : 46}
-		+ID : 2 {x : 112, y : 3, z : 99}
-		-ID : 2 {x : 112, y : 3, z : 99}
-		+ID : 3 {x : 96, y : 37, z : -57}
-		-ID : 3 {x : 96, y : 37, z : -57}
-		+ID : 1 {x : 122, y : 14, z : 73}
-		-ID : 1 {x : 122, y : 14, z : 73}
-		+ID : 3 {x : 125, y : -6, z : -84}
-		-ID : 3 {x : 125, y : -6, z : -84}
-		+ID : 22 {2.1. File #2 has different lines, some of wID : 2hich are l+ID : 2 {xonger}
-		 : 49, y : 48, z : -116}2 {2.1. Fil
-		e #2 has different lines, some of which are longer}
-		-ID : 2 {x : 49, y : 48, z : -116}
-		+ID : 1 {x : -17, y : -33, z : 70}
-		-ID : 1 {x : -17, y : -33, z : 70}
-		+ID : 11 {1.1. This is the first line}
-		-ID : 11 {1.1. This is the first line}
-		+ID : 3 {x : -38, y : -13, z : -50}
-		-ID : 3 {x : -38, y : -13, z : -50}
-		+ID : 2 {x : -22, y : -11, z : 109}
-		-ID : 2 {x : -22, y : -11, z : 109}
-		+ID : 22 {2.2. But it only has two lines}
-		-ID : 22 {2.2. But it only has two lines}
-		+ID : 11 {1.2. This is the next line}
-		-ID : 11 {1.2. This is the next line}
-		+ID : 3 {x : 27, y : 98, z : -34}
-		-ID : 3 {x : 27, y : 98, z : -34}
-		+ID : 1 {x : -68, y : 40, z : 91}
-		-ID : 1 {x : -68, y : 40, z : 91}
-		+ID : 2 {x : -37, y : -110, z : 70}
-		-ID : 2 {x : -37, y : -110, z : 70}
-		+ID : 11 {1.3. This is the final line}
-		-ID : 11 {1.3. This is the final line}
-		+ID : 3 {x : -94, y : -36, z : 84}
-		-ID : 3 {x : -94, y : -36, z : 84}
-		+ID : 1 {x : 33, y : 41, z : -56}
-		-ID : 1 {x : 33, y : 41, z : -56}
-		+ID : 3 {x : -12, y : 5, z : 10}
-		-ID : 3 {x : -12, y : 5, z : 10}
-		+ID : 2 {x : 68, y : 71, z : 87}
-		-ID : 2 {x : 68, y : 71, z : 87}
-		+ID : 11 {2.1. File #2 has different linesID : 1, some of w1 {2.1. Fihich are lole #2 has nger}
-		different lines, some of which are longer}
-		+ID : 3 {x : 95, y : -39, z : -43}
-		-ID : 3 {x : 95, y : -39, z : -43}
-		+ID : 1 {x : 94, y : 34, z : -51}
-		-ID : 1 {x : 94, y : 34, z : -51}
-
-
+		-ID : 1 {x : -24, y : 27, z : -101}
+		+ID : 2 {x : 82, y : 6, z : -31}
+		-ID : 2 {x : 82, y : 6, z : -31}
+		+ID : 3 {x : -67, y : -85, z : 65}
+		-ID : 3 {x : -67, y : -85, z : 65}
+		+ID : 1 {x : -23, y : -120, z : 4}
+		-ID : 1 {x : -23, y : -120, z : 4}
+		+ID : 2 {x : 7, y : 23, z : 30}
+		-ID : 2 {x : 7, y : 23, z : 30}
+		+ID : 1 {x : -30, y : -115, z : 37}
+		-ID : 1 {x : -30, y : -115, z : 37}
+		+ID : 3 {x : -75, y : -79, z : -4}
+		-ID : 3 {x : -75, y : -79, z : -4}
+		+ID : 2 {x : 20, y : -96, z : 115}
+		-ID : 2 {x : 20, y : -96, z : 115}
+		+ID : 1 {x : 19, y : 106, z : 62}
+		-ID : 1 {x : 19, y : 106, z : 62}
+		+ID : 2 {x : -71, y : -31, z : 32}
+		-ID : 2 {x : -71, y : -31, z : 32}
+		+ID : 3 {x : 114, y : -10, z : -64}
+		-ID : 3 {x : 114, y : -10, z : -64}
+		+ID : 1 {x : -68, y : 95, z : -113}
+		-ID : 1 {x : -68, y : 95, z : -113}
+		+ID : 2 {x : 54, y : 26, z : 101}
+		-ID : 2 {x : 54, y : 26, z : 101}
 
 * The '-' prefix indicates data consumption
 * The '+' prefix indicates data production
-* The number right after the ID indicates which sensor or sender the data originates from. The 5 different IDs in the trace {{1,2} : C Accelerometers, 3 : Java Accelerometer, {11,22} C Messengers} show us that data from our 5 different producers get consumed.
-* Note that the trace for long messages from both producer and consumer sometimes get mixed up in the output because the producer outputs after successfully posting the data, not before. Therefore, between the posting time and the flushing of the producer trace, the consumer has time to output some trace of its own on the shared output stream.  
+* The number right after the ID indicates which sensor or sender the data originates from. The 3 different IDs in the trace {{1,2} : C Accelerometers, 3 : Java Accelerometer, {11,22} C Messengers} show us that data from our 3 different producers gets produced and consumed.
 
+
+## Checking the behavior for variable size example
+
+* You still need to perform the following operation :
+	uncomment the call to `	SNI_PRODUCER_init_factory_messenger()` in the [main.c](/STM32F429IDISCO-SNI_SP_FreeRTOS-CM4_ARMCC-bsp/Project/MicroEJ/src/main.c) source file
+	
+* After flashing the board, set up a terminal on the board serial port and press the reset input. You shall get an output similar to the one below :
+
+		VM START
+		+ID : 11 {ID : 11.1. This i1 {1.1. Ths the firstis is the  line}
+		first line}
+		+ID : 22 {ID : 22.1. File #2 {2.1. Fi2 has diffele #2 has rent lines,different  some of whlines, somich are lone of whichger}
+		 are longer}
+		+ID : 11 {-ID : 1.2. This i11 {1.2. Ts the next his is the line}
+		next line}
+		+ID : 11 {-ID : 1.3. This i11 {1.3. Ts the finalhis is the  line}
+		final line}
+		+ID : 22 {ID : 22.2. But it2 {2.2. Bu only has tt it only wo lines}
+		has two lines}
+		+ID : 11 {-ID : 2.1. File #11 {2.1. F2 has diffeile #2 hasrent lines, different some of wh lines, soich are lonme of whicger}
+		h are longer}
+		+ID : 11 {ID : 12.2. But it1 {2.2. Bu only has tt it only wo lines}
+		has two lines}
+		+ID : 22 {1.1. This i-ID : 22s the firs {1.1. Thist line}
+		 is the first line}
+		+ID : 11 {-ID : 1.1. This i11 {1.1. Ts the firsthis is the  line}
+		first line}
+		+ID : 22 {-ID : 1.2. This i22 {1.2. Ts the next his is theline}
+		 next line}
+		+ID : 11 {-ID : 1.2. This i11 {1.2. Ts the next his is the line}
+		next line}
+		+ID : 11 {-ID : 1.3. This i11 {1.3. Ts the finalhis is the line}
+		 final line}
+		+ID : 22 {-ID : 1.3. This i22 {1.3. Ts the finalhis is the line}
+		 final line}
+		+ID : 11 {2.1. File #-ID : 112 has diffe {2.1. Filrent lines,e #2 has d some of whifferent lich are lonines, someger}
+		 of which are longer}
+		+ID : 11 {ID : 12.2. But it1 {2.2. Bu only has t it only htwo lines}as two line
+		s}
+		+ID : 22 {ID : 22.1. File #2 {2.1. Fi2 has diffele #2 has rent lines,different  some of whlines, somich are loe of which nger}
+		are longer}
+		+ID : 22 {ID : 22.2. But it2 {2.2. Bu only has tt it only wo lines}
+		has two lines}
+		+ID : 11 {ID : 11.1. This i1 {1.1. Ths the firstis is the  line}
+		first line}
+		+ID : 11 {-ID : 1.2. This i11 {1.2. Ths the nextis is the  line}
+		next line}
+		+ID : 11 {-ID : 1.3. This i11 {1.3. Ts the finalhis is the line}
+		 final line}
+		+ID : 11 {2.1. File #-ID : 112 has diffe {2.1. Filrent lines,e #2 has d some of whifferent lich are lonines, someger}
+		 of which are longer}
+		+ID : 22 {ID : 21.1. This i2 {1.1. Ths the firstis is the  line}
+		first line}
+		+ID : 11 {ID : 12.2. But it1 {2.2. Bu
+
+
+Note that the trace for long messages from both producer and consumer do get mixed up in the output because the producer outputs after successfully posting the data, not before. Therefore, between the posting time and the flushing of the producer trace, the consumer has time to output some trace of its own on the shared output stream.
 
 # Advanced use cases
 

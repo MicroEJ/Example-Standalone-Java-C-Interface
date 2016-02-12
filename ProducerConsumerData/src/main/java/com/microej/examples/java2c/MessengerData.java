@@ -36,7 +36,6 @@ public class MessengerData {
 		stringBuilder.append(" {");
 		stringBuilder.append(new String(this.content));
 		stringBuilder.append("}");
-		//return "ID : " + senderId + " {" + new String(this.content) + "}";
 		return stringBuilder.toString();
 	}
 

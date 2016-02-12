@@ -11,7 +11,7 @@ package com.microej.examples.java2c;
 import com.microej.examples.nativequeue.api.QueueService;
 
 
-public class ProducerConsumerExample {
+public class SNIAndImmortalsFixedSizeExample {
 
 	/**
 	 * @param args
@@ -19,17 +19,12 @@ public class ProducerConsumerExample {
 	public static void main(String[] args) {
 
 		QueueService accelerometerQueue = new QueueService(AccelerometerData.getQueuePtr());
-		QueueService messengerQueue = new QueueService(MessengerData.getQueuePtr());
 
-		AccelerometerDataProducer accelerometerDataProducer = new AccelerometerDataProducer(accelerometerQueue, 1100, 3);
+		AccelerometerDataProducer accelerometerDataProducer = new AccelerometerDataProducer(accelerometerQueue, 3, 2200);
 		new Thread(accelerometerDataProducer).start();
 
 		AccelerometerDataConsumer accelerometerDataConsumer = new AccelerometerDataConsumer(accelerometerQueue);
 		new Thread(accelerometerDataConsumer).start();
-
-		MessengerDataConsumer messengerConsumer = new MessengerDataConsumer(messengerQueue);
-		new Thread(messengerConsumer).start();
-
 	}
 
 }
