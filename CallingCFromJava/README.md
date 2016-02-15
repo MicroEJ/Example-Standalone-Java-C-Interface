@@ -10,7 +10,8 @@ The following steps will be taken :
 
 * Building a Java Platform
 * Building the Java client code
-* Building & Running the C target executable
+* Running the application on simulator
+* Running the application on target
 
 ## Requirements
 * JRE 7 (or later) x86.
@@ -58,74 +59,79 @@ We need to generate and build a Java Platform (JPF), i.e. the set of object file
 	* In the **MicroEJ Repository** frame
 		* Click on the **Refresh** button 
 
-# Building the Java client code
-In this section, we will create the java application to invoke our C code
+# Running the application on simulator
 
-## MicroEJ project creation
+Using MicroEJ, you may deploy and run your application on an embedded target (if the hardware and related BSP are available) or you may run your application on a Java simulator mimicking the behavior of your embedded target.
 
-This project will host the application specific code
+## Building for the simulator
+Here, we will launch a MicroEJ "Run Configuration" that will compile the Java code from the CallingCFromJava project for the JPF we created previously
 
-* Select **File > New > Java Project** menu item
-	* Set **Project Name** field to "**CallingCFromJava**"
-	* In the **Runtime Environment** frame, select the following MicroEJ Libraries :
-		* EDC 1.2 (selected by default)
-		* SNI 1.2.0
-* Click on **Next**
-* Click on **Finish**
-
-## Java Class creation
-* Select **File > New > Source Folder** menu item
-	* Set the **Folder name** field to "**/src/main/java**"
-* Select **File > New > Class** menu item
-	* Set the **Source folder** field to "**CallingCFromJava/src/main/java**"
-	* Set the **Package** field to "com.microej.examples.java2C"
-	* Set the **Name** field to "**NativeCCallExample**"
-	* Click on **Finish**
-	* Copy and paste the following code inside the generated [NativeCCallExample.java](CallingCFromJava/src/main/java/com/microej/examples/java2c/NativeCCallExample.java) file. Notice the **native** qualifier used for the declaration of the C function binding.  
-
-			package com.microej.examples.java2C;		
-			public class NativeCCallExample {
-			
-				public static void main(String[] args) {
-					final int aValue = 120;
-					System.out.println("Calling : someCFunctionReturningTwiceAValue(" + aValue +")");
-					final int resultOfCallToSomeCFunction = someCFunctionReturningTwiceAValue(aValue);		
-					System.out.println("Result  : " + resultOfCallToSomeCFunction);
-				}
-				
-				static native int someCFunctionReturningTwiceAValue(int n);
-			}
-
-
-## Compiling the Java code for the target
-
-Here, we will create a MicroEJ "Run Configuration" that will compile the Java code we just created for the JPF we created previously
-
-* Select **File > New > Folder** menu item
-	* Set the **Enter or select the parent folder** field to ["CallingCFromJava"](.) (Project root)
-	* Set the **Folder Name** field to ["launches"](CallingCFromJava/launches)
-* Select **Run Configurations...** from the **Run configurations** drop down list (or Press Ctrl+Shift+3 and type "Run Configurations...")
-* Select **MicroEJ Application** group and click **New**
-	* Set **Name** field to "NativeCCallExample_Build"
-	* In **Main** tab
-		* Set the **Project** field to "CallingCFromJava"
-		* Click on **Select Main type...** and type NativeCCallExample
+* Select **Run > Run Configurations...** menu item
+* Select **MicroEJ Application** group
+* Select the `NativeCCallExample_Sim_Build` configuration
 	* In **Execution** tab
-		* In **Target** frame
-			* Click the **Browse** button next to the JPF Field and select your platform
-		* In **Execution** frame
-			* Select **Execute on EmbJPF** radio button
-			* Leave the **Output Folder** field set to "${project_loc:CallingCFromJava}"
-	* In **Configuration** tab
-		* Select the **Target > Deploy** Node
-			* Set the **Means** field to "Copy at a location known by BSP Project"
-	* In **Common** tab
-		* In **Save as** frame
-			* Select the **Shared file** radio button
-			* Click on **Browse** and select [CallingCFromJava/launches](CallingCFromJava/launches) folder	
+			* In **Target** frame
+				* Click the **Browse** button next to the JPF Field and select your platform
+			* In **Execution** frame
+				* Notice that "Execute on SimJPF" radio button option is checked
 	* Click on "Run"
 
-# Building & Running the C target executable
+## Getting a java.lang.UnsatisfiedLinkError exception
+
+The result of the previous error shall lead to this error message
+	
+		=============== [ Initialization Stage ] ===============
+		=============== [ Launching SimJPF ] ===============
+		Calling : someCFunctionReturningTwiceAValue(120)
+		Exception in thread "main" java.lang.UnsatisfiedLinkError: No HIL client implementor found (timeout)
+			at java.lang.Throwable.fillInStackTrace(Throwable.java:79)
+			at java.lang.Throwable.<init>(Throwable.java:30)
+			at java.lang.Error.<init>(Error.java:10)
+			at java.lang.LinkageError.<init>(LinkageError.java:10)
+			at java.lang.UnsatisfiedLinkError.<init>(UnsatisfiedLinkError.java:10)
+			at com.microej.examples.java2c.NativeCCallExample.main(NativeCCallExample.java:19)
+			at java.lang.MainThread.run(Thread.java:836)
+			at java.lang.Thread.runWrapper(Thread.java:372)
+		=============== [ Completed Successfully ] ===============
+		
+		SUCCESS
+
+This is perfectly normal since in [NativeCCallExample.java](CallingCFromJava/src/main/java/com/microej/examples/java2C/NativeCCallExample.java) we declared **someCFunctionReturningTwiceAValue** as a native function, when running the simulator, the Hardware In the Loop (HIL) engines expects to find some Java implementation emulating the behavior of the native function. 
+
+## Adding a mock of the native function to the JPF
+Since our Java application relies on native C functions, on an embedded target, we would need to provide a C implementation. But given that we are running it on a Java simulator, we can emulate those functions using a Java mock.
+
+The [CallingCFromJavaMock](CallingCFromJavaMock) project provides the mocks required for running the Java application on simulator.
+
+* Open the [CallingCFromJavaMock.jardesc](/CallingCFromJavaMock/CallingCFromJavaMock.jardesc) jar description file
+* Update the export destination file so that it has the following value
+	`[CallingCFromJava-1.0.0]\source\mocks\dropins\CallingCFromJavaMock.jar`
+* Click on **Finish**
+* Retry running the `NativeCCallExample_Sim_Build` configuration.
+
+		=============== [ Initialization Stage ] ===============
+		=============== [ Launching SimJPF ] ===============
+		Calling : someCFunctionReturningTwiceAValue(120)
+		Result  : 240
+		=============== [ Completed Successfully ] ===============
+		
+		SUCCESS
+
+
+# Running the application on target
+
+## Building for the target
+Here, we will launch a MicroEJ "Run Configuration" that will compile the Java code from the CallingCFromJava project for the JPF we created previously
+
+* Select **Run > Run Configurations...** menu item
+* Select **MicroEJ Application** group
+* Select the `NativeCCallExample_Sim_Build` configuration
+	* In **Execution** tab
+			* In **Target** frame
+				* Click the **Browse** button next to the JPF Field and select your platform
+			* In **Execution** frame
+				* Notice that "Execute on EmbJPF" radio button option is checked
+	* Click on "Run"
 
 ## Opening the generated C project (BSP specific)
 * From the **Project Explorer** view
@@ -148,7 +154,7 @@ This is perfectly normal since in [NativeCCallExample.java](CallingCFromJava/src
 * Right-Click on the folder that you just created
 	* Select **New > File** context menu item
 	* Set the **File Name** field to "NativeCCallExample.c"
-	* Copy and paste the following code inside the generated [NativeCCallExample.c](CallingCFromJava/src/main/c/com/microej/examples/java2C/NativeCCallExample.c). Notice the C function follows the strict SNI naming convention mentioned earlier.
+	* Copy and paste the following code inside the generated [NativeCCallExample.c](CallingCFromJava/src/main/c/com/microej/examples/java2c/NativeCCallExample.c). Notice the C function follows the strict SNI naming convention mentioned earlier.
 
 			#include <sni.h>
 			jint Java_com_microej_examples_java2C_NativeCCallExample_someCFunctionReturningTwiceAValue(jint aValue) {

@@ -20,6 +20,6 @@ public class NativeCCallExample {
 		System.out.println("Result  : " + resultOfCallToSomeCFunction);
 	}
 	
-	static native int someCFunctionReturningTwiceAValue(int n);
+	public static native int someCFunctionReturningTwiceAValue(int n);
 
 }
