@@ -105,7 +105,7 @@ The [CallingCFromJavaMock](CallingCFromJavaMock) project provides the mocks requ
 
 * Open the [CallingCFromJavaMock.jardesc](/CallingCFromJavaMock/CallingCFromJavaMock.jardesc) jar description file
 * Update the export destination file so that it has the following value
-	`[CallingCFromJava-1.0.0]\source\mocks\dropins\CallingCFromJavaMock.jar`
+	`CallingCFromJava-1.0.0\source\mocks\dropins\CallingCFromJavaMock.jar`
 * Click on **Finish**
 * Retry running the [NativeCCallExample_Sim_Build.launch](/CallingCFromJava/launches/NativeCCallExample_Sim_Build.launch) configuration.
 
@@ -127,10 +127,10 @@ Here, we will launch a MicroEJ "Run Configuration" that will compile the Java co
 * Select **MicroEJ Application** group
 * Select the [NativeCCallExample_Emb_Build](/CallingCFromJava/launches/NativeCCallExample_Emb_Build.launch) configuration
 	* In **Execution** tab
-			* In **Target** frame
-				* Click the **Browse** button next to the JPF Field and select your platform
-			* In **Execution** frame
-				* Notice that "Execute on EmbJPF" radio button option is checked
+		* In **Target** frame
+			* Click the **Browse** button next to the JPF Field and select your platform
+		* In **Execution** frame
+			* Notice that "Execute on EmbJPF" radio button option is checked
 	* Click on "Run"
 
 ## Opening the generated C project (BSP specific)
@@ -171,7 +171,7 @@ This is perfectly normal since in [NativeCCallExample.java](CallingCFromJava/src
 	* Right-Click and select **Add Group** this will add a group called "New Group"
 	* Select this group and hit **F2** key so as to rename it to "JavaNatives"
 	* Right-Click on the **JavaNatives** group and select **Add Existing Files to group 'JavaNatives'...**
-	* Navigate to the [NativeCCallExample.c](CallingCFromJava/src/main/c/com/microej/examples/java2C/NativeCCallExample.c) file (its location is in the clipboard ..\\..\\..\\..\\CallingCFromJava\\bsp)
+	* Navigate to the [NativeCCallExample.c](CallingCFromJava/src/main/c/com/microej/examples/java2C/NativeCCallExample.c) file (its location is in the clipboard ..\\..\\..\\..\\CallingCFromJava\\src\\main\\c\\com\\microej\\examples\\java2c\\NativeCCallExample.c)
 	* Click **Add**
 	* Click **Close**
 
