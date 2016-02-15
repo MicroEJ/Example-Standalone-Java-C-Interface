@@ -68,17 +68,17 @@ Here, we will launch a MicroEJ "Run Configuration" that will compile the Java co
 
 * Select **Run > Run Configurations...** menu item
 * Select **MicroEJ Application** group
-* Select the `NativeCCallExample_Sim_Build` configuration
+* Select the [NativeCCallExample_Sim_Build.launch](/CallingCFromJava/launches/NativeCCallExample_Sim_Build.launch) configuration
 	* In **Execution** tab
-			* In **Target** frame
-				* Click the **Browse** button next to the JPF Field and select your platform
-			* In **Execution** frame
-				* Notice that "Execute on SimJPF" radio button option is checked
+		* In **Target** frame
+			* Click the **Browse** button next to the JPF Field and select your platform
+		* In **Execution** frame
+			* Notice that "Execute on SimJPF" radio button option is checked
 	* Click on "Run"
 
 ## Getting a java.lang.UnsatisfiedLinkError exception
 
-The result of the previous error shall lead to this error message
+The result of the previous step shall lead to this error message
 	
 		=============== [ Initialization Stage ] ===============
 		=============== [ Launching SimJPF ] ===============
@@ -101,13 +101,13 @@ This is perfectly normal since in [NativeCCallExample.java](CallingCFromJava/src
 ## Adding a mock of the native function to the JPF
 Since our Java application relies on native C functions, on an embedded target, we would need to provide a C implementation. But given that we are running it on a Java simulator, we can emulate those functions using a Java mock.
 
-The [CallingCFromJavaMock](CallingCFromJavaMock) project provides the mocks required for running the Java application on simulator.
+The [CallingCFromJavaMock](CallingCFromJavaMock) project provides the mocks required for running the Java application on simulator (see [/CallingCFromJavaMock/.../NativeCCallExample.java](/CallingCFromJavaMock/src/main/java/com/microej/examples/java2c/NativeCCallExample.java)).
 
 * Open the [CallingCFromJavaMock.jardesc](/CallingCFromJavaMock/CallingCFromJavaMock.jardesc) jar description file
 * Update the export destination file so that it has the following value
 	`[CallingCFromJava-1.0.0]\source\mocks\dropins\CallingCFromJavaMock.jar`
 * Click on **Finish**
-* Retry running the `NativeCCallExample_Sim_Build` configuration.
+* Retry running the [NativeCCallExample_Sim_Build.launch](/CallingCFromJava/launches/NativeCCallExample_Sim_Build.launch) configuration.
 
 		=============== [ Initialization Stage ] ===============
 		=============== [ Launching SimJPF ] ===============
@@ -125,7 +125,7 @@ Here, we will launch a MicroEJ "Run Configuration" that will compile the Java co
 
 * Select **Run > Run Configurations...** menu item
 * Select **MicroEJ Application** group
-* Select the `NativeCCallExample_Sim_Build` configuration
+* Select the [NativeCCallExample_Emb_Build](/CallingCFromJava/launches/NativeCCallExample_Emb_Build.launch) configuration
 	* In **Execution** tab
 			* In **Target** frame
 				* Click the **Browse** button next to the JPF Field and select your platform
