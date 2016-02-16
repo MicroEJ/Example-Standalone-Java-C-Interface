@@ -23,7 +23,6 @@ void SNI_PRODUCER_init_factory_accelerometer(void)
 			{
 					"PRODUCER_Accelerometer_Task_1",
 					1300,
-//					&SNI_PRODUCER_accelerometer_configure_adapter,
 					&SNI_PRODUCER_accelerometer_produce_adapter
 			},
 			1
@@ -33,7 +32,6 @@ void SNI_PRODUCER_init_factory_accelerometer(void)
 			{
 					"PRODUCER_Accelerometer_Task_2",
 					1400,
-//					&SNI_PRODUCER_accelerometer_configure_adapter,
 					&SNI_PRODUCER_accelerometer_produce_adapter
 			},
 			2
@@ -54,7 +52,6 @@ void SNI_PRODUCER_init_factory_messenger(void)
 			{
 					"PRODUCER_Messenger_Task_1",
 					1100,
-//					&SNI_PRODUCER_messenger_configure_adapter,
 					&SNI_PRODUCER_messenger_produce_adapter
 			},
 			11,
@@ -66,7 +63,6 @@ void SNI_PRODUCER_init_factory_messenger(void)
 			{
 					"PRODUCER_Messenger_Task_2",
 					1800,
-//					&SNI_PRODUCER_messenger_configure_adapter,
 					&SNI_PRODUCER_messenger_produce_adapter
 			},
 			22,

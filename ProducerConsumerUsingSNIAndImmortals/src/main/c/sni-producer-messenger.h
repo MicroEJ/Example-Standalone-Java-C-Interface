@@ -26,12 +26,13 @@ jboolean SNI_PRODUCER_messenger_queue_init(void);
 //== constructor
 void SNI_PRODUCER_messenger_init(SNI_PRODUCER_messenger_t* messenger);
 
-//== functions adapters
+//== production function adapter
 void SNI_PRODUCER_messenger_produce_adapter(SNI_PRODUCER_t* pProducer);
 
-//== functions implementations
+//== actual production function
 void SNI_PRODUCER_messenger_produce(SNI_PRODUCER_messenger_t* pProducer);
 
+//== SNI function
 jint Java_com_microej_examples_java2c_MessengerData_getQueuePtr(void);
 
 #endif // SP_PRODUCER_MESSENGER_H

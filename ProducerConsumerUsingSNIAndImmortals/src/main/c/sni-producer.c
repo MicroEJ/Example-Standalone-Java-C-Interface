@@ -25,9 +25,11 @@
 #define SNI_PRODUCER_TASK_PRIORITY      ( 3 ) /** Should be > tskIDLE_PRIORITY & < configTIMER_TASK_PRIORITY */
 #define SNI_PRODUCER_TASK_STACK_SIZE     SNI_PRODUCER_STACK_SIZE/4
 
+//==== "private" method(s) declaration
+void _SNI_PRODUCER_taskBody(void* arg);
 
-/* API -----------------------------------------------------------------------*/
-
+//==== "public" method(s) definition
+//== constructor
 void SNI_PRODUCER_init(SNI_PRODUCER_t* pProducer)
 {
 	if ( NULL != pProducer )
@@ -47,6 +49,7 @@ void SNI_PRODUCER_init(SNI_PRODUCER_t* pProducer)
 	}
 }
 
+//==== "private" method(s) definition
 void _SNI_PRODUCER_taskBody(void* arg)
 {
 	if ( NULL != arg )

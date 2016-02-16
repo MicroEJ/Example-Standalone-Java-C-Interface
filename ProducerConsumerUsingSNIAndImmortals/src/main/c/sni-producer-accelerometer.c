@@ -63,7 +63,7 @@ void SNI_PRODUCER_accelerometer_init(SNI_PRODUCER_accelerometer_t* pAcceleromete
 	}
 }
 
-//== functions adapters
+//== production function adapter
 void SNI_PRODUCER_accelerometer_produce_adapter(SNI_PRODUCER_t* pProducer)
 {
 	if ( NULL != pProducer )
@@ -72,7 +72,7 @@ void SNI_PRODUCER_accelerometer_produce_adapter(SNI_PRODUCER_t* pProducer)
 	}
 }
 
-//== functions implementations
+//== actual production function
 void SNI_PRODUCER_accelerometer_produce(SNI_PRODUCER_accelerometer_t* pProducer)
 {
 	Accelerometer_data_t data = Accelerometer_data_generate_sample(pProducer->sensor_ID);
@@ -89,6 +89,7 @@ void SNI_PRODUCER_accelerometer_produce(SNI_PRODUCER_accelerometer_t* pProducer)
 	}
 }
 
+//== SNI function
 jint Java_com_microej_examples_java2c_AccelerometerData_getQueuePtr(void)
 {
 	return (jint)&accelerometerQueue;

@@ -23,12 +23,13 @@ jboolean SNI_PRODUCER_accelerometer_queue_init(void);
 //== constructor
 void SNI_PRODUCER_accelerometer_init(SNI_PRODUCER_accelerometer_t* accelerometer);
 
-//== functions adapters
+//== production function adapter
 void SNI_PRODUCER_accelerometer_produce_adapter(SNI_PRODUCER_t* pProducer);
 
-//== functions implementations
+//== actual production function
 void SNI_PRODUCER_accelerometer_produce(SNI_PRODUCER_accelerometer_t* pProducer);
 
+//== SNI function
 jint Java_com_microej_examples_java2c_AccelerometerData_getQueuePtr(void);
 
 #endif // SP_PRODUCER_ACCELEROMETER_H

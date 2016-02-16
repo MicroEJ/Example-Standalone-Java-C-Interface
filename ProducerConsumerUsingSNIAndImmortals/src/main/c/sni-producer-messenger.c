@@ -60,7 +60,7 @@ void SNI_PRODUCER_messenger_init(SNI_PRODUCER_messenger_t* pAccelerometer)
 	}
 }
 
-//== functions adapters
+//== production function adapter
 void SNI_PRODUCER_messenger_produce_adapter(SNI_PRODUCER_t* pProducer)
 {
 	if ( NULL != pProducer )
@@ -69,7 +69,7 @@ void SNI_PRODUCER_messenger_produce_adapter(SNI_PRODUCER_t* pProducer)
 	}
 }
 
-//== functions implementations
+//== actual production function
 void SNI_PRODUCER_messenger_produce(SNI_PRODUCER_messenger_t* pProducer)
 {
 	Messenger_data_t data = Messenger_data_get_next_line(pProducer->sender_ID,&(pProducer->file_index), &(pProducer->line_index));
@@ -88,6 +88,7 @@ void SNI_PRODUCER_messenger_produce(SNI_PRODUCER_messenger_t* pProducer)
 	}
 }
 
+//== SNI function
 jint Java_com_microej_examples_java2c_MessengerData_getQueuePtr(void)
 {
 	return (jint)&messengerQueue;

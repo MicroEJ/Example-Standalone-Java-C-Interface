@@ -21,11 +21,8 @@ struct SNI_PRODUCER_t{
 	void (*productionFunction)(SNI_PRODUCER_t* pProducer);		//pointer to production function - with pointer to producer argument
 };
 
-//==== "public" method(s)
+//==== "public" method(s) declaration
 //== constructor
 void SNI_PRODUCER_init(SNI_PRODUCER_t* pProducer);
-
-//==== "private" method(s)
-void _SNI_PRODUCER_taskBody(void* arg);
 
 #endif // SNI_PRODUCER_H
