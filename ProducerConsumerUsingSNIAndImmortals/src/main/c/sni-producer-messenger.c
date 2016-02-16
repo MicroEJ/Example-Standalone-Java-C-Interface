@@ -77,7 +77,7 @@ void SNI_PRODUCER_messenger_produce(SNI_PRODUCER_messenger_t* pProducer)
 	{
 		if ( QUEUE_SERVICE_OK == LLQueue_write(&messengerQueue,(jbyte*)(&data)) )
 		{
-			char dataAsString[MESSENGER_DATA_MAX_STRING_LENGTH];
+			char dataAsString[PRODUCER_MESSENGER_QUEUE_ITEM_SIZE];
 			Messenger_data_toString(&data,dataAsString);
 			printf("+%s\n",dataAsString);
 		}

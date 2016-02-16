@@ -8,7 +8,7 @@
 #ifndef MESSENGER_DATA_H
 #define MESSENGER_DATA_H
 
-#define MESSENGER_DATA_MAX_STRING_LENGTH 255
+#define MESSENGER_DATA_MAX_STRING_LENGTH 253 // = 255 - length of (sender_ID + content_Length) )
 
 #include <stdint.h>
 #include <sni.h>

@@ -39,10 +39,6 @@ public class MessengerData {
 		return stringBuilder.toString();
 	}
 
-	//ShieldedPlug related IDs - see src/main/resources/database-definition.xml file for relevant values
-	public static final int DATABASE_ID = 1;
-	public static final int DATABASE_FIELD_ID_MESSAGE = 0;
-
 	//SNI related native - retrieves pointer to queue
 	native public static int getQueuePtr();
 

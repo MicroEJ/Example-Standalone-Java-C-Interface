@@ -37,7 +37,7 @@ static MSG_FILE* MSG_FILE_ptrs[] =
 	NULL
 };
 	
-int32_t getFileLength( MSG_FILE file )
+int32_t _getFileLength( MSG_FILE file )
 {
 	int32_t count = 0;
 	while (file[count])
@@ -47,7 +47,7 @@ int32_t getFileLength( MSG_FILE file )
 	return count;
 }
 
-int32_t getFilePtrsArrayLength( MSG_FILE* param_MSG_FILE_ptrs[] )
+int32_t _getFilePtrsArrayLength( MSG_FILE* param_MSG_FILE_ptrs[] )
 {
 	int32_t count = 0;
 	while (param_MSG_FILE_ptrs[count])
@@ -66,12 +66,12 @@ Messenger_data_t Messenger_data_get_next_line(int8_t senderID, int32_t* fileInde
 
 	if ( NULL != fileIndex && NULL != lineIndex)
 	{
-		if ( *fileIndex < getFilePtrsArrayLength(MSG_FILE_ptrs) )
+		if ( *fileIndex < _getFilePtrsArrayLength(MSG_FILE_ptrs) )
 		{
 			if ( *fileIndex >= 0 )
 			{
 				MSG_FILE* currentFile = MSG_FILE_ptrs[*fileIndex];
-				if ( *lineIndex < getFileLength(*currentFile) )
+				if ( *lineIndex < _getFileLength(*currentFile) )
 				{
 					if ( *lineIndex >= 0 )
 					{
