@@ -84,3 +84,15 @@ To access the document from MicroEJ:
 
 * Select **Help > MicroEJ Resource Center** menu item
 	* Select **Library Specification > SP 1.0**
+	
+### Simulation
+
+The **Simulation** section of the **platform architecture manual** document contains useful info for :
+
+* creating Java mocks simulating native code using the same naming conventions as SNI
+* using the Hardware In the Loop (HIL) engine as a replacement for the SNI/GreenThread interface used on target environments
+
+To access the document from MicroEJ:
+
+* Select **Help > MicroEJ Resource Center** menu item
+	* Select **Manual > Platform Architecture - User Manual**
