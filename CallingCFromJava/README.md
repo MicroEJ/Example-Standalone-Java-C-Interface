@@ -156,12 +156,10 @@ This is perfectly normal since in [NativeCCallExample.java](CallingCFromJava/src
 	* Set the **File Name** field to "NativeCCallExample.c"
 	* Copy and paste the following code inside the generated [NativeCCallExample.c](CallingCFromJava/src/main/c/com/microej/examples/java2c/NativeCCallExample.c). Notice the C function follows the strict SNI naming convention mentioned earlier.
 
-			``` c++
 			#include <sni.h>
 			jint Java_com_microej_examples_java2C_NativeCCallExample_someCFunctionReturningTwiceAValue(jint aValue) {
 				return aValue*2;
 			}
-			```
 
 
 * Right-click on the file that you just created
