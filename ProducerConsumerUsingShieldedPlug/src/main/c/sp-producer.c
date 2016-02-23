@@ -24,7 +24,10 @@
 #define SP_PRODUCER_TASK_PRIORITY      ( 3 ) /** Should be > tskIDLE_PRIORITY & < configTIMER_TASK_PRIORITY */
 #define SP_PRODUCER_TASK_STACK_SIZE     SP_PRODUCER_STACK_SIZE/4
 
-//==== "public" method(s)
+//==== "private" method(s) declaration
+void _SP_PRODUCER_taskBody(void* arg);
+
+//==== "public" method(s) definition
 //== constructor
 void SP_PRODUCER_init(SP_PRODUCER_t* pProducer)
 {
@@ -47,7 +50,7 @@ void SP_PRODUCER_init(SP_PRODUCER_t* pProducer)
 	}
 }
 
-//==== "private" method(s)
+//==== "private" method(s) definition
 void _SP_PRODUCER_taskBody(void* arg)
 {
 	if ( NULL != arg )

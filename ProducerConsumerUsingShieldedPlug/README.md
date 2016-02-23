@@ -8,7 +8,7 @@ This example shows an implementation of the producer consumer pattern.
 
 ## Dependencies
 
-It relies on the following project :
+It relies on the following project:
 - [ProducerConsumerData](/ProducerConsumerData) describes the data being exchanged
 
 
@@ -61,7 +61,7 @@ As illustrated in the [ProducerConsumerExample.java](/ProducerConsumerUsingShiel
 
 Since the actual data production is more likely to originate from a device with a driver implemented in C, an implementation of the producer written in C is provided.
 
-The source code is available in the following files.
+The source code is available in the following files:
 * [sp-producer.h](/ProducerConsumerUsingShieldedPlug/src/main/c/sp-producer.h)
 * [sp-producer.c](/ProducerConsumerUsingShieldedPlug/src/main/c/sp-producer.c)
 * [sp-producer-accelerometer.h](/ProducerConsumerUsingShieldedPlug/src/main/c/sp-producer-accelerometer.h)
@@ -75,7 +75,7 @@ In this section, we shall describe in more details the design of the **sp-produc
 
 A producer is viewed as a task that must periodically call a produce function, which contents are actually domain specific.
 
-This leads to a producer "class" with the following contents
+This leads to a producer "class" with the following contents:
 * attributes (will be set by the domain-specific producer)
 	* production period
 	* pointer to configuration function (with pointer to producer argument so as to be able to retrieve configuration information from a producer)
@@ -91,7 +91,7 @@ Although the design is to some extent object-oriented, the implementation in thi
 
 In this section, we shall describe in more details the design of the **sp-producer-accelerometer** source files.
 
-This leads to an accelerometer "class" with the following contents
+This leads to an accelerometer "class" with the following contents:
 * attributes
 	* sensor_ID (useful for tracing from which sensor the data comes from)
 	* "parent" producer member (so as to reuse "abstract" producer code)
@@ -108,7 +108,7 @@ This leads to an accelerometer "class" with the following contents
 
 The `SP_PRODUCER_init_factory` function instantiates two producers with different IDs and production periods
 
-The source code is available in the following files.
+The source code is available in the following files:
 * [sp-producer-factory.h](/ProducerConsumerUsingShieldedPlug/src/main/c/sp-producer-factory.h)
 * [sp-producer-factory.c](/ProducerConsumerUsingShieldedPlug/src/main/c/sp-producer-factory.c)
 

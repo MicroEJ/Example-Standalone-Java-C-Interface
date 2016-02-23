@@ -21,11 +21,8 @@ struct SP_PRODUCER_t{
 	void (*productionFunction)(SP_PRODUCER_t* pProducer);		//pointer to production function - with pointer to producer argument
 };
 
-//==== "public" method(s)
+//==== "public" method(s) declaration
 //== constructor
 void SP_PRODUCER_init(SP_PRODUCER_t* pProducer);
-
-//==== "private" method(s)
-void _SP_PRODUCER_taskBody(void* arg);
 
 #endif // SP_PRODUCER_H
