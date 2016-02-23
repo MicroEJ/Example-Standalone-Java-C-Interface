@@ -11,6 +11,15 @@ This example shows an implementation of the producer consumer pattern.
 It relies on the following project:
 - [ProducerConsumerData](/ProducerConsumerData) describes the data being exchanged
 
+Here, we shall briefly list the projects and libraries required for building this example:
+
+* Right-click on the project from MicroEJ.
+	* Go to "Properties > Java Build Path", this will give us access to the project's build path dependencies
+		* In the "Projects" tab:
+			* [ProducerConsumerData](/ProducerConsumerData) describes the data being exchanged
+		* In the "Libraries" tag, the following MicroEJ APIs are listed as required using variables:
+			* EDC-1.2
+			* SP-1.0
 
 ## Producers/Consumers interaction
 There are one consumer (written in Java) and four producers (two written in Java, two written in C).
@@ -96,7 +105,7 @@ This leads to an accelerometer "class" with the following contents:
 	* sensor_ID (useful for tracing from which sensor the data comes from)
 	* "parent" producer member (so as to reuse "abstract" producer code)
 * methods
-	* initialisation method (will propagate initialization order to "parent" and perform sensor-specific initialization (if any))
+	* initialization method (will propagate initialization order to "parent" and perform sensor-specific initialization (if any))
 	* adapter configuration function
 		* with signature matching the one of the pointer to production function in the "parent" producer struct
 		* used as an adapter method to call a more specialized configuration function that can set implementation-specific info (such as pointer to Shielded Plug database)
@@ -111,6 +120,24 @@ The `SP_PRODUCER_init_factory` function instantiates two producers with differen
 The source code is available in the following files:
 * [sp-producer-factory.h](/ProducerConsumerUsingShieldedPlug/src/main/c/sp-producer-factory.h)
 * [sp-producer-factory.c](/ProducerConsumerUsingShieldedPlug/src/main/c/sp-producer-factory.c)
+
+# Launch configuration parameters
+
+## Shielded Plug database definition
+
+One requirement of the Shielded Plug API is that you define the database schema via a configuration file.
+
+The source code for that file is available here :
+* [database-definition.xml](/ProducerConsumerUsingShieldedPlug/src/main/resources/database-definition.xml)
+
+This configuration file is a required parameter of the MicroEJ Application launch configuration when using the Shielded Plug API:
+* Select **Run Configurations...**
+* Select the (ProducerConsumerUsingShieldedPlug_Build)[[ProducerConsumerUsingShieldedPlug_Build.launch](/ProducerConsumerUsingShieldedPlug/launches/ProducerConsumerUsingShieldedPlug_Build.launch) ] configuration
+* Go to the **Configuration** tab
+* Select the **Shielded Plug** node
+* You shall see that the **Database definition** field is pointing to the [database-definition.xml](/ProducerConsumerUsingShieldedPlug/src/main/resources/database-definition.xml) file
+
+Details of the shielded plug configuration file fields are described in the [/ProducerConsumerData/README.md](/ProducerConsumerData/README.md) file
 
 # Testing
 

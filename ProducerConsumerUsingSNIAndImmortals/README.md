@@ -8,9 +8,17 @@ This example shows an implementation of the producer consumer pattern.
 
 ## Dependencies
 
-It relies on the following projects:
-- [ProducerConsumerData](/ProducerConsumerData) describes the data being exchanged
-- [NativeQueueWrapper](/NativeQueueWrapper) provides the required data delivery infrastructure, based on message queues.
+Here, we shall briefly list the projects and libraries required for building this example :
+
+* Right-click on the project from MicroEJ.
+	* Go to "Properties > Java Build Path", this will give us access to the project's build path dependencies
+		* In the "Projects" tab:
+			* [ProducerConsumerData](/ProducerConsumerData) describes the data being exchanged
+			* [NativeQueueWrapper](/NativeQueueWrapper) provides the required data delivery infrastructure, based on message queues.
+		* In the "Libraries" tag, the following MicroEJ APIs are listed as required using variables:
+			* EDC-1.2
+			* SP-1.0
+			* SNI-1.2.0
 
 ## Producers/Consumers interaction
 For fixed size data, there are one consumer (written in Java) and three producers (one written in Java, two written in C).
