@@ -6,51 +6,23 @@
 
 This example shows an implementation of the producer consumer pattern.
 
-There is one consumer (written in Java) and four producers (two written in Java, two written in C).
+## Dependencies
+
+It relies on the following project :
+- [ProducerConsumerData](/ProducerConsumerData) describes the data being exchanged
+
+
+## Producers/Consumers interaction
+There are one consumer (written in Java) and four producers (two written in Java, two written in C).
 
 Data is exchanged via a shared in-memory database using the Shielded Plug API.
 
 * The producers overwrite data at a fixed period without checking if data has been consumed by any other task.
 * The consumer gets new data from the database as soon as it is available.
 
-The following steps will be taken :
-
-* Project setup
-* Java design
-	* Java data class
-	* Java producer class
-	* Java consumer class
-* C design
-	* C data struct
-	* C producer task
-* Integration
-
-# Project setup
-
-For reference, BSP toolchain setup related instructions are described in the [Building a java platform](/STM32F429IDISCO-SNI_SP_FreeRTOS-CM4_ARMCC-configuration/README.md#building-a-java-platform) section of the [STM32F429IDISCO-SNI_SP_FreeRTOS-CM4_ARMCC-configuration README.md](/STM32F429IDISCO-SNI_SP_FreeRTOS-CM4_ARMCC-configuration/README.md) file.
-
-These steps have already been done in this workspace and you do not need to repeat them.
-
 # Java design
 
-Before interfacing with the C world, we shall design a Java-only system that exchanges data between produced and consumer via the shielded plug mechanism
-
-## Java data class
-
-In this section, we shall create a class to represent the data being exchanged between producer(s) and consumer(s). The source code is in the following files :
-* [AccelerometerData.java](/ProducerConsumerData/src/main/java/com/microej/examples/java2c/AccelerometerData.java)
-* [database-definition.xml](/ProducerConsumerUsingShieldedPlug/src/main/resources/database-definition.xml)
-
-The following constants are noteworthy:
-- the `DATABASE_ID` constant value in **AccelerometerData.java** matches the `id` value of the AccelerometerDataDB element in **database-definition.xml**
-- the `DATABASE_FIELD_ID_ACCELEROMETER` constant value in **AccelerometerData.java** matches the `id` value of the AccelerometerDataDB::AccelerometerData element in **database-definition.xml**
-- the `ACCELEROMETER_DATA_SIZE` constant value in **AccelerometerData.java** matches the `length` value of the AccelerometerDataDB::AccelerometerData element in **database-definition.xml**
-
-Those constants are useful to data producers/consumers when calling Shielded Plug APIs to retrieve the relevant database and database fields before writing/reading data from it.
-
-# Java producer class
-
-In this section, we shall create a class to produce data sporadically.
+## Java producer class
 
 Each producer runs on a dedicated thread. In pseudocode, the thread body roughly looks like this
 
@@ -63,29 +35,12 @@ Each producer runs on a dedicated thread. In pseudocode, the thread body roughly
 	
  The actual source code is in the [AccelerometerDataProducer.java](/ProducerConsumerUsingShieldedPlug/src/main/java/com/microej/examples/java2c/AccelerometerDataProducer.java) file. 
  
-## Alternate implementation using TimerTask
+### Alternate implementation using TimerTask
 
 Because of the fixed periodic nature of the task and of its short execution time, an alternate implementation based on Timer and TimerTask API is proposed in the [AccelerometerDataProducerUsingTimerTask.java](/ProducerConsumerUsingShieldedPlug/src/main/java/com/microej/examples/java2c/AccelerometerDataProducerUsingTimerTask.java) file.
 
 
-## Starting the producer threads
-
-* Open the [ProducerConsumerExample.java](/ProducerConsumerUsingShieldedPlug/src/main/java/com/microej/examples/java2c/ProducerConsumerExample.java) source file
-* Replace the main() method by the code below
-	
-		public static void main(String[] args) {
-			AccelerometerDataProducer producer = new AccelerometerDataProducer(3,1200);
-			new Thread(producer).start();
-
-			AccelerometerDataProducerUsingTimerTask producerUsingTimerTask = new AccelerometerDataProducerUsingTimerTask(4,1200);
-			producerUsingTimerTask.start();
-		}
-
-At this point, you may flash on target and check that both producers generate data using a debug connection on the serial port.
-
-# Java consumer class
-
-In this section, we shall create a class to consume data as soon as it is available.
+## Java consumer class
 
 Each consumer runs on a dedicated thread. In pseudocode, the thread body roughly looks like this
 
@@ -98,50 +53,29 @@ The source code is available in the following files:
 * [AccelerometerDataConsumer.java](/ProducerConsumerUsingShieldedPlug/src/main/java/com/microej/examples/java2c/AccelerometerDataConsumer.java)
 * [AccelerometerDataUnmarshaller.java](/ProducerConsumerUsingShieldedPlug/src/main/java/com/microej/examples/java2c/AccelerometerDataUnmarshaller.java) (helper class for easy conversion from a shielded plug data block to a readily usable application domain object via a copy of byte array elements into a Java object )
 
-## Starting the consumer thread
+## Starting the Java threads
 
-* Open the [ProducerConsumerExample.java](/ProducerConsumerUsingShieldedPlug/src/main/java/com/microej/examples/java2c/ProducerConsumerExample.java) source file
-* Update the main() method using the code below
-	
-		public static void main(String[] args) {
-			AccelerometerDataConsumer consumer = new AccelerometerDataConsumer();
-			new Thread(consumer).start();
-	
-			AccelerometerDataProducer producer = new AccelerometerDataProducer(3,1200);
-			new Thread(producer).start();
-	
-			AccelerometerDataProducerUsingTimerTask producerUsingTimerTask = new AccelerometerDataProducerUsingTimerTask(4,1200);
-			producerUsingTimerTask.start();
-		}
-
-At this point, you may flash on target and check that consumer reads data using a debug connection on the serial port.
+As illustrated in the [ProducerConsumerExample.java](/ProducerConsumerUsingShieldedPlug/src/main/java/com/microej/examples/java2c/ProducerConsumerExample.java) source file, the Java producer and consumer Threads start-up is straightforward.
 
 # C design
 
-Now that we are confident with the production-consumption mechanism in Java, we shall design a way to generate data from the C world, since the actual data production is more likely to originate from a device with a driver implemented in C.
+Since the actual data production is more likely to originate from a device with a driver implemented in C, an implementation of the producer written in C is provided.
 
-## C data struct
+The source code is available in the following files.
+* [sp-producer.h](/ProducerConsumerUsingShieldedPlug/src/main/c/sp-producer.h)
+* [sp-producer.c](/ProducerConsumerUsingShieldedPlug/src/main/c/sp-producer.c)
+* [sp-producer-accelerometer.h](/ProducerConsumerUsingShieldedPlug/src/main/c/sp-producer-accelerometer.h)
+* [sp-producer-accelerometer.c](/ProducerConsumerUsingShieldedPlug/src/main/c/sp-producer-accelerometer.c)
 
-Let us define some
-* struct to hold the data : **Accelerometer_data_t**
-* method to generate/retrieve the data (and trace where it comes from - that is what the **Accelerometer_data_t::sensor_ID** field is for)
-* debug helper function (the **print** function)
+Note that the partitioning between sp-producer and sp-producer-accelerometer files is done so as to abstract the production task mechanism and associated creation and synchronization (factored out in sp-producer) from the business domain logic (specialized in sp-producer-accelerometer) as much as possible.
 
-The source code is available in the following files :
-* [accelerometer-data.h](/ProducerConsumerData/src/main/c/accelerometer-data.h)
-* [accelerometer-data.c](/ProducerConsumerData/src/main/c/accelerometer-data.c)
+## C "abstract" producer
 
-## C producer task
+In this section, we shall describe in more details the design of the **sp-producer** source files.
 
-In this section, we shall create C code to produce data sporadically.
+A producer is viewed as a task that must periodically call a produce function, which contents are actually domain specific.
 
-### Domain-agnostic producer code
-
-For reuse purposes, we shall separate the producer-consumer pattern implementation from the sensor-oriented domain logic.
-
-Here we shall define that a producer is a task that must periodically call a produce function, which contents are actually domain specific.
-
-This leads us to defining a producer "class" with the following contents
+This leads to a producer "class" with the following contents
 * attributes (will be set by the domain-specific producer)
 	* production period
 	* pointer to configuration function (with pointer to producer argument so as to be able to retrieve configuration information from a producer)
@@ -152,30 +86,25 @@ This leads us to defining a producer "class" with the following contents
 
 Although the design is to some extent object-oriented, the implementation in this example is in C, not in C++.
 
-The source code is available in the following files.
-* [sp-producer.h](/ProducerConsumerUsingShieldedPlug/src/main/c/sp-producer.h)
-* [sp-producer.c](/ProducerConsumerUsingShieldedPlug/src/main/c/sp-producer.c)
 
+## C "concrete" producer
 
-### Domain-specific producer code
+In this section, we shall describe in more details the design of the **sp-producer-accelerometer** source files.
 
-Here we shall define an accelerometer "class" with the following contents
+This leads to an accelerometer "class" with the following contents
 * attributes
 	* sensor_ID (useful for tracing from which sensor the data comes from)
-	* "parent" producer member (so as to reuse Domain-agnostic producer code)
+	* "parent" producer member (so as to reuse "abstract" producer code)
 * methods
-	* initialisation method (will propagate initialisation to "parent")
+	* initialisation method (will propagate initialization order to "parent" and perform sensor-specific initialization (if any))
 	* adapter configuration function
-		* with signature matching the one of the pointer to production function in the domain-agnostic producer struct
+		* with signature matching the one of the pointer to production function in the "parent" producer struct
 		* used as an adapter method to call a more specialized configuration function that can set implementation-specific info (such as pointer to Shielded Plug database)
 	* adapter production function
-		* with signature matching the one of the pointer to production function in the domain-agnostic producer struct
+		* with signature matching the one of the pointer to production function in the "parent" producer struct
 		* used as an adapter method to call a more specialized production function that can use domain-specific producer info (such as sensor_ID)
-	* source code
-		* [sp-producer-accelerometer.h](/ProducerConsumerUsingShieldedPlug/src/main/c/sp-producer-accelerometer.h)
-		* [sp-producer-accelerometer.c](/ProducerConsumerUsingShieldedPlug/src/main/c/sp-producer-accelerometer.c)
 
-### Instantiation code
+## Instantiation code
 
 The `SP_PRODUCER_init_factory` function instantiates two producers with different IDs and production periods
 
@@ -183,20 +112,10 @@ The source code is available in the following files.
 * [sp-producer-factory.h](/ProducerConsumerUsingShieldedPlug/src/main/c/sp-producer-factory.h)
 * [sp-producer-factory.c](/ProducerConsumerUsingShieldedPlug/src/main/c/sp-producer-factory.c)
 
+# Testing
 
-# Integration
-
-
-For reference, BSP toolchain integration related instructions are described in the [Producer Consumer Using Shielded Plug Integration](/STM32F429IDISCO-SNI_SP_FreeRTOS-CM4_ARMCC-configuration/README.md#producer-consumer-using-shielded-plug-integration) section of the [STM32F429IDISCO-SNI_SP_FreeRTOS-CM4_ARMCC-configuration/README.md](/STM32F429IDISCO-SNI_SP_FreeRTOS-CM4_ARMCC-configuration/README.md) file.
-
-These steps have already been done in this workspace and you do not need to repeat them.
-
-However, you still need to perform the following operation :
-uncomment the call to `SP_PRODUCER_init_factory` in the [main.c](/STM32F429IDISCO-SNI_SP_FreeRTOS-CM4_ARMCC-bsp/Project/MicroEJ/src/main.c) source file
-
-
-	
-## Checking the behavior
+* Run the [ProducerConsumerUsingShieldedPlug_Build.launch](/ProducerConsumerUsingShieldedPlug/launches/ProducerConsumerUsingShieldedPlug_Build.launch) launch configuration
+* Uncomment the call to `SP_PRODUCER_init_factory` in the [main.c](/STM32F429IDISCO-SNI_SP_FreeRTOS-CM4_ARMCC-bsp/Project/MicroEJ/src/main.c) source file
 * After flashing the board, set up a terminal on the board serial port and press the reset input. You shall get an output similar to the one below :
 
 		+ID : 3 {x : -48, y : -101, z : -18}
@@ -227,13 +146,3 @@ uncomment the call to `SP_PRODUCER_init_factory` in the [main.c](/STM32F429IDISC
 * The '-' prefix indicates data consumption
 * The '+' prefix indicates data production
 * The number right after the ID indicates which sensor the data originates from. The 4 different IDs in the trace show us that data from our 4 different producers get consumed.
-
-
-# Advanced use cases
-
-The Use Case shown in this document only covers a most basic usage of the shared memory feature provided by Shielded Plug to solve a specific configuration of the producer consumer problem. Here, some data may be overwritten before getting a chance to be consumed. If this is an issue, the following options shall be considered :
-
-* **Bufferization of the data being produced**: Here, only one data slot is available at any time, and it is overwritten if data has not been consumed faster than it was produced. Assuming production rate is not always greater than consumption rate, using a buffer able to accommodate production/consumption peak ratios can be considered.
-
-* **Consumer-Producer synchronization**: If production can be paused, the consumer(s) could notify the producer(s) that consumable data has been processed. The producer(s) may then adapt its production to the (variable) consumption rate.
- 

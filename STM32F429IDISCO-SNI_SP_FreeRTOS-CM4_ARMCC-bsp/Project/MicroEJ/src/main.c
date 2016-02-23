@@ -15,6 +15,10 @@
 #include "microjvm_main.h"
 #include "stm32f4xx.h"
 #include "stm32f429i_discovery_sdram.h"
+
+#include "sni-producer-factory.h"
+#include "sp-producer-factory.h"
+
 /* Defines -------------------------------------------------------------------*/
 
 #define MICROJVM_STACK_SIZE 4096
@@ -34,9 +38,6 @@ void xJavaTaskFunction(void * pvParameters)
 /*
  * Generic main function
  */
-#include "sni-producer-factory.h"
-#include "sp-producer-factory.h"
-
 int main(void)
 {
 	//disable buffering on stdout
@@ -51,15 +52,22 @@ int main(void)
     SCB->SHCSR |= SCB_SHCSR_BUSFAULTENA_Msk;
     SCB->SHCSR |= SCB_SHCSR_USGFAULTENA_Msk;
 
-	//SNI_PRODUCER_init_factory_accelerometer();
-	SNI_PRODUCER_init_factory_messenger();
-	//SP_PRODUCER_init_factory();	
+    //-- uncomment the code below when Java app was built using the SNI_And_Immortals_Fixed_Size_Example_Build.launch
+    //-- keep it commented out otherwise
+    //SNI_PRODUCER_init_factory_accelerometer();
+
+    //-- uncomment the code below when Java app was built using the SNI_And_Immortals_Variable_Size_Example_Build.launch
+    //-- keep it commented out otherwise
+    //SNI_PRODUCER_init_factory_messenger();
+
+    //-- uncomment the code below when Java app was built using the ProducerConsumerUsingShieldedPlug_Build.launch
+    //-- keep it commented out otherwise
+    SP_PRODUCER_init_factory();
 
 	// start the main task
 	xTaskCreate( xJavaTaskFunction, NULL, JAVA_TASK_STACK_SIZE, NULL, JAVA_TASK_PRIORITY, NULL );
 	
 	vTaskStartScheduler();
-
 
 	printf("END\n");
 }
