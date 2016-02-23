@@ -6,58 +6,30 @@
 
 This example shows an implementation of the producer consumer pattern.
 
-There are two kinds of data produced :
-- fixed size (cf [AccelerometerData.java](/ProducerConsumerData/src/main/java/com/microej/examples/java2c/AccelerometerData.java) source file).
-- variable size (cf [MessengerData.java](/ProducerConsumerData/src/main/java/com/microej/examples/java2c/MessengerData.java) source file). 
+## Dependencies
 
-For fixed size data, there is one consumer (written in Java) and three producers (one written in Java, two written in C).
+It relies on the following projects:
+- [ProducerConsumerData](/ProducerConsumerData) describes the data being exchanged
+- [NativeQueueWrapper](/NativeQueueWrapper) provides the required data delivery infrastructure, based on message queues.
+
+## Producers/Consumers interaction
+For fixed size data, there are one consumer (written in Java) and three producers (one written in Java, two written in C).
 For variable size data, there is one consumer (written in Java) and two producers (written in C).
-
-Data is exchanged via message queues. A Java wrapper has been created to access the C message queues API. This wrapper is defined in the [NativeQueueWrapper](/NativeQueueWrapper) project.
 
 * The producers send data at a fixed period if space is available in the relevant queue.
 * The consumers get new data from the message queue as soon as it is available. If no data is available immediately, the queue wrapper will block until some becomes available.
 
+# Java Design
 
-The following steps will be taken :
+## Fixed Size data exchange
 
-* Project setup
-* Java design
-	* Fixed size data exchange
-		* Java data class
-		* Java producer class
-		* Java consumer class
-	* Variable size data exchange
-		* Java data class
-		* Java consumer class
-* C design
-	* C data structs
-	* C producer tasks
-* Integration
-
-# Project setup
-
-For reference, BSP toolchain setup related instructions are described in the [Building a java platform](/STM32F429IDISCO-SNI_SP_FreeRTOS-CM4_ARMCC-configuration/README.md#building-a-java-platform) section of the [STM32F429IDISCO-SNI_SP_FreeRTOS-CM4_ARMCC-configuration README.md](/STM32F429IDISCO-SNI_SP_FreeRTOS-CM4_ARMCC-configuration/README.md) file.
-
-These steps have already been done in this workspace and you do not need to repeat them.
-
-# Java design
-
-## Fixed size data exchange
-
-Note that we create both a consumer and a producer class in Java, but "force" them to communicate via our native message queue API wrapper instead of using regular Java APIs for cross-thread data exchange. We create an AccelerometerData producer/consumer ecosystem in Java so as to test the native message queue API wrapper.
-
-### Java data class
-
-In this section, we shall create a class to represent the data being exchanged between producer(s) and consumer(s).
-
-For fixed size data, the source code is in the [AccelerometerData.java](/ProducerConsumerData/src/main/java/com/microej/examples/java2c/AccelerometerData.java) file.
+Note that for fixed size data, we create both a consumer and a producer class in Java, but "force" them to communicate via our native message queue API wrapper instead of using regular Java APIs for cross-thread data exchange. We create an AccelerometerData producer/consumer ecosystem in Java so as to test the native message queue API wrapper.
 
 ### Java producer class
 
-In this section, we shall create a class to produce data sporadically.
+Usually, data production will be done from a C context and data consumption will be done from a Java context. We will however go through the effort of creating a Java producer class for pedagogical purposes and to ensure that the queue wrapper service allows bidirectional data exchange.
 
-Each producer :
+Each producer:
 
 * runs on a dedicated thread
 * posts data through delegation to a QueueService instance
@@ -76,25 +48,13 @@ In pseudocode, the thread body roughly looks like this
 
 #### Starting the producer thread
 
-* Open the [SNIAndImmortalsFixedSizeExample.java](/ProducerConsumerUsingSNIAndImmortals/src/main/java/com/microej/examples/java2c/SNIAndImmortalsFixedSizeExample.java) source file
-
-* Update the main() method using the code below
-	
-		public static void main(String[] args) {
-				QueueService accelerometerQueue = new QueueService(AccelerometerData.getQueuePtr());
-
-				AccelerometerDataProducer accelerometerDataProducer = new AccelerometerDataProducer(ACCELEROMETER_DATA_QUEUE_ID, 1100, 3);
-				new Thread(accelerometerDataProducer).start();
-		}
-
+As illustrated in the [SNIAndImmortalsFixedSizeExample.java](/ProducerConsumerUsingSNIAndImmortals/src/main/java/com/microej/examples/java2c/SNIAndImmortalsFixedSizeExample.java) source file, once a **QueueService** is available, it is passed on to an **AccelerometerDataProducer** instance constructor that can then use it as a means to deliver its production while running its own thread.
 
 ### Java consumer class
 
-In this section, we shall create a class to consume data as soon as it is available.
-
-Each consumer :
+Each consumer:
 * runs on a dedicated thread
-* retrieves data through delegation to a QueueService instance
+* retrieves data through delegation to a QueueService instance as soon as some is available
 
 In pseudocode, the thread body roughly looks like this
 
@@ -102,117 +62,66 @@ In pseudocode, the thread body roughly looks like this
 	while (true)
 	{
 		data = queueService.read() //blocking call until some data is available
-	}
 
-The source code is in the following files :
+The source code is in the following file:
 * [AccelerometerDataConsumer.java](/ProducerConsumerUsingSNIAndImmortals/src/main/java/com/microej/examples/java2c/AccelerometerDataConsumer.java) file.
 
 #### Starting the consumer thread
 
-* Open the [SNIAndImmortalsFixedSizeExample.java](/ProducerConsumerUsingSNIAndImmortals/src/main/java/com/microej/examples/java2c/SNIAndImmortalsFixedSizeExample.java) source file
-
-* Update the main() method using the code below
-	
-		public static void main(String[] args) {
-				QueueService accelerometerQueue = new QueueService(AccelerometerData.getQueuePtr());
-
-				AccelerometerDataProducer accelerometerDataProducer = new AccelerometerDataProducer(ACCELEROMETER_DATA_QUEUE_ID, 1100, 3);
-				new Thread(accelerometerDataProducer).start();
-		
-				AccelerometerDataConsumer accelerometerDataConsumer = new AccelerometerDataConsumer(ACCELEROMETER_DATA_QUEUE_ID);
-				new Thread(accelerometerDataConsumer).start();
-		}
+As illustrated in the [SNIAndImmortalsFixedSizeExample.java](/ProducerConsumerUsingSNIAndImmortals/src/main/java/com/microej/examples/java2c/SNIAndImmortalsFixedSizeExample.java) source file, once a **QueueService** is available, it is passed on to an **AccelerometerDataConsumer** instance constructor that can then use it as a means to retrieve data from the queue while running its own thread, which is quite similar to the way the producer thread is started.
 
 ## Variable size data exchange
 
-Note that we do not create a producer in Java for MessengerData, we will do that later using C.
+### Consumer class
 
-### Java data class
+The design is similar to the one used for fixed size data exchange
 
-In this section, we shall create a class to represent the data being exchanged between producer(s) and consumer(s).
-
-For variable size data, the source code is in the [MessengerDataConsumer.java](/ProducerConsumerData/src/main/java/com/microej/examples/java2c/MessengerData.java) file.
-
-### Java consumer class
-
-In this section, we shall create a class to consume data as soon as it is available.
-
-Each consumer :
-* runs on a dedicated thread
-* retrieves data through delegation to a QueueService instance
-
-In pseudocode, the thread body roughly looks like this
-
-	queueService = createQueueuService(QUEUE_ID)
-	while (true)
-	{
-		data = queueService.read() //blocking call until some data is available
-	}
-
-The source code is in the following files :
+The source code is in the following files:
 * [MessengerDataConsumer.java](/ProducerConsumerUsingSNIAndImmortals/src/main/java/com/microej/examples/java2c/MessengerDataConsumer.java) file.
 
 #### Starting the consumer thread
 
-* Open the [SNIAndImmortalsVariableSizeExample.java](/ProducerConsumerUsingSNIAndImmortals/src/main/java/com/microej/examples/java2c/SNIAndImmortalsVariableSizeExample.java) source file
+As illustrated in the [SNIAndImmortalsVariableSizeExample.java](/ProducerConsumerUsingSNIAndImmortals/src/main/java/com/microej/examples/java2c/SNIAndImmortalsVariableSizeExample.java) source file, once a **QueueService** is available, it is passed on to a **MessengerDataConsumer** instance constructor that can then use it as a means  to retrieve data from the queue while running its own thread.
 
-* Update the main() method using the code below
-	
-		public static void main(String[] args) {
-			QueueService messengerQueue = new QueueService(MessengerData.getQueuePtr());
-			
-			MessengerDataConsumer messengerConsumer = new MessengerDataConsumer(messengerQueue);
-			new Thread(messengerConsumer).start();
-		}
-
-
+------------
 # C design
 
-We shall now design a way to generate data from the C world, since the actual data production is more likely to originate from a device with a driver implemented in C.
 
-## C data structs
-
-Let us define some
-* structs to hold the data **Accelerometer_data_t** and **Messenger_data_t**
-* methods to generate/retrieve the data (and trace where it comes from - that is what the **Accelerometer_data_t::sensor_ID** and **Messenger_data_t::sender_ID** fields are for)
-* debug helper functions (the **print** functions)
+Since the actual data production is more likely to originate from a device with a driver implemented in C, an implementation of the producer written in C is provided.
 
 The source code is available in the following files :
-* [accelerometer-data.h](/ProducerConsumerData/src/main/c/accelerometer-data.h)
-* [accelerometer-data.c](/ProducerConsumerData/src/main/c/accelerometer-data.c)
-* [messenger-data.h](/ProducerConsumerData/src/main/c/messenger-data.h)
-* [messenger-data.c](/ProducerConsumerData/src/main/c/messenger-data.c)
+* [sni-producer.h](/ProducerConsumerUsingSNIAndImmortals/src/main/c/sni-producer.h)
+* [sni-producer.c](/ProducerConsumerUsingSNIAndImmortals/src/main/c/sni-producer.c)
+* [sni-producer-accelerometer.h](/ProducerConsumerUsingSNIAndImmortals/src/main/c/sni-producer-accelerometer.h)
+* [sni-producer-accelerometer.c](/ProducerConsumerUsingSNIAndImmortals/src/main/c/sni-producer-accelerometer.c)
+* [sni-producer-messenger.h](/ProducerConsumerUsingSNIAndImmortals/src/main/c/sni-producer-messenger.h)
+* [sni-producer-messenger.c](/ProducerConsumerUsingSNIAndImmortals/src/main/c/sni-producer-messenger.c)
 
-## C producer tasks
+Note that the partitioning between sp-producer and sp-producer-accelerometer files is done so as to abstract the production task mechanism and associated creation and synchronization (factored out in sp-producer) from the business domain logic (specialized in sp-producer-accelerometer) as much as possible.
 
-In this section, we shall create C code to produce data sporadically.
+## C "abstract" producer
 
-### Domain-agnostic producer code
+In this section, we shall describe in more details the design of the **sni-producer** source files.
 
-For reuse purposes, we shall separate the producer-consumer pattern implementation from the sensor-oriented and message sender domain logic.
+A producer is viewed as a task that must periodically call a produce function, which contents are actually domain specific.
 
-Here we shall define that a producer is a task that must periodically call a produce function, which contents are actually domain specific.
+This leads to a producer "class" with the following contents:
 
-This leads us to defining a producer "class" with the following contents
 * attributes (will be set by the domain-specific producer)
 	* production period
-	* pointer to configuration function (with pointer to producer argument so as to be able to retrieve configuration information from a producer)
 	* pointer to production function (with pointer to producer argument so as to be able to associate produced data with producer)
 * methods
 	* initialisation method (will start the production task)
-	* taskbody (calls the configuration function once then calls the production function at every production period expiration)
+	* taskbody (calls the production function at every production period expiration)
 
 Although the design is to some extent object-oriented, the implementation in this example is in C, not in C++.
 
-The source code is available in the following files.
-* [sni-producer.h](/ProducerConsumerUsingSNIAndImmortals/src/main/c/sni-producer.h)
-* [sni-producer.c](/ProducerConsumerUsingSNIAndImmortals/src/main/c/sni-producer.c)
+## C "concrete" producer
 
+In this section, we shall describe in more details the design of the **sni-producer-accelerometer** and **sni-producer-messenger** source files.
 
-### Domain-specific producer code
-
-Here we shall define the relevant "classes" :
-* an accelerometer "class" with the following contents :
+This leads to:
+* an accelerometer "class" with the following contents:
 	* attributes
 		* sensor_ID (useful for tracing from which sensor the data comes from)
 		* "parent" producer member (so as to reuse Domain-agnostic producer code)
@@ -224,11 +133,8 @@ Here we shall define the relevant "classes" :
 		* adapter production function
 			* with signature matching the one of the pointer to production function in the domain-agnostic producer struct
 			* used as an adapter method to call a more specialized production function that can use domain-specific producer info (such as sensor_ID)
-	* source code
-		* [sni-producer-accelerometer.h](/ProducerConsumerUsingSNIAndImmortals/src/main/c/sni-producer-accelerometer.h)
-		* [sni-producer-accelerometer.c](/ProducerConsumerUsingSNIAndImmortals/src/main/c/sni-producer-accelerometer.c)
 			
-* a messenger "class" with the following contents :
+* a messenger "class" with the following contents:
 	* attributes
 		* sender_ID (useful for tracing from who the message comes from)
 		* "parent" producer member (so as to reuse Domain-agnostic producer code)
@@ -240,31 +146,22 @@ Here we shall define the relevant "classes" :
 		* adapter production function
 			* with signature matching the one of the pointer to production function in the domain-agnostic producer struct
 			* used as an adapter method to call a more specialized production function that can use domain-specific producer info (such as sender_ID)
-	* source code
-		* [sni-producer-messenger.h](/ProducerConsumerUsingSNIAndImmortals/src/main/c/sni-producer-messenger.h)
-		* [sni-producer-messenger.c](/ProducerConsumerUsingSNIAndImmortals/src/main/c/sni-producer-messenger.c)
 
 ### Instantiation code
 
-The `SNI_PRODUCER_init_factory` function delegates to `SNI_PRODUCER_init_factory_accelerometer` and `SNI_PRODUCER_init_factory_messenger` which both instantiate two producers with different IDs and production periods for each kind of data.
+The `SNI_PRODUCER_init_factory_accelerometer` and `SNI_PRODUCER_init_factory_messenger` functions both instantiate two producers with different IDs and production periods for each kind of data.
 
 The source code is available in the following files.
 * [sni-producer-factory.h](/ProducerConsumerUsingSNIAndImmortals/src/main/c/sni-producer-factory.h)
 * [sni-producer-factory.c](/ProducerConsumerUsingSNIAndImmortals/src/main/c/sni-producer-factory.c)
 
 
-# Integration
-
-For reference, BSP toolchain integration related instructions are described in the [Produced Consumer Using SNI and Immortals Integration](/STM32F429IDISCO-SNI_SP_FreeRTOS-CM4_ARMCC-configuration/README.md#producer-consumer-using-sni-and-immortals-integration) section of the [STM32F429IDISCO-SNI_SP_FreeRTOS-CM4_ARMCC-configuration/README.md](/STM32F429IDISCO-SNI_SP_FreeRTOS-CM4_ARMCC-configuration/README.md) file.
-
-These steps have already been done in this workspace and you do not need to repeat them.
-
+# Testing
 	
-## Checking the behavior for fixed size example
+## For fixed size example
 
-* You still need to perform the following operation :
-	uncomment the call to `	SNI_PRODUCER_init_factory_accelerometer()` in the [main.c](/STM32F429IDISCO-SNI_SP_FreeRTOS-CM4_ARMCC-bsp/Project/MicroEJ/src/main.c) source file
-
+* Run the [SNI_And_Immortals_Fixed_Size_Example_Build.launch](/ProducerConsumerUsingSNIAndImmortals/launches/SNI_And_Immortals_Fixed_Size_Example_Build.launch) launch configuration
+* Uncomment the call to `	SNI_PRODUCER_init_factory_accelerometer()` in the [main.c](/STM32F429IDISCO-SNI_SP_FreeRTOS-CM4_ARMCC-bsp/Project/MicroEJ/src/main.c) source file
 * After flashing the board, set up a terminal on the board serial port and press the reset input. You shall get an output similar to the one below :
 
 		-ID : 1 {x : -24, y : 27, z : -101}
@@ -297,12 +194,10 @@ These steps have already been done in this workspace and you do not need to repe
 * The '+' prefix indicates data production
 * The number right after the ID indicates which sensor or sender the data originates from. The 3 different IDs in the trace {{1,2} : C Accelerometers, 3 : Java Accelerometer, {11,22} C Messengers} show us that data from our 3 different producers gets produced and consumed.
 
+## Testing for variable size example
 
-## Checking the behavior for variable size example
-
-* You still need to perform the following operation :
-	uncomment the call to `	SNI_PRODUCER_init_factory_messenger()` in the [main.c](/STM32F429IDISCO-SNI_SP_FreeRTOS-CM4_ARMCC-bsp/Project/MicroEJ/src/main.c) source file
-	
+* Run the [SNI_And_Immortals_Variable_Size_Example_Build.launch](/ProducerConsumerUsingSNIAndImmortals/launches/SNI_And_Immortals_Variable_Size_Example_Build.launch) launch configuration
+* Uncomment the call to `	SNI_PRODUCER_init_factory_messenger()` in the [main.c](/STM32F429IDISCO-SNI_SP_FreeRTOS-CM4_ARMCC-bsp/Project/MicroEJ/src/main.c) source file
 * After flashing the board, set up a terminal on the board serial port and press the reset input. You shall get an output similar to the one below :
 
 		VM START
@@ -354,10 +249,3 @@ These steps have already been done in this workspace and you do not need to repe
 
 
 Note that the trace for long messages from both producer and consumer do get mixed up in the output because the producer outputs after successfully posting the data, not before. Therefore, between the posting time and the flushing of the producer trace, the consumer has time to output some trace of its own on the shared output stream.
-
-# Advanced use cases
-
-The Use Case shown in this document only covers a specific configuration of the producer consumer problem. Some other important use cases might be considered such as :
-* allocating different processing priorities depending on the message queue
-* using priority queues where some items are to be processed faster than some others
-
