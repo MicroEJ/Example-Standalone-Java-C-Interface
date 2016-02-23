@@ -19,23 +19,16 @@ The following examples, most of them based on the consumer/producer problem, ill
 * [Producer Consumer problem with ShieldedPlug](/ProducerConsumerUsingShieldedPlug) using Shielded Plug API as the delivery mechanism
 * [Producer Consumer problem with SNI and Immortals](/ProducerConsumerUsingSNIAndImmortals) using SNI and Immortals APIs to wrap the native FreeRTOS message queue API as the delivery mechanism
 
-## [TODO] API Selection Criterion
+## API Selection Criteria
 
-* ShieldedPlug DB Access is forbidden in interrupt context ! (How is this enforced ? Is it ?)
-* ShieldedPlug more suitable for short-lived structured small data transfer (because shielded plug copies data) ?
-* Need to share big memory area ?
-* Resource access contention ?
-* ...
+Here are a few things to consider when choosing between Shielded Plug and an SNI and Immortals based solution
 
-<!--
+* Generally speaking, Shielded Plug will copy data from/to a database block and will therefore take more memory than an SNI-based solution relying on a shared memory area with less data copying.
+* Besides, Shielded Plug requires that you describe your data in an xml based configuration file.
+* However, the synchronization API is somewhat simpler
+* Using SNI and Immortals, it is easier to pass data directly to/from C native functions
 
-|APIs|Example
-|--|--|
-|SNI|[Making synchronous C functions calls from Java](/CallingCFromJava)|
-|Shielded Plug|[Producer Consumer problem](/ProducerConsumerUsingShieldedPlug) using Shielded Plug API as the delivery|
-|SNI,Immortals|[Producer Consumer problem with SNI and Immortals](/ProducerConsumerUsingSNIAndImmortals)|
-
--->
+In summary, for simple use cases, Shielded Plug shall suffice, but for more intensive and more constrained environments, SNI and Immortals may be a better fit.
 
 ## Additional references
 
