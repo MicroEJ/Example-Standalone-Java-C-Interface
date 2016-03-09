@@ -44,7 +44,7 @@ Each producer:
 
 In pseudocode, the thread body roughly looks like this
 
-	queueService = createQueueuService(QUEUE_ID)
+	queueService = createQueueService(QUEUE_ID)
 	while (true)
 	{
 		data = generateData()
@@ -66,7 +66,7 @@ Each consumer:
 
 In pseudocode, the thread body roughly looks like this
 
-	queueService = createQueueuService(QUEUE_ID)
+	queueService = createQueueService(QUEUE_ID)
 	while (true)
 	{
 		data = queueService.read() //blocking call until some data is available
