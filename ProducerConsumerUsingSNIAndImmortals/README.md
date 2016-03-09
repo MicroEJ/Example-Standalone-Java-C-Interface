@@ -200,7 +200,7 @@ The source code is available in the following files.
 
 * The '-' prefix indicates data consumption
 * The '+' prefix indicates data production
-* The number right after the ID indicates which sensor or sender the data originates from. The 3 different IDs in the trace {{1,2} : C Accelerometers, 3 : Java Accelerometer, {11,22} C Messengers} show us that data from our 3 different producers gets produced and consumed.
+* The number right after the ID indicates which sensor or sender the data originates from. The 3 different IDs in the trace {{1,2} : C Accelerometers, 3 : Java Accelerometer} show us that data from our 3 different producers gets produced and consumed.
 
 ## Testing for variable size example
 
@@ -257,3 +257,5 @@ The source code is available in the following files.
 
 
 Note that the trace for long messages from both producer and consumer do get mixed up in the output because the producer outputs after successfully posting the data, not before. Therefore, between the posting time and the flushing of the producer trace, the consumer has time to output some trace of its own on the shared output stream.
+
+* The number right after the ID indicates which sensor or sender the data originates from. The 2 different IDs in the trace {{11,22} : C Messengers} show us that data from our 2 different producers gets produced and consumed.
