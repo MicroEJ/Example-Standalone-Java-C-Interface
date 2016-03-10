@@ -77,13 +77,14 @@ void SNI_PRODUCER_accelerometer_produce(SNI_PRODUCER_accelerometer_t* pProducer)
 {
 	Accelerometer_data_t data = Accelerometer_data_generate_sample(pProducer->sensor_ID);
 
-	if ( QUEUE_SERVICE_OK == LLQueue_write(&accelerometerQueue,(jbyte*)(&data)) )
+	//trace for debugging/documentation purposes
 	{
-		char dataAsString[ACCELEROMETER_DATA_MAX_STRING_LENGTH];
+		char dataAsString[ACCELEROMETER_DATA_MAX_STRING_LENGTH] = "";
 		Accelerometer_data_toString(&data,dataAsString);
 		printf("+%s\n",dataAsString);
 	}
-	else
+
+	if ( QUEUE_SERVICE_OK != LLQueue_write(&accelerometerQueue,(jbyte*)(&data)) )
 	{
 		printf("%s error writing data \n",__PRETTY_FUNCTION__);
 	}

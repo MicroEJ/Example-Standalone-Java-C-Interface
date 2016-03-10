@@ -75,13 +75,13 @@ void SNI_PRODUCER_messenger_produce(SNI_PRODUCER_messenger_t* pProducer)
 	Messenger_data_t data = Messenger_data_get_next_line(pProducer->sender_ID,&(pProducer->file_index), &(pProducer->line_index));
 	if ( 0 != data.content_Length )
 	{
-		if ( QUEUE_SERVICE_OK == LLQueue_write(&messengerQueue,(jbyte*)(&data)) )
+		//trace for debugging/documentation purposes
 		{
 			char dataAsString[PRODUCER_MESSENGER_QUEUE_ITEM_SIZE];
 			Messenger_data_toString(&data,dataAsString);
 			printf("+%s\n",dataAsString);
 		}
-		else
+		if ( QUEUE_SERVICE_OK != LLQueue_write(&messengerQueue,(jbyte*)(&data)) )
 		{
 			printf("%s error writing data \n",__PRETTY_FUNCTION__);
 		}
