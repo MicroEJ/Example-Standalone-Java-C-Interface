@@ -21,9 +21,8 @@
 
 /* Defines -------------------------------------------------------------------*/
 
-#define SNI_PRODUCER_STACK_SIZE 1024
 #define SNI_PRODUCER_TASK_PRIORITY      ( 3 ) /** Should be > tskIDLE_PRIORITY & < configTIMER_TASK_PRIORITY */
-#define SNI_PRODUCER_TASK_STACK_SIZE     SNI_PRODUCER_STACK_SIZE/4
+#define SNI_PRODUCER_TASK_STACK_SIZE    128
 
 //==== "private" method(s) declaration
 void _SNI_PRODUCER_taskBody(void* arg);
@@ -35,7 +34,7 @@ void SNI_PRODUCER_init(SNI_PRODUCER_t* pProducer)
 	if ( NULL != pProducer )
 	{
 		// create the PRODUCER task		
-		xTaskHandle xHandle;
+		xTaskHandle xHandle = NULL;
 		portBASE_TYPE xReturn;
 		xReturn = xTaskCreate(_SNI_PRODUCER_taskBody, NULL, SNI_PRODUCER_TASK_STACK_SIZE, (void*) pProducer, SNI_PRODUCER_TASK_PRIORITY, xHandle);
 		if( xReturn != pdPASS )
