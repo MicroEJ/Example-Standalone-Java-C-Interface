@@ -33,19 +33,19 @@ typedef enum queue_operation_return_code_t {
 
 
 //== regular queue API
-jboolean LLQueue_init(queue_service_descriptor_t* queue, xQueueHandle queueHandle, jint itemSize, jint maxItems );
-jint LLQueue_getItemSize(queue_service_descriptor_t* queue, jint* result);
-jint LLQueue_getItemsCount(queue_service_descriptor_t* queue, jint* result);
-jint LLQueue_getMaxItems(queue_service_descriptor_t* queue, jint* result);
-jint LLQueue_read(queue_service_descriptor_t* fromQueue, jbyte* itemDataAsByteArray);
-jint LLQueue_write(queue_service_descriptor_t* toQueue, jbyte* itemDataAsByteArray);
+jboolean LLQueue_init(queue_service_descriptor_t* queue, const xQueueHandle queueHandle, const jint itemSize, const jint maxItems );
+jint LLQueue_getItemSize(const queue_service_descriptor_t* queue, jint* result);
+jint LLQueue_getItemsCount(const queue_service_descriptor_t* queue, jint* result);
+jint LLQueue_getMaxItems(const queue_service_descriptor_t* queue, jint* result);
+jint LLQueue_read(queue_service_descriptor_t* fromQueue, volatile jbyte* itemDataAsByteArray);
+jint LLQueue_write(const queue_service_descriptor_t* toQueue, volatile jbyte* itemDataAsByteArray);
 
 
 //== SNI wrappers
-jint Java_com_microej_examples_nativequeue_api_NativeQueueService_getItemSize(jint queueId, jint* result);
-jint Java_com_microej_examples_nativequeue_api_NativeQueueService_getItemsCount(jint queueId, jint* result);
-jint Java_com_microej_examples_nativequeue_api_NativeQueueService_getMaxItems(jint queueId, jint* result);
-jint Java_com_microej_examples_nativequeue_api_NativeQueueService_read(jint fromQueueId, jbyte* itemDataAsByteArray);
-jint Java_com_microej_examples_nativequeue_api_NativeQueueService_write(jint toQueueId, jbyte* itemDataAsByteArray);
+jint Java_com_microej_examples_nativequeue_api_NativeQueueService_getItemSize(const jint queueId, jint* result);
+jint Java_com_microej_examples_nativequeue_api_NativeQueueService_getItemsCount(const jint queueId, jint* result);
+jint Java_com_microej_examples_nativequeue_api_NativeQueueService_getMaxItems(const jint queueId, jint* result);
+jint Java_com_microej_examples_nativequeue_api_NativeQueueService_read(const jint fromQueueId, volatile jbyte* itemDataAsByteArray);
+jint Java_com_microej_examples_nativequeue_api_NativeQueueService_write(const jint toQueueId, volatile jbyte* itemDataAsByteArray);
 
 #endif // LL_NATIVE_QUEUE_SERVICE_H

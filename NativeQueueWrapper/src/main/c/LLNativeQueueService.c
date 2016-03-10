@@ -21,13 +21,13 @@ const struct queue_service_descriptor_t UNINITIALIZED_registry_entry =
 
 //== helper methods declarations
 void _LLQueue_pauseCurrentJavaThread(queue_service_descriptor_t* fromQueue);
-void _LLQueue_resumePendingJavaThread(queue_service_descriptor_t* fromQueue);
-jint _LLQueue_read(queue_service_descriptor_t* fromQueue, jbyte* itemDataAsByteArray, jboolean fromJava);
-jint _LLQueue_write(queue_service_descriptor_t* toQueue, jbyte* itemDataAsByteArray, jboolean fromJava);
+void _LLQueue_resumePendingJavaThread(const queue_service_descriptor_t* fromQueue);
+jint _LLQueue_read(queue_service_descriptor_t* fromQueue, volatile jbyte* itemDataAsByteArray, const jboolean fromJava);
+jint _LLQueue_write(const queue_service_descriptor_t* toQueue, volatile jbyte* itemDataAsByteArray, const jboolean fromJava);
 
 
 //== regular queue API
-jboolean LLQueue_init(queue_service_descriptor_t* queue, xQueueHandle queueHandle, jint itemSize, jint maxItems )
+jboolean LLQueue_init(queue_service_descriptor_t* queue, const xQueueHandle queueHandle, const jint itemSize, const jint maxItems )
 {
 	jboolean result = JFALSE;
 	if ( NULL != queue )
@@ -53,7 +53,7 @@ jboolean LLQueue_init(queue_service_descriptor_t* queue, xQueueHandle queueHandl
 //--------------------
 // each function shall check queue parameter
 
-jint LLQueue_getItemSize(queue_service_descriptor_t* queue,  jint* result)
+jint LLQueue_getItemSize(const queue_service_descriptor_t* queue,  jint* result)
 {
 	jint errorCode = QUEUE_READ_FAILED;
 	if ( NULL != queue )
@@ -69,7 +69,7 @@ jint LLQueue_getItemSize(queue_service_descriptor_t* queue,  jint* result)
 	return errorCode;
 }
 
-jint LLQueue_getItemsCount(queue_service_descriptor_t* queue, jint* result)
+jint LLQueue_getItemsCount(const queue_service_descriptor_t* queue, jint* result)
 {
 	jint errorCode = QUEUE_READ_FAILED;
 	if ( NULL != queue )
@@ -89,7 +89,7 @@ jint LLQueue_getItemsCount(queue_service_descriptor_t* queue, jint* result)
 	return errorCode;
 }
 
-jint LLQueue_getMaxItems(queue_service_descriptor_t* queue, jint* result)
+jint LLQueue_getMaxItems(const queue_service_descriptor_t* queue, jint* result)
 {
 	jint errorCode = QUEUE_READ_FAILED;
 	if ( NULL != queue )
@@ -105,11 +105,11 @@ jint LLQueue_getMaxItems(queue_service_descriptor_t* queue, jint* result)
 	return errorCode;
 }
 
-jint LLQueue_read(queue_service_descriptor_t* fromQueue, jbyte* itemDataAsByteArray){
+jint LLQueue_read(queue_service_descriptor_t* fromQueue, volatile jbyte* itemDataAsByteArray){
 	return _LLQueue_read(fromQueue,itemDataAsByteArray,JFALSE);
 }
 
-jint LLQueue_write(queue_service_descriptor_t* toQueue, jbyte* itemDataAsByteArray)
+jint LLQueue_write(const queue_service_descriptor_t* toQueue, volatile jbyte* itemDataAsByteArray)
 {
 	return _LLQueue_write(toQueue, itemDataAsByteArray, JFALSE);
 }
@@ -129,7 +129,7 @@ void _LLQueue_pauseCurrentJavaThread(queue_service_descriptor_t* fromQueue)
 	}
 }
 
-void _LLQueue_resumePendingJavaThread(queue_service_descriptor_t* fromQueue)
+void _LLQueue_resumePendingJavaThread(const queue_service_descriptor_t* fromQueue)
 {
 	if ( NULL != fromQueue )
 	{
@@ -144,7 +144,7 @@ void _LLQueue_resumePendingJavaThread(queue_service_descriptor_t* fromQueue)
 	}
 }
 
-jint _LLQueue_read(queue_service_descriptor_t* fromQueue, jbyte* itemDataAsByteArray, jboolean fromJava)
+jint _LLQueue_read(queue_service_descriptor_t* fromQueue, volatile jbyte* itemDataAsByteArray, const jboolean fromJava)
 {
 	jint result = QUEUE_READ_FAILED;
 	if ( NULL != fromQueue )
@@ -188,7 +188,7 @@ jint _LLQueue_read(queue_service_descriptor_t* fromQueue, jbyte* itemDataAsByteA
 	return result;
 }
 
-jint _LLQueue_write(queue_service_descriptor_t* toQueue, jbyte* itemDataAsByteArray, jboolean fromJava)
+jint _LLQueue_write(const queue_service_descriptor_t* toQueue, volatile jbyte* itemDataAsByteArray, const jboolean fromJava)
 {
 	jint result = QUEUE_WRITE_FAILED;
 	if ( NULL != toQueue )
@@ -212,7 +212,7 @@ jint _LLQueue_write(queue_service_descriptor_t* toQueue, jbyte* itemDataAsByteAr
 
 			if ( JTRUE == sizeCheckPassed )
 			{
-				portBASE_TYPE dataSent = xQueueSend(currentQueue, itemDataAsByteArray, 10);
+				portBASE_TYPE dataSent = xQueueSend(currentQueue, (void * const) itemDataAsByteArray, 10);
 				if (!dataSent)
 				{
 					result = QUEUE_WRITE_FAILED;
@@ -233,27 +233,27 @@ jint _LLQueue_write(queue_service_descriptor_t* toQueue, jbyte* itemDataAsByteAr
 }
 
 //== SNI wrappers
-jint Java_com_microej_examples_nativequeue_api_NativeQueueService_getItemSize(jint queueId,  jint* result)
+jint Java_com_microej_examples_nativequeue_api_NativeQueueService_getItemSize(const jint queueId,  jint* result)
 {
 	return LLQueue_getItemSize((queue_service_descriptor_t*)queueId,result);
 }
 
-jint Java_com_microej_examples_nativequeue_api_NativeQueueService_getItemsCount(jint queueId, jint* result)
+jint Java_com_microej_examples_nativequeue_api_NativeQueueService_getItemsCount(const jint queueId, jint* result)
 {
 	return LLQueue_getItemsCount((queue_service_descriptor_t*)queueId,result);
 }
 
-jint Java_com_microej_examples_nativequeue_api_NativeQueueService_getMaxItems(jint queueId, jint* result)
+jint Java_com_microej_examples_nativequeue_api_NativeQueueService_getMaxItems(const jint queueId, jint* result)
 {
 	return LLQueue_getMaxItems((queue_service_descriptor_t*)queueId,result);
 }
 
-jint Java_com_microej_examples_nativequeue_api_NativeQueueService_read(jint fromQueueId, jbyte* itemDataAsByteArray)
+jint Java_com_microej_examples_nativequeue_api_NativeQueueService_read(const jint fromQueueId, volatile jbyte* itemDataAsByteArray)
 {	
 	return _LLQueue_read((queue_service_descriptor_t*)fromQueueId,itemDataAsByteArray,JTRUE);
 }
 
-jint Java_com_microej_examples_nativequeue_api_NativeQueueService_write(jint toQueueId, jbyte* itemDataAsByteArray)
+jint Java_com_microej_examples_nativequeue_api_NativeQueueService_write(const jint toQueueId, volatile jbyte* itemDataAsByteArray)
 {
 	return _LLQueue_write((queue_service_descriptor_t*)toQueueId,itemDataAsByteArray,JTRUE);
 }
