@@ -146,88 +146,82 @@ void _LLQueue_resumePendingJavaThread(const queue_service_descriptor_t* fromQueu
 
 jint _LLQueue_read(queue_service_descriptor_t* fromQueue, volatile jbyte* itemDataAsByteArray, const jboolean fromJava)
 {
-	jint result = QUEUE_READ_FAILED;
+	jint result = QUEUE_INVALID_QUEUE;
 	if ( NULL != fromQueue )
 	{
 		xQueueHandle currentQueue = fromQueue->queueHandle;
 		if ( NULL != currentQueue )
 		{
-			jboolean sizeCheckPassed = JFALSE;
-			if ( JTRUE == fromJava)
+			result = QUEUE_READ_FAILED;
+			if ( NULL != itemDataAsByteArray )
 			{
-				jint arrayLength = SNI_getArrayLength(itemDataAsByteArray);
-				if ( arrayLength == fromQueue->itemSize )
+				jboolean sizeCheckPassed = JFALSE;
+				if ( JTRUE == fromJava)
+				{
+					jint arrayLength = SNI_getArrayLength(itemDataAsByteArray);
+					if ( arrayLength == fromQueue->itemSize )
+					{
+						sizeCheckPassed = JTRUE;
+					}
+				}
+				else
 				{
 					sizeCheckPassed = JTRUE;
 				}
-			}
-			else
-			{
-				sizeCheckPassed = JTRUE;
-			}
 
-			if ( JTRUE == sizeCheckPassed )
-			{
-				portBASE_TYPE dataReceived = xQueueReceive(currentQueue, itemDataAsByteArray, 0);
-				if(!dataReceived){
-					if ( JTRUE == fromJava )
-					{
-						_LLQueue_pauseCurrentJavaThread(fromQueue);
+				if ( JTRUE == sizeCheckPassed )
+				{
+					portBASE_TYPE dataReceived = xQueueReceive(currentQueue, itemDataAsByteArray, 0);
+					if(!dataReceived){
+						if ( JTRUE == fromJava )
+						{
+							_LLQueue_pauseCurrentJavaThread(fromQueue);
+						}
 					}
-				}
-				else {
-					result = QUEUE_SERVICE_OK;
+					else {
+						result = QUEUE_SERVICE_OK;
+					}
 				}
 			}
 		}
-	}
-	else
-	{
-		result = QUEUE_INVALID_QUEUE;
 	}
 	return result;
 }
 
 jint _LLQueue_write(const queue_service_descriptor_t* toQueue, volatile jbyte* itemDataAsByteArray, const jboolean fromJava)
 {
-	jint result = QUEUE_WRITE_FAILED;
+	jint result = QUEUE_INVALID_QUEUE;
 	if ( NULL != toQueue )
 	{
 		xQueueHandle currentQueue = toQueue->queueHandle;
 		if ( NULL != currentQueue )
 		{
-			jboolean sizeCheckPassed = JFALSE;
-			if ( JTRUE == fromJava)
+			result = QUEUE_WRITE_FAILED;
+			if ( NULL != itemDataAsByteArray )
 			{
-				jint arrayLength = SNI_getArrayLength(itemDataAsByteArray);
-				if ( arrayLength == toQueue->itemSize )
+				jboolean sizeCheckPassed = JFALSE;
+				if ( JTRUE == fromJava)
 				{
-					sizeCheckPassed = JTRUE;
-				}
-			}
-			else
-			{
-				sizeCheckPassed = JTRUE;
-			}
-
-			if ( JTRUE == sizeCheckPassed )
-			{
-				portBASE_TYPE dataSent = xQueueSend(currentQueue, (void * const) itemDataAsByteArray, 10);
-				if (!dataSent)
-				{
-					result = QUEUE_WRITE_FAILED;
+					jint arrayLength = SNI_getArrayLength(itemDataAsByteArray);
+					if ( arrayLength == toQueue->itemSize )
+					{
+						sizeCheckPassed = JTRUE;
+					}
 				}
 				else
 				{
-					result = QUEUE_SERVICE_OK;
+					sizeCheckPassed = JTRUE;
+				}
+
+				if ( JTRUE == sizeCheckPassed )
+				{
+					portBASE_TYPE dataSent = xQueueSend(currentQueue, (void * const) itemDataAsByteArray, 10);
+					if (dataSent)
+						result = QUEUE_SERVICE_OK;
+					}
 				}
 			}
-		}
 		_LLQueue_resumePendingJavaThread(toQueue);
-	}
-	else
-	{
-		result = QUEUE_INVALID_QUEUE;
 	}
 	return result;
 }

@@ -12,72 +12,65 @@
 
 //TODO implement tests for each API
 
-//jint LLQueue_createQueue(jint queueId, jint itemSize, jint maxItems);
-void testLLQueue_createQueue()
+//jboolean LLQueue_init(queue_service_descriptor_t* queue, const xQueueHandle queueHandle, const jint itemSize, const jint maxItems );
+void testLLQueue_init()
 {
 	//check valid ranges for input params
-	// QUEUE_CREATE_FAILED if ( queueId ! in [0,MAX_QUEUES_IN_REGISTRY] )
-	// QUEUE_CREATE_FAILED if ( itemSize ! in [0,???] )
-	// QUEUE_CREATE_FAILED if ( maxItems ! in [0,???] )
-	//check QUEUE_CREATE_FAILED == result for already existing queue
+	// return_value == false : if ( NULL == queue )
+	// return_value == false : if ( NULL != queue->queueHandle ) //already existing queue ?
+	// return_value == false : if ( itemSize ! in [0,???] )
+	// return_value == false : if ( maxItems ! in [0,???] )
 }
 
-//jint LLQueue_destroyQueue(jint queueId);
-void testLLQueue_destroyQueue()
-{
-	//check valid ranges for input params
-	//check result for non-existing queue
-		// for never created before ID
-		// for already created before ID, but already deleted since
-}
-
-//jint LLQueue_getItemSize(jint queueId, jint* result);
+//jint LLQueue_getItemSize(const queue_service_descriptor_t* queue, jint* result);
 void testLLQueue_getItemSize()
 {
 	//check valid ranges for input params
-	// QUEUE_READ_FAILED if ( queueId ! in [0,MAX_QUEUES_IN_REGISTRY] )
-	//check QUEUE_INVALID_ID == result for non-existing queue
+	// return_value == QUEUE_INVALID_QUEUE : if ( NULL == queue )
+	// *result > 0
 }
 
-//jint LLQueue_getItemsCount(jint queueId, jint* result);
+//jint LLQueue_getItemsCount(const queue_service_descriptor_t* queue, jint* result);
 void testLLQueue_getItemsCount()
 {
 	//check valid ranges for input params
-	// QUEUE_READ_FAILED if ( queueId ! in [0,MAX_QUEUES_IN_REGISTRY] )
-	// QUEUE_READ_FAILED if ( NULL == result )
-	//check QUEUE_INVALID_ID == result for non-existing queue
-	//check result for empty queue
-}
+	// return_value == QUEUE_INVALID_QUEUE : if ( NULL == queue )
+	// *result >= 0}
 
-//jint LLQueue_getMaxItems(jint queueId, jint* result);
+//jint LLQueue_getMaxItems(const queue_service_descriptor_t* queue, jint* result);
 void testLLQueue_getMaxItems()
 {
 	//check valid ranges for input params
-	// QUEUE_READ_FAILED if ( queueId ! in [0,MAX_QUEUES_IN_REGISTRY] )
-	// QUEUE_READ_FAILED if ( NULL == result )
-	//check QUEUE_INVALID_ID == result for non-existing queue
-	//check result == relevant value use when calling createQueue before
+	// return_value == QUEUE_INVALID_QUEUE : if ( NULL == queue )
+	// *result >= 0}
 }
 
-//jint LLQueue_read(jint fromQueueId, jbyte* itemDataAsByteArray);
+//jint LLQueue_read(queue_service_descriptor_t* fromQueue, volatile jbyte* itemDataAsByteArray);
 void testLLQueue_read()
 {
 	//check valid ranges for input params
-	// QUEUE_READ_FAILED if ( queueId ! in [0,MAX_QUEUES_IN_REGISTRY] )
-	// QUEUE_READ_FAILED if ( NULL == itemDataAsByteArray )
-	//check QUEUE_INVALID_ID == result for non-existing queue
-	//check result for empty queue
-	//check result for itemDataAsByteArray { < | > | == } testLLQueue_getItemSize()
-	//check result == relevant value use when calling write before using byte-wise comparison (memcmp)
+	// return_value == QUEUE_INVALID_QUEUE : if ( NULL == fromQueue )
+	// return_value == QUEUE_INVALID_QUEUE : if ( NULL == fromQueue->queueHandle )
+	// return_value == QUEUE_READ_FAILED : if ( NULL == itemDataAsByteArray )
+
+	//check result
+	// return_value == QUEUE_READ_FAILED : if ( 0 == LLQueue_getItemsCount(fromQueue) ) //empty queue
+	// return_value == QUEUE_SERVICE_OK : if ( 0 < LLQueue_getItemsCount(fromQueue) ) //NOT empty queue
+	// 0 == memcmp (*itemDataAsByteArray,*originalDataAsByteArray,LLQueue_getItemSize(fromQueue)) //after having called LLQueueWrite(fromQueue,originalDataAsByteArray)
 }
 
-//jint LLQueue_write(jint toQueueId, jbyte* itemDataAsByteArray);
+//jint LLQueue_write(const queue_service_descriptor_t* toQueue, volatile jbyte* itemDataAsByteArray);
 void testLLQueue_write()
 {
 	//check valid ranges for input params
-	//check QUEUE_INVALID_ID == result for non-existing queue
-	//check result for full queue
-	//check available memory after call == available memory before call - itemSize
+	// return_value == QUEUE_INVALID_QUEUE : if ( NULL == fromQueue )
+	// return_value == QUEUE_INVALID_QUEUE : if ( NULL == fromQueue->queueHandle )
+	// return_value == QUEUE_WRITE_FAILED : if ( NULL == itemDataAsByteArray )
+
+	//check result
+	// return_value == QUEUE_WRITE_FAILED : if ( LLQueue_getItemsCount(toQueue) ==  LLQueue_getMaxItems(toQueue) ) //queue full
+
+	// ? check available memory after call == available memory before call - itemSize
 }
 
 
