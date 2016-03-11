@@ -4,7 +4,7 @@
 	<classpathentry kind="var" path="SNI-1.2.0"/>
 	<classpathentry kind="var" path="EDC-1.2"/>
 	<classpathentry kind="var" path="BON-1.2"/>
-	<classpathentry kind="src" path="/NativeQueueWrapper"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/ProducerConsumerData"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/NativeQueueWrapper"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
