@@ -1,3 +1,10 @@
+/*
+ * Java
+ *
+ * Copyright 2016 IS2T. All rights reserved.
+ * For demonstration purpose only.
+ * IS2T PROPRIETARY. Use is subject to license terms.
+ */
 package com.microej.examples.nativequeue.api;
 
 /**
@@ -10,18 +17,23 @@ class NativeQueueService {
 
 	//WARNING: keep these values synchronized with constants defined in LLNativeQueueService.h C header file.
 	public final static int QUEUE_SERVICE_OK = 0;
-	public final static int QUEUE_INVALID_QUEUE = 1;
-	public final static int QUEUE_READ_FAILED = 2;
-	public final static int QUEUE_WRITE_FAILED = 3;
+	public final static int QUEUE_INVALID_QUEUE = -1;
+	public final static int QUEUE_READ_FAILED = -2;
+	public final static int QUEUE_WRITE_FAILED = -3;
 
 	static public String toStringError(int returnCode){
 		String result = "UNKNOWN_CODE";
-		switch (returnCode)
-		{
-			case QUEUE_SERVICE_OK 		: result = "QUEUE_SUCCESS"; break;
-			case QUEUE_INVALID_QUEUE 	: result = "QUEUE_INVALID_QUEUE"; break;
-			case QUEUE_READ_FAILED 		: result = "QUEUE_READ_FAILED"; break;
-			case QUEUE_WRITE_FAILED 	: result = "QUEUE_WRITE_FAILED"; break;
+
+		if(returnCode >= 0){
+			result = "QUEUE_SUCCESS";
+		}
+		else {
+			switch (returnCode)
+			{
+				case QUEUE_INVALID_QUEUE 	: result = "QUEUE_INVALID_QUEUE"; break;
+				case QUEUE_READ_FAILED 		: result = "QUEUE_READ_FAILED"; break;
+				case QUEUE_WRITE_FAILED 	: result = "QUEUE_WRITE_FAILED"; break;
+			}
 		}
 		return result;
 	}
@@ -29,32 +41,29 @@ class NativeQueueService {
 	/**
 	 * 
 	 * @param fromQueueId the queue ID
-	 * @param result the ItemSize of the queue (0 if error happened)
-	 * @return {@link NativeQueueService#QUEUE_INVALID_QUEUE} if queue does not exist
+	 * @return the ItemSize of the queue or {@link NativeQueueService#QUEUE_INVALID_QUEUE} if queue does not exist
 	 */
-	public static native int getItemSize(int queueId, int[] result);
+	public static native int getItemSize(int queueId);
 
 	/**
 	 * 
 	 * @param fromQueueId the queue ID
-	 * @param result the number of Items in the queue (0 if error happened)
-	 * @return {@link NativeQueueService#QUEUE_INVALID_QUEUE} if queue does not exist
+	 * @return the number of Items in the queue or {@link NativeQueueService#QUEUE_INVALID_QUEUE} if queue does not exist
 	 */
-	public static native int getItemsCount(int fromQueueId, int[] result);
+	public static native int getItemsCount(int fromQueueId);
 
 	/**
 	 * 
 	 * @param fromQueueId the queue ID
-	 * @param result the max number of Items in the queue (0 if error happened)
-	 * @return {@link NativeQueueService#QUEUE_INVALID_QUEUE} if queue does not exist
+	 * @return the max number of Items in the queue or {@link NativeQueueService#QUEUE_INVALID_QUEUE} if queue does not exist
 	 */
-	public static native int getMaxItems(int fromQueueId, int[] result);
+	public static native int getMaxItems(int fromQueueId);
 
 	/**
 	 * 
 	 * @param fromQueueId the queue ID
-	 * @param dataAsByteArray (must be in the immortals pool, size must match value returned by getItemSize(fromQueueId) )
-	 * @return true if read succeeded, false otherwise
+	 * @param dataAsByteArray (must be in the immortals pool, size must match value returned by getItemSize(fromQueueId))
+	 * @return {@link #QUEUE_SERVICE_OK} if read succeeded, a negative value otherwise
 	 */
 	public static native int read(int fromQueueId, byte [] itemDataAsByteArray);
 
@@ -62,7 +71,7 @@ class NativeQueueService {
 	 * 
 	 * @param toQueueId the queue ID
 	 * @param dataAsByteArray (must be in the immortals pool, size must match value returned by getItemSize(toQueueId))
-	 * @return true if write succeeded, false otherwise
+	 * @return {@link #QUEUE_SERVICE_OK} if read succeeded, a negative value otherwise
 	 */
 	public static native int write(int toQueueId, byte [] itemDataAsByteArray);
 

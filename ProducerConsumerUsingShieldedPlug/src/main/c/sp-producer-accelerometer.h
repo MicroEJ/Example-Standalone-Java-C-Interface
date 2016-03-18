@@ -14,7 +14,8 @@
 #include "sp-producer.h"
 
 typedef struct SP_PRODUCER_accelerometer_t{
-	SP_PRODUCER_t super;						//a SP_PRODUCER_accelerometer_t "Is-a" SP_PRODUCER_t
+	const signed char name[32];								//name of the producing task (useful for debugging purposes)
+	int16_t productionPeriodInMS;							//period (in Milliseconds) for producing data
 
 	int8_t sensor_ID;
 

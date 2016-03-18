@@ -10,10 +10,6 @@
 
 #include <stdint.h>
 
-//must match the IDs used in the shielded plug database definition file
-#define ACCELEROMETER_SP_DATABASE_ID 0
-#define ACCELEROMETER_SP_DATABASE_FIELD_ID_ACCELEROMETER 0
-
 #define ACCELEROMETER_DATA_MAX_STRING_LENGTH 64
 
 typedef struct Accelerometer_data_t{

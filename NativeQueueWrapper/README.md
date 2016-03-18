@@ -39,8 +39,8 @@ Add this project to your project build Path :
 
 #### Reusing the queue service descriptor from the Java world
 * The queue service descriptor can then be retrieved from the Java world by using a native casting the pointer to the descriptor to a jint. See :
-	* **Java_com_microej_examples_java2c_AccelerometerData_getQueuePtr()** function in [sni-producer-accelerometer.c](/ProducerConsumerUsingSNIAndImmortals/src/main/c/sni-producer-accelerometer.c)
-	* **getQueuePtr()** method in [AccelerometerData.java](/ProducerConsumerData/src/main/java/com/microej/examples/java2c/AccelerometerData.java) 
+	* **Java_com_microej_examples_java2c_SNIAndImmortalsFixedSizeExample_getAccelerometerQueuePtr()** function in [sni-producer-accelerometer.c](/ProducerConsumerUsingSNIAndImmortals/src/main/c/sni-producer-accelerometer.c)
+	* **getAccelerometerQueuePtr()** method in [SNIAndImmortalsFixedSizeExample.java](/ProducerConsumerUsingSNIAndImmortals/src/main/java/com/microej/examples/java2c/SNIAndImmortalsFixedSizeExample.java) 
 
 * A QueueService instance shall then be constructed, passing the descriptor as a parameter. See **main** methods in :
 	* [SNIAndImmortalsFixedSizeExample.java](/ProducerConsumerUsingSNIAndImmortals/src/main/java/com/microej/examples/java2c/SNIAndImmortalsFixedSizeExample.java)

@@ -18,11 +18,13 @@ public class SNIAndImmortalsVariableSizeExample {
 	 */
 	public static void main(String[] args) {
 
-		QueueService messengerQueue = new QueueService(MessengerData.getQueuePtr());
-		
+		QueueService messengerQueue = new QueueService(getMessengerQueuePtr());
+
 		MessengerDataConsumer messengerConsumer = new MessengerDataConsumer(messengerQueue);
 		new Thread(messengerConsumer).start();
 
 	}
 
+	//SNI related native - retrieves pointer to queue
+	native public static int getMessengerQueuePtr();
 }

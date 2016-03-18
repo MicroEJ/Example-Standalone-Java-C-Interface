@@ -10,7 +10,6 @@ package com.microej.examples.java2c;
 
 import java.io.IOException;
 
-import com.microej.examples.java2c.AccelerometerData;
 import com.microej.examples.nativequeue.api.QueueService;
 
 import ej.bon.Immortals;
@@ -18,16 +17,15 @@ import ej.bon.Immortals;
 
 public class AccelerometerDataConsumer implements Runnable{
 
-	//ensure no one else accesses this
+	//Ensure no one else accesses this
 	private final QueueService queueService;
 	private final byte[] data;
 
-	
+
 	public AccelerometerDataConsumer(QueueService queueService) {
 		this.queueService = queueService;
 
-		//need to make the byte [] immortal to bypass SNI API constraints on parameters that specify that
-		//"the native functions cannot access Java objects field nor methods"
+		//Make the byte [] immortal to access it in C function.
 		this.data = (byte[]) Immortals.setImmortal(new byte[AccelerometerData.ACCELEROMETER_DATA_SIZE]);
 	}
 
@@ -36,7 +34,7 @@ public class AccelerometerDataConsumer implements Runnable{
 	public void run() {
 		for (;;)
 		{
-			//use the QueueService to retrieve data
+			//Use the QueueService to retrieve data
 			try {
 				this.queueService.read(this.data);
 				AccelerometerData dataWrapper = new AccelerometerData(data);

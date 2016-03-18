@@ -10,7 +10,6 @@ package com.microej.examples.java2c;
 
 import java.io.IOException;
 
-import com.microej.examples.java2c.AccelerometerData;
 import com.microej.examples.nativequeue.api.QueueService;
 
 import ej.bon.Immortals;
@@ -18,7 +17,7 @@ import ej.bon.Immortals;
 
 public class AccelerometerDataProducer implements Runnable{
 
-	//ensure no one else accesses this
+	//Ensure no one else accesses this
 	private final QueueService queueService;
 
 	private final byte sensorID;
@@ -30,9 +29,8 @@ public class AccelerometerDataProducer implements Runnable{
 		this.queueService = queueService;
 		this.sensorID = (byte)sensorID;
 		this.productionPeriodInMilliseconds = productionPeriodInMilliseconds;
-		
-		//need to make the byte [] immortal to bypass SNI API constraints on parameters that specify that
-		//"the native functions cannot access Java objects field nor methods"
+
+		//Make the byte [] immortal to access it in C function.
 		this.data = (byte[]) Immortals.setImmortal(new byte[AccelerometerData.ACCELEROMETER_DATA_SIZE]);
 	}
 
@@ -45,16 +43,15 @@ public class AccelerometerDataProducer implements Runnable{
 			System.out.println("ItemsCount	: " + this.queueService.getItemsCount() );
 			System.out.println("MaxItems	: " + this.queueService.getMaxItems() );
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
 		while(true)
 		{
-			//use the QueueService to post data
+			//Use the QueueService to post data
 			try {
 				AccelerometerData accelerometerData = AccelerometerData.generateRandomData(sensorID);
-				System.arraycopy(accelerometerData.toByteArray(), 0, this.data, 0, AccelerometerData.ACCELEROMETER_DATA_SIZE);	
+				System.arraycopy(accelerometerData.toByteArray(), 0, this.data, 0, AccelerometerData.ACCELEROMETER_DATA_SIZE);
 				this.queueService.write(this.data);
 				System.out.println("+" + accelerometerData.toString());
 			}

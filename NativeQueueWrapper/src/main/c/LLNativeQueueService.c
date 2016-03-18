@@ -227,19 +227,43 @@ jint _LLQueue_write(const queue_service_descriptor_t* toQueue, volatile jbyte* i
 }
 
 //== SNI wrappers
-jint Java_com_microej_examples_nativequeue_api_NativeQueueService_getItemSize(const jint queueId,  jint* result)
+jint Java_com_microej_examples_nativequeue_api_NativeQueueService_getItemSize(const jint queueId)
 {
-	return LLQueue_getItemSize((queue_service_descriptor_t*)queueId,result);
+	jint result;
+	jint size;
+	result = LLQueue_getItemSize((queue_service_descriptor_t*)queueId, &size);
+	if(result < 0){
+		return result;
+	}
+	else {
+		return size;
+	}
 }
 
-jint Java_com_microej_examples_nativequeue_api_NativeQueueService_getItemsCount(const jint queueId, jint* result)
+jint Java_com_microej_examples_nativequeue_api_NativeQueueService_getItemsCount(const jint queueId)
 {
-	return LLQueue_getItemsCount((queue_service_descriptor_t*)queueId,result);
+	jint result;
+	jint size;
+	result = LLQueue_getItemsCount((queue_service_descriptor_t*)queueId, &size);
+	if(result < 0){
+		return result;
+	}
+	else {
+		return size;
+	}
 }
 
-jint Java_com_microej_examples_nativequeue_api_NativeQueueService_getMaxItems(const jint queueId, jint* result)
+jint Java_com_microej_examples_nativequeue_api_NativeQueueService_getMaxItems(const jint queueId)
 {
-	return LLQueue_getMaxItems((queue_service_descriptor_t*)queueId,result);
+	jint result;
+	jint size;
+	result = LLQueue_getMaxItems((queue_service_descriptor_t*)queueId, &size);
+	if(result < 0){
+		return result;
+	}
+	else {
+		return size;
+	}
 }
 
 jint Java_com_microej_examples_nativequeue_api_NativeQueueService_read(const jint fromQueueId, volatile jbyte* itemDataAsByteArray)

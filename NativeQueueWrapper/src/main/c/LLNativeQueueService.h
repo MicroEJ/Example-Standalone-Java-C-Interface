@@ -22,12 +22,12 @@ typedef struct queue_service_descriptor_t {
 
 //Used for operations return value
 //WARNING: keep these values synchronized with the constants defined in
-//com.microej.examples.nativequeue.api.QueueOperationReturnCode Java class.
+//com.microej.examples.nativequeue.api.NativeQueueService Java class.
 typedef enum queue_operation_return_code_t {
 	QUEUE_SERVICE_OK = 0,
-	QUEUE_INVALID_QUEUE = 1,
-	QUEUE_READ_FAILED = 2,
-	QUEUE_WRITE_FAILED = 3,
+	QUEUE_INVALID_QUEUE = -1,
+	QUEUE_READ_FAILED = -2,
+	QUEUE_WRITE_FAILED = -3,
 	_QUEUE_FORCE_REPRESENTATION_AS_INT_32 = INT32_MAX // will force representation as int 32, which is typedef'ed by jint
 } queue_operation_return_code_t;
 
@@ -42,9 +42,9 @@ jint LLQueue_write(const queue_service_descriptor_t* toQueue, volatile jbyte* it
 
 
 //== SNI wrappers
-jint Java_com_microej_examples_nativequeue_api_NativeQueueService_getItemSize(const jint queueId, jint* result);
-jint Java_com_microej_examples_nativequeue_api_NativeQueueService_getItemsCount(const jint queueId, jint* result);
-jint Java_com_microej_examples_nativequeue_api_NativeQueueService_getMaxItems(const jint queueId, jint* result);
+jint Java_com_microej_examples_nativequeue_api_NativeQueueService_getItemSize(const jint queueId);
+jint Java_com_microej_examples_nativequeue_api_NativeQueueService_getItemsCount(const jint queueId);
+jint Java_com_microej_examples_nativequeue_api_NativeQueueService_getMaxItems(const jint queueId);
 jint Java_com_microej_examples_nativequeue_api_NativeQueueService_read(const jint fromQueueId, volatile jbyte* itemDataAsByteArray);
 jint Java_com_microej_examples_nativequeue_api_NativeQueueService_write(const jint toQueueId, volatile jbyte* itemDataAsByteArray);
 

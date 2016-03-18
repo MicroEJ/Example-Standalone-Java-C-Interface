@@ -18,7 +18,7 @@ public class SNIAndImmortalsFixedSizeExample {
 	 */
 	public static void main(String[] args) {
 
-		QueueService accelerometerQueue = new QueueService(AccelerometerData.getQueuePtr());
+		QueueService accelerometerQueue = new QueueService(getAccelerometerQueuePtr());
 
 		AccelerometerDataProducer accelerometerDataProducer = new AccelerometerDataProducer(accelerometerQueue, 3, 2200);
 		new Thread(accelerometerDataProducer).start();
@@ -27,4 +27,6 @@ public class SNIAndImmortalsFixedSizeExample {
 		new Thread(accelerometerDataConsumer).start();
 	}
 
+	//SNI related native - retrieves pointer to queue
+	native public static int getAccelerometerQueuePtr();
 }

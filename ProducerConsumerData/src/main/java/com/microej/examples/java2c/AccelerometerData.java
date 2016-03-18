@@ -11,14 +11,14 @@ package com.microej.examples.java2c;
 import java.util.Random;
 public class AccelerometerData {
 
-	private static Random generator = new Random();
+	private static Random Generator = new Random();
 
 	public static final int ACCELEROMETER_DATA_SIZE = 4;
 
-	private byte sensorID;
-	private byte x;
-	private byte y;
-	private byte z;
+	private final byte sensorID;
+	private final byte x;
+	private final byte y;
+	private final byte z;
 
 	public AccelerometerData(byte[] accelerometerDataAsByteArray) {
 		sensorID = accelerometerDataAsByteArray[0];
@@ -30,7 +30,7 @@ public class AccelerometerData {
 	public static AccelerometerData generateRandomData(byte id)
 	{
 		byte[] resultAsByteArray = new byte[ACCELEROMETER_DATA_SIZE];
-		generator.nextBytes(resultAsByteArray);
+		Generator.nextBytes(resultAsByteArray);
 		resultAsByteArray[0] = id;
 		AccelerometerData result = new AccelerometerData(resultAsByteArray);
 		return result;
@@ -38,13 +38,13 @@ public class AccelerometerData {
 
 	public byte[] toByteArray() {
 		byte[] result = new byte[ACCELEROMETER_DATA_SIZE];
-		result [0] = (byte) sensorID;
+		result [0] = sensorID;
 		result [1] = x;
 		result [2] = y;
 		result [3] = z;
 		return result;
 	}
-	
+
 	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
@@ -59,12 +59,5 @@ public class AccelerometerData {
 		sb.append("}");
 		return sb.toString();
 	}
-
-	//ShieldedPlug related IDs - see src/main/resources/database-definition.xml file for relevant values
-	public static final int DATABASE_ID = 0;
-	public static final int DATABASE_FIELD_ID_ACCELEROMETER = 0;
-
-	//SNI related native - retrieves pointer to queue
-	native public static int getQueuePtr();
 
 }

@@ -70,6 +70,7 @@ In pseudocode, the thread body roughly looks like this
 	while (true)
 	{
 		data = queueService.read() //blocking call until some data is available
+	}
 
 The source code is in the following file:
 * [AccelerometerDataConsumer.java](/ProducerConsumerUsingSNIAndImmortals/src/main/java/com/microej/examples/java2c/AccelerometerDataConsumer.java) file.

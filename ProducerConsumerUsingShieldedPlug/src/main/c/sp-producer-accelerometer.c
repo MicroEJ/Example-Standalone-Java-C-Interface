@@ -12,9 +12,25 @@
 #include "sp-producer-accelerometer.h"
 #include "accelerometer-data.h"
 
+#include "FreeRTOS.h"
+#include "task.h"
 #include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
+
+/* Defines -------------------------------------------------------------------*/
+
+#define SP_PRODUCER_STACK_SIZE 2048
+#define SP_PRODUCER_TASK_PRIORITY      ( 3 ) /** Should be > tskIDLE_PRIORITY & < configTIMER_TASK_PRIORITY */
+#define SP_PRODUCER_TASK_STACK_SIZE     SP_PRODUCER_STACK_SIZE/4
+
+//must match the IDs used in the shielded plug database definition file
+#define ACCELEROMETER_SP_DATABASE_ID 0
+#define ACCELEROMETER_SP_DATABASE_FIELD_ID_ACCELEROMETER 0
+
+//==== "private" method(s) declaration
+void _SP_PRODUCER_taskBody(void* arg);
 
 
 //== constructor
@@ -22,29 +38,48 @@ void SP_PRODUCER_accelerometer_init(SP_PRODUCER_accelerometer_t* pAccelerometer)
 {
 	if ( NULL != pAccelerometer )
 	{
-		SP_PRODUCER_init(&pAccelerometer->super);
+		printf("%s name : %s\n",__PRETTY_FUNCTION__,pAccelerometer->name);
+		printf("%s productionPeriodInMS : %d\n",__PRETTY_FUNCTION__,pAccelerometer->productionPeriodInMS);
 		printf("%s sensor_ID : %d\n",__PRETTY_FUNCTION__,pAccelerometer->sensor_ID);
-	}
-}
 
-//== functions adapters
-void SP_PRODUCER_accelerometer_configure_adapter(SP_PRODUCER_t* pProducer)
-{
-	if ( NULL != pProducer )
+		xTaskHandle xHandle;
+		portBASE_TYPE xReturn;
+		xReturn = xTaskCreate(_SP_PRODUCER_taskBody, NULL, SP_PRODUCER_TASK_STACK_SIZE, (void*) pAccelerometer, SP_PRODUCER_TASK_PRIORITY, xHandle);
+		if( xReturn != pdPASS )
+		{
+			printf("%s error : unable to create task for %s\n",__PRETTY_FUNCTION__, pAccelerometer->name);
+		}
+	}
+	else
 	{
-		SP_PRODUCER_accelerometer_configure((SP_PRODUCER_accelerometer_t*) pProducer);
+		printf("%s error : pointer to pAccelerometer is NULL !\n",__PRETTY_FUNCTION__);
 	}
 }
 
-void SP_PRODUCER_accelerometer_produce_adapter(SP_PRODUCER_t* pProducer)
+//==== "private" method(s) definition
+void _SP_PRODUCER_taskBody(void* arg)
 {
-	if ( NULL != pProducer )
+	if ( NULL != arg )
 	{
-		SP_PRODUCER_accelerometer_produce((SP_PRODUCER_accelerometer_t*) pProducer);
+		SP_PRODUCER_accelerometer_t* pProducer = (SP_PRODUCER_accelerometer_t*) arg;
+
+		const portTickType xDelay = pProducer->productionPeriodInMS / portTICK_RATE_MS;
+
+		SP_PRODUCER_accelerometer_configure(pProducer);
+
+		portTickType xLastWakeTime = xTaskGetTickCount ();
+		for(;;)
+		{
+			vTaskDelayUntil(&xLastWakeTime,xDelay);
+			SP_PRODUCER_accelerometer_produce(pProducer);
+		}
+	}
+	else
+	{
+		printf("%s error : pointer to producer is NULL !\n",__PRETTY_FUNCTION__);
 	}
 }
 
-//== functions implementations
 void SP_PRODUCER_accelerometer_configure(SP_PRODUCER_accelerometer_t* pProducer)
 {
 	//ShieldedPlug is a typedef to void*, so the database will outlive the scope of the function

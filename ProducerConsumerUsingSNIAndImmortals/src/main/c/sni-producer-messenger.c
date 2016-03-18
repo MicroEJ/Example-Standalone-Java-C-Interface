@@ -89,7 +89,7 @@ void SNI_PRODUCER_messenger_produce(SNI_PRODUCER_messenger_t* pProducer)
 }
 
 //== SNI function
-jint Java_com_microej_examples_java2c_MessengerData_getQueuePtr(void)
+jint Java_com_microej_examples_java2c_SNIAndImmortalsVariableSizeExample_getMessengerQueuePtr(void)
 {
 	return (jint)&messengerQueue;
 }
