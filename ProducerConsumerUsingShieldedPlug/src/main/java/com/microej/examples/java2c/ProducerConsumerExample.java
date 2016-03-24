@@ -16,18 +16,24 @@ public class ProducerConsumerExample {
 
 	//ShieldedPlug related IDs - see src/main/resources/database-definition.xml file for relevant values
 	public static final int DATABASE_ID = 0;
-	public static final int DATABASE_FIELD_ID_ACCELEROMETER = 0;
+	public static final int DATABASE_FIELD_ID_ACCELEROMETER_1 = 0;
+	public static final int DATABASE_FIELD_ID_ACCELEROMETER_2 = 1;
+	public static final int DATABASE_FIELD_ID_ACCELEROMETER_3 = 2;
 
 	/**
 	 * @param args
 	 */
 	public static void main(String[] args) {
 
-		AccelerometerDataConsumer consumer = new AccelerometerDataConsumer();
-		new Thread(consumer).start();
+		AccelerometerDataConsumer consumer1 = new AccelerometerDataConsumer(DATABASE_FIELD_ID_ACCELEROMETER_1);
+		new Thread(consumer1).start();
+		AccelerometerDataConsumer consumer2 = new AccelerometerDataConsumer(DATABASE_FIELD_ID_ACCELEROMETER_2);
+		new Thread(consumer2).start();
+		AccelerometerDataConsumer consumer3 = new AccelerometerDataConsumer(DATABASE_FIELD_ID_ACCELEROMETER_3);
+		new Thread(consumer3).start();
 
 		Timer producerTimer = new Timer("AccelerometerDataProducerTimer");
-		AccelerometerDataProducerTask producerTask = new AccelerometerDataProducerTask(4);
+		AccelerometerDataProducerTask producerTask = new AccelerometerDataProducerTask(DATABASE_FIELD_ID_ACCELEROMETER_3);
 		producerTimer.scheduleAtFixedRate(producerTask, 0, 1200);
 
 	}

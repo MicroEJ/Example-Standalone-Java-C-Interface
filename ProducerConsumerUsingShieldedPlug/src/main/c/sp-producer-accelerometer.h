@@ -11,7 +11,6 @@
 
 #include <stdint.h>
 #include <sp.h>
-#include "sp-producer.h"
 
 typedef struct SP_PRODUCER_accelerometer_t{
 	const signed char name[32];								//name of the producing task (useful for debugging purposes)
@@ -21,16 +20,13 @@ typedef struct SP_PRODUCER_accelerometer_t{
 
 	//== "private" data
 	int8_t shieldedPlugDatabaseId;			//shielded plug database ID
+	int8_t shieldedPlugDatabaseFieldId;		//shielded plug database field ID
 	ShieldedPlug pDatabase;					//pointer to shielded plug database - set by SP_PRODUCER_accelerometer_init(...)
 
 }SP_PRODUCER_accelerometer_t;
 
 //== constructor
 void SP_PRODUCER_accelerometer_init(SP_PRODUCER_accelerometer_t* accelerometer);
-
-//== functions adapters
-void SP_PRODUCER_accelerometer_configure_adapter(SP_PRODUCER_t* pProducer);
-void SP_PRODUCER_accelerometer_produce_adapter(SP_PRODUCER_t* pProducer);
 
 //== functions implementations
 void SP_PRODUCER_accelerometer_configure(SP_PRODUCER_accelerometer_t* pProducer);

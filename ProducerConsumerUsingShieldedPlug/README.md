@@ -1,5 +1,6 @@
 [](Markdown)
 [](Copyright 2016 IS2T. All rights reserved.)
+[](For demonstration purpose only.)
 [](IS2T PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.)
 
 # Overview
@@ -22,7 +23,7 @@ Here, we shall briefly list the projects and libraries required for building thi
 			* SP-1.0
 
 ## Producers/Consumers interaction
-There are one consumer (written in Java) and four producers (two written in Java, two written in C).
+There are one consumer (written in Java) and three producers (one written in Java, two written in C).
 
 Data is exchanged via a shared in-memory database using the Shielded Plug API.
 
@@ -130,6 +131,12 @@ One requirement of the Shielded Plug API is that you define the database schema 
 The source code for that file is available here :
 * [database-definition.xml](/ProducerConsumerUsingShieldedPlug/src/main/resources/database-definition.xml)
 
+In this file, some database and field IDs are defined :
+
+* Their C and Java counterparts (with matching values) are defined as :
+	* **DATABASE_ID** and **DATABASE_FIELD_ID_ACCELEROMETER** in [AccelerometerData.java](/ProducerConsumerData/src/main/java/com/microej/examples/java2c/AccelerometerData.java)
+	* **ACCELEROMETER_SP_DATABASE_ID** and **ACCELEROMETER_SP_DATABASE_FIELD_ID_ACCELEROMETER** in [accelerometer-data.h](/ProducerConsumerData/src/main/c/accelerometer-data.h)
+
 This configuration file is a required parameter of the MicroEJ Application launch configuration when using the Shielded Plug API:
 * Select **Run Configurations...**
 * Select the (ProducerConsumerUsingShieldedPlug_Build)[[ProducerConsumerUsingShieldedPlug_Build.launch](/ProducerConsumerUsingShieldedPlug/launches/ProducerConsumerUsingShieldedPlug_Build.launch) ] configuration
@@ -137,7 +144,6 @@ This configuration file is a required parameter of the MicroEJ Application launc
 * Select the **Shielded Plug** node
 * You shall see that the **Database definition** field is pointing to the [database-definition.xml](/ProducerConsumerUsingShieldedPlug/src/main/resources/database-definition.xml) file
 
-Details of the shielded plug configuration file fields are described in the [/ProducerConsumerData/README.md](/ProducerConsumerData/README.md) file
 
 # Testing
 

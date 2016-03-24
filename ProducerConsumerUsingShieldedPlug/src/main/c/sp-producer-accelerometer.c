@@ -27,7 +27,9 @@
 
 //must match the IDs used in the shielded plug database definition file
 #define ACCELEROMETER_SP_DATABASE_ID 0
-#define ACCELEROMETER_SP_DATABASE_FIELD_ID_ACCELEROMETER 0
+#define ACCELEROMETER_SP_DATABASE_FIELD_ID_ACCELEROMETER_1 0
+#define ACCELEROMETER_SP_DATABASE_FIELD_ID_ACCELEROMETER_2 1
+#define ACCELEROMETER_SP_DATABASE_FIELD_ID_ACCELEROMETER_3 2
 
 //==== "private" method(s) declaration
 void _SP_PRODUCER_taskBody(void* arg);
@@ -88,7 +90,7 @@ void SP_PRODUCER_accelerometer_configure(SP_PRODUCER_accelerometer_t* pProducer)
 
 	int32_t SP_number_of_blocks = SP_getSize(pProducer->pDatabase );
 	printf("%s SP_number_of_blocks %d\n",__PRETTY_FUNCTION__,SP_number_of_blocks);
-	int32_t SP_block_length_accelerometer = SP_getLength(pProducer->pDatabase,ACCELEROMETER_SP_DATABASE_FIELD_ID_ACCELEROMETER);
+	int32_t SP_block_length_accelerometer = SP_getLength(pProducer->pDatabase,pProducer->shieldedPlugDatabaseFieldId);
 	printf("%s SP_block_length_accelerometer %d\n",__PRETTY_FUNCTION__,SP_block_length_accelerometer);
 }
 
@@ -99,7 +101,7 @@ void SP_PRODUCER_accelerometer_produce(SP_PRODUCER_accelerometer_t* pProducer)
 	{
 		Accelerometer_data_t data = Accelerometer_data_generate_sample(pProducer->sensor_ID);
 		
-		int32_t writeStatus = SP_write(pDatabase,ACCELEROMETER_SP_DATABASE_FIELD_ID_ACCELEROMETER,&data);
+		int32_t writeStatus = SP_write(pDatabase,pProducer->shieldedPlugDatabaseFieldId,&data);
 		if (SP_SUCCESS == writeStatus )
 		{
 			char dataAsString[ACCELEROMETER_DATA_MAX_STRING_LENGTH];

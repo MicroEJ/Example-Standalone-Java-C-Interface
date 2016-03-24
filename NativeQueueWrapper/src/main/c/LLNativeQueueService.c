@@ -243,26 +243,26 @@ jint Java_com_microej_examples_nativequeue_api_NativeQueueService_getItemSize(co
 jint Java_com_microej_examples_nativequeue_api_NativeQueueService_getItemsCount(const jint queueId)
 {
 	jint result;
-	jint size;
-	result = LLQueue_getItemsCount((queue_service_descriptor_t*)queueId, &size);
+	jint count;
+	result = LLQueue_getItemsCount((queue_service_descriptor_t*)queueId, &count);
 	if(result < 0){
 		return result;
 	}
 	else {
-		return size;
+		return count;
 	}
 }
 
 jint Java_com_microej_examples_nativequeue_api_NativeQueueService_getMaxItems(const jint queueId)
 {
 	jint result;
-	jint size;
-	result = LLQueue_getMaxItems((queue_service_descriptor_t*)queueId, &size);
+	jint maxItems;
+	result = LLQueue_getMaxItems((queue_service_descriptor_t*)queueId, &maxItems);
 	if(result < 0){
 		return result;
 	}
 	else {
-		return size;
+		return maxItems;
 	}
 }
 

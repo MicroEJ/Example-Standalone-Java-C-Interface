@@ -1,5 +1,6 @@
 [](Markdown)
 [](Copyright 2016 IS2T. All rights reserved.)
+[](For demonstration purpose only.)
 [](IS2T PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.)
 
 # Overview
@@ -25,11 +26,4 @@ Note that the **senderID** field in addition to the actual message data is usefu
 
 # Creating Java objects from bytes retrieved from a C native function call
 
-Whatever the data kind, the Java constructor takes a byte array as an argument so as to easily convert raw data retrieved from either [ShieldedPlug](/ProducerConsumerUsingShieldedPlug) or [SNI](/ProducerConsumerUsingSNIAndImmortals) to a regular Java object 
-
-# Shielded plug specifics
-* In the [database-definition.xml](/ProducerConsumerUsingShieldedPlug/src/main/resources/database-definition.xml) file, for the [Shielded Plug](/ProducerConsumerUsingShieldedPlug) example, some database and field IDs are defined.
-
-* Their C and Java counterparts (with matching values) are defined as :
-	* **DATABASE_ID** and **DATABASE_FIELD_ID_ACCELEROMETER** in [AccelerometerData.java](/ProducerConsumerData/src/main/java/com/microej/examples/java2c/AccelerometerData.java)
-	* **ACCELEROMETER_SP_DATABASE_ID** and **ACCELEROMETER_SP_DATABASE_FIELD_ID_ACCELEROMETER** in [accelerometer-data.h](/ProducerConsumerData/src/main/c/accelerometer-data.h)
+Whatever the data kind, the Java constructor takes a byte array as an argument so as to easily convert raw data retrieved from either [ShieldedPlug](/ProducerConsumerUsingShieldedPlug) or [SNI](/ProducerConsumerUsingSNIAndImmortals) to a regular Java object

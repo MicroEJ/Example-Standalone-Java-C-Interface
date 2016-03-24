@@ -27,7 +27,7 @@ public class AccelerometerDataProducerTask extends TimerTask {
 	@Override
 	public void run() {
 		AccelerometerData accelerometerData = AccelerometerData.generateRandomData(sensorID);
-		database.write(ProducerConsumerExample.DATABASE_FIELD_ID_ACCELEROMETER, accelerometerData.toByteArray());
+		database.write(sensorID, accelerometerData.toByteArray());
 		System.out.println("+" + accelerometerData.toString());
 	}
 

@@ -14,22 +14,30 @@ import com.is2t.sp.ShieldedPlug;
 
 public class AccelerometerDataConsumer implements Runnable{
 
+	private int accelerometerID;
+	
+	public AccelerometerDataConsumer(int accelerometerID) {
+		super();
+		this.accelerometerID = accelerometerID;
+	}
+
+
 	@Override
 	public void run() {
 
 		ShieldedPlug database = ShieldedPlug.getDatabase(ProducerConsumerExample.DATABASE_ID);
-		database.setReader(ProducerConsumerExample.DATABASE_FIELD_ID_ACCELEROMETER, new AccelerometerDataUnmarshaller());
+		database.setReader(accelerometerID, new AccelerometerDataUnmarshaller());
 
 		while (true) {
 			try {
 				// wait for a change on accelerometer data
-				database.waitFor(ProducerConsumerExample.DATABASE_FIELD_ID_ACCELEROMETER);
+				database.waitFor(accelerometerID);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
 			try {
 				// read the AccelerometerData
-				AccelerometerData accelerometerData = (AccelerometerData) database.readObject(ProducerConsumerExample.DATABASE_FIELD_ID_ACCELEROMETER);
+				AccelerometerData accelerometerData = (AccelerometerData) database.readObject(accelerometerID);
 				System.out.println("-" + accelerometerData.toString());
 			} catch (EmptyBlockException e) {
 				e.printStackTrace();

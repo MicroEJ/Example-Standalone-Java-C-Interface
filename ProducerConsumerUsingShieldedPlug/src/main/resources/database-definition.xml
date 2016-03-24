@@ -7,6 +7,8 @@
 -->
 <shieldedPlug>
 	<database name="AccelerometerDataDB" id="0" immutable="true" version="1.0.0">
-		<block id="0" name="AccelerometerData" length="4" maxTasks="2"/>
+		<block id="0" name="Accelerometer1Data" length="4" maxTasks="2"/>
+		<block id="1" name="Accelerometer2Data" length="4" maxTasks="2"/>
+		<block id="2" name="Accelerometer3Data" length="4" maxTasks="2"/>
 	</database>
 </shieldedPlug>

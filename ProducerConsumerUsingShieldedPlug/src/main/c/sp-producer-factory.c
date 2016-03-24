@@ -13,6 +13,12 @@
 #include "sp-producer-accelerometer.h"
 #include <stdio.h> //only to retrieve definition of NULL
 
+//must match the IDs used in the shielded plug database definition file
+#define ACCELEROMETER_SP_DATABASE_ID 0
+#define ACCELEROMETER_SP_DATABASE_FIELD_ID_ACCELEROMETER_1 0
+#define ACCELEROMETER_SP_DATABASE_FIELD_ID_ACCELEROMETER_2 1
+#define ACCELEROMETER_SP_DATABASE_FIELD_ID_ACCELEROMETER_3 2
+
 //== "static" factory function
 void SP_PRODUCER_init_factory(void)
 {
@@ -21,7 +27,7 @@ void SP_PRODUCER_init_factory(void)
 	static SP_PRODUCER_accelerometer_t accelerometerProducer1 = {
 			"PRODUCER_Accelerometer_Task_1",
 			1000,
-			1,
+			ACCELEROMETER_SP_DATABASE_FIELD_ID_ACCELEROMETER_1,
 			ACCELEROMETER_SP_DATABASE_ID,
 			NULL
 	};
@@ -29,7 +35,7 @@ void SP_PRODUCER_init_factory(void)
 	static SP_PRODUCER_accelerometer_t accelerometerProducer2 = {
 			"PRODUCER_Accelerometer_Task_2",
 			1500,
-			2,
+			ACCELEROMETER_SP_DATABASE_FIELD_ID_ACCELEROMETER_2,
 			ACCELEROMETER_SP_DATABASE_ID,
 			NULL
 	};
