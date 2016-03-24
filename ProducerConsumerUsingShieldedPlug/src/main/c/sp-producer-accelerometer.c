@@ -25,11 +25,6 @@
 #define SP_PRODUCER_TASK_PRIORITY      ( 3 ) /** Should be > tskIDLE_PRIORITY & < configTIMER_TASK_PRIORITY */
 #define SP_PRODUCER_TASK_STACK_SIZE     SP_PRODUCER_STACK_SIZE/4
 
-//must match the IDs used in the shielded plug database definition file
-#define ACCELEROMETER_SP_DATABASE_ID 0
-#define ACCELEROMETER_SP_DATABASE_FIELD_ID_ACCELEROMETER_1 0
-#define ACCELEROMETER_SP_DATABASE_FIELD_ID_ACCELEROMETER_2 1
-#define ACCELEROMETER_SP_DATABASE_FIELD_ID_ACCELEROMETER_3 2
 
 //==== "private" method(s) declaration
 void _SP_PRODUCER_taskBody(void* arg);

@@ -134,8 +134,8 @@ The source code for that file is available here :
 In this file, some database and field IDs are defined :
 
 * Their C and Java counterparts (with matching values) are defined as :
-	* **DATABASE_ID** and **DATABASE_FIELD_ID_ACCELEROMETER** in [AccelerometerData.java](/ProducerConsumerData/src/main/java/com/microej/examples/java2c/AccelerometerData.java)
-	* **ACCELEROMETER_SP_DATABASE_ID** and **ACCELEROMETER_SP_DATABASE_FIELD_ID_ACCELEROMETER** in [accelerometer-data.h](/ProducerConsumerData/src/main/c/accelerometer-data.h)
+	* **DATABASE_ID** and **DATABASE_FIELD_ID_ACCELEROMETER\*** in [ProducerConsumerExample.java](/ProducerConsumerUsingShieldedPlug/src/main/java/com/microej/examples/java2c/ProducerConsumerExample.java)
+	* **ACCELEROMETER_SP_DATABASE_ID** and **ACCELEROMETER_SP_DATABASE_FIELD_ID_ACCELEROMETER\*** in [sp-producer-factory.c](/ProducerConsumerUsingShieldedPlug/src/main/c/sp-producer-factory.c)
 
 This configuration file is a required parameter of the MicroEJ Application launch configuration when using the Shielded Plug API:
 * Select **Run Configurations...**
@@ -151,31 +151,30 @@ This configuration file is a required parameter of the MicroEJ Application launc
 * Uncomment the call to `SP_PRODUCER_init_factory` in the [main.c](/STM32F429IDISCO-SNI_SP_FreeRTOS-CM4_ARMCC-bsp/Project/MicroEJ/src/main.c) source file
 * After flashing the board, set up a terminal on the board serial port and press the reset input. You shall get an output similar to the one below :
 
-		+ID : 3 {x : -48, y : -101, z : -18}
-		-ID : 3 {x : -48, y : -101, z : -18}
-		+ID : 4 {x : -82, y : -26, z : 14}
-		-ID : 4 {x : -82, y : -26, z : 14}
-		+ID : 1 {x : 45, y : 124, z : -24}
-		-ID : 1 {x : 45, y : 124, z : -24}
-		+ID : 2 {x : 27, y : -101, z : 82}
-		-ID : 2 {x : 27, y : -101, z : 82}
-		+ID : 1 {x : 6, y : -31, z : -23}
-		-ID : 1 {x : 6, y : -31, z : -23}
-		+ID : 3 {x : 101, y : 1, z : -51}
-		-ID : 3 {x : 101, y : 1, z : -51}
-		+ID : 4 {x : -48, y : -54, z : 103}
-		-ID : 4 {x : -48, y : -54, z : 103}
-		+ID : 2 {x : -120, y : 4, z : 7}
-		-ID : 2 {x : -120, y : 4, z : 7}
-		+ID : 1 {x : 23, y : 30, z : -30}
-		-ID : 1 {x : 23, y : 30, z : -30}
-		+ID : 3 {x : -119, y : 68, z : 61}
-		-ID : 3 {x : -119, y : 68, z : 61}
-		+ID : 4 {x : -2, y : -13, z : -95}
-		-ID : 4 {x : -2, y : -13, z : -95}
-		+ID : 1 {x : -115, y : 37, z : 20}
-		-ID : 1 {x : -115, y : 37, z : 20}
+		-ID : 0 {x : -43, y : 4, z : -48}
+		+ID : 0 {x : -43, y : 4, z : -48}
+		+ID : 2 {x : -83, y : 108, z : -19}
+		-ID : 2 {x : -83, y : 108, z : -19}
+		-ID : 0 {x : -29, y : -61, z : 90}
+		+ID : 0 {x : -29, y : -61, z : 90}
+		-ID : 1 {x : 110, y : 41, z : -111}
+		+ID : 1 {x : 110, y : 41, z : -111}
+		+ID : 2 {x : 49, y : -107, z : -89}
+		-ID : 2 {x : 49, y : -107, z : -89}
+		-ID : 0 {x : 16, y : -20, z : -49}
+		+ID : 0 {x : 16, y : -20, z : -49}
+		-ID : 1 {x : 63, y : 38, z : 74}
+		+ID : 1 {x : 63, y : 38, z : 74}
+		-ID : 0 {x : -43, y : -51, z : -100}
+		+ID : 0 {x : -43, y : -51, z : -100}
+		+ID : 2 {x : -4, y : -125, z : -110}
+		-ID : 2 {x : -4, y : -125, z : -110}
+		-ID : 0 {x : -120, y : 59, z : 59}
+		+ID : 0 {x : -120, y : 59, z : 59}
+		+ID : 2 {x : -75, y : -89, z : 0}
+		-ID : 2 {x : -75, y : -89, z : 0}
+
 
 * The '-' prefix indicates data consumption
 * The '+' prefix indicates data production
-* The number right after the ID indicates which sensor the data originates from. The 4 different IDs in the trace show us that data from our 4 different producers get consumed.
+* The number right after the ID indicates which sensor the data originates from. The 4 different IDs in the trace show us that data from our 3 different producers get consumed.
