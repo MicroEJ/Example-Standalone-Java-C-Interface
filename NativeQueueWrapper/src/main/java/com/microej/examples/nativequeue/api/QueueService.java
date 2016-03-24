@@ -58,7 +58,6 @@ public class QueueService {
 
 	public void write(byte[] input) throws IOException{
 		synchronized (writeMonitor) {
-
 			int errorCode = NativeQueueService.write(queuePtr, input);
 			if( errorCode == NativeQueueService.QUEUE_WRITE_FAILED ){
 				errorCode = NativeQueueService.write(queuePtr, input);

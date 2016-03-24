@@ -25,7 +25,7 @@ public class AccelerometerDataConsumer implements Runnable{
 	public AccelerometerDataConsumer(QueueService queueService) {
 		this.queueService = queueService;
 
-		//Make the byte [] immortal to access it in C function.
+		//Make the byte [] immortal to access it from C functions.
 		this.data = (byte[]) Immortals.setImmortal(new byte[AccelerometerData.ACCELEROMETER_DATA_SIZE]);
 	}
 

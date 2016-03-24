@@ -30,7 +30,7 @@ public class AccelerometerDataProducer implements Runnable{
 		this.sensorID = (byte)sensorID;
 		this.productionPeriodInMilliseconds = productionPeriodInMilliseconds;
 
-		//Make the byte [] immortal to access it in C function.
+		//Make the byte [] immortal to access it from C functions.
 		this.data = (byte[]) Immortals.setImmortal(new byte[AccelerometerData.ACCELEROMETER_DATA_SIZE]);
 	}
 
