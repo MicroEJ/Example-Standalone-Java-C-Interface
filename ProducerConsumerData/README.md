@@ -5,24 +5,16 @@
 
 # Overview
 
-This helper project contains two Java classes and their C struct counterparts meant to hold the data to be exchanged between Java threads and C tasks.
+This helper project contains a Java class and its C struct counterpart meant to hold the data to be exchanged between Java threads and C tasks.
 
-# Data kinds
-For fixed size data, see the following files :
+# Source files
+See the following files :
 
 * [AccelerometerData.java](/ProducerConsumerData/src/main/java/com/microej/examples/java2c/AccelerometerData.java)
 * [accelerometer-data.h](/ProducerConsumerData/src/main/c/accelerometer-data.h)
 * [accelerometer-data.c](/ProducerConsumerData/src/main/c/accelerometer-data.c)
 
 Note that the **sensorID** field in addition to the actual sensor data ({x,y,z} triplet) is useful for knowing from which sensor the data comes from
- 
-For variable size data, see the following files :
-
-* [MessengerData.java](/ProducerConsumerData/src/main/java/com/microej/examples/java2c/MessengerData.java)
-* [messenger-data.h](/ProducerConsumerData/src/main/c/messenger-data.h)
-* [messenger-data.c](/ProducerConsumerData/src/main/c/messenger-data.c)
-
-Note that the **senderID** field in addition to the actual message data is useful for knowing who sent the data
 
 # Creating Java objects from bytes retrieved from a C native function call
 
