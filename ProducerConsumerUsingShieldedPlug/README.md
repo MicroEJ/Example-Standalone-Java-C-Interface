@@ -43,11 +43,7 @@ Each producer runs on a dedicated thread. In pseudocode, the thread body roughly
 		wait(production_period)
 	}
 	
- The actual source code is in the [AccelerometerDataProducer.java](/ProducerConsumerUsingShieldedPlug/src/main/java/com/microej/examples/java2c/AccelerometerDataProducer.java) file. 
- 
-### Alternate implementation using TimerTask
-
-Because of the fixed periodic nature of the task and of its short execution time, an alternate implementation based on Timer and TimerTask API is proposed in the [AccelerometerDataProducerUsingTimerTask.java](/ProducerConsumerUsingShieldedPlug/src/main/java/com/microej/examples/java2c/AccelerometerDataProducerUsingTimerTask.java) file.
+Because of the fixed periodic nature of the task and of its short execution time, a producer implementation based on Timer and TimerTask API is proposed in the [AccelerometerDataProducerTask.java](/ProducerConsumerUsingShieldedPlug/src/main/java/com/microej/examples/java2c/AccelerometerDataProducerTask.java) file.
 
 
 ## Java consumer class
