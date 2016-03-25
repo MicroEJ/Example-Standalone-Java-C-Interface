@@ -18,4 +18,4 @@ Note that the **sensorID** field in addition to the actual sensor data ({x,y,z} 
 
 # Creating Java objects from bytes retrieved from a C native function call
 
-Whatever the data kind, the Java constructor takes a byte array as an argument so as to easily convert raw data retrieved from either [ShieldedPlug](/ProducerConsumerUsingShieldedPlug) or [SNI](/ProducerConsumerUsingSNIAndImmortals) to a regular Java object
+Whatever the data kind, the Java constructor takes a byte array as an argument so as to easily convert raw data retrieved from either [ShieldedPlug](/ProducerConsumerUsingShieldedPlug) or [SNI](/ProducerConsumerUsingQueues) to a regular Java object

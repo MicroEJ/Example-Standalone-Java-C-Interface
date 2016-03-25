@@ -54,11 +54,7 @@ int main(void)
 
     //-- uncomment the code below when Java app was built using the SNI_And_Immortals_Fixed_Size_Example_Build.launch
     //-- keep it commented out otherwise
-    //SNI_PRODUCER_init_factory_accelerometer();
-
-    //-- uncomment the code below when Java app was built using the SNI_And_Immortals_Variable_Size_Example_Build.launch
-    //-- keep it commented out otherwise
-    //SNI_PRODUCER_init_factory_messenger();
+    //SNI_PRODUCER_init_factory();
 
     //-- uncomment the code below when Java app was built using the ProducerConsumerUsingShieldedPlug_Build.launch
     //-- keep it commented out otherwise

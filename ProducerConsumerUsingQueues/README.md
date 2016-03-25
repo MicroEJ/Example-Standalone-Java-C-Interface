@@ -22,17 +22,16 @@ Here, we shall briefly list the projects and libraries required for building thi
 			* SNI-1.2.0
 
 ## Producers/Consumers interaction
-For fixed size data, there are one consumer (written in Java) and three producers (one written in Java, two written in C).
-For variable size data, there is one consumer (written in Java) and two producers (written in C).
+There is one consumer (written in Java) and three producers (one written in Java, two written in C).
 
 * The producers send data at a fixed period if space is available in the relevant queue.
-* The consumers get new data from the message queue as soon as it is available. If no data is available immediately, the queue wrapper will block until some becomes available.
+* The consumer gets new data from the message queue as soon as it is available. If no data is available immediately, the queue wrapper will block until some becomes available.
 
 # Java Design
 
-## Fixed Size data exchange
+## Data exchange
 
-Note that for fixed size data, we create both a consumer and a producer class in Java, but "force" them to communicate via our native message queue API wrapper instead of using regular Java APIs for cross-thread data exchange. We create an AccelerometerData producer/consumer ecosystem in Java so as to test the native message queue API wrapper.
+Note that we create both a consumer and a producer class in Java, but "force" them to communicate via our native message queue API wrapper instead of using regular Java APIs for cross-thread data exchange. We create an AccelerometerData producer/consumer ecosystem in Java so as to test the native message queue API wrapper.
 
 ### Java producer class
 
@@ -80,34 +79,15 @@ The source code is in the following file:
 
 As illustrated in the [SNIAndImmortalsFixedSizeExample.java](/ProducerConsumerUsingSNIAndImmortals/src/main/java/com/microej/examples/java2c/SNIAndImmortalsFixedSizeExample.java) source file, once a **QueueService** is available, it is passed on to an **AccelerometerDataConsumer** instance constructor that can then use it as a means to retrieve data from the queue while running its own thread, which is quite similar to the way the producer thread is started.
 
-## Variable size data exchange
-
-### Consumer class
-
-The design is similar to the one used for fixed size data exchange
-
-The source code is in the following files:
-* [MessengerDataConsumer.java](/ProducerConsumerUsingSNIAndImmortals/src/main/java/com/microej/examples/java2c/MessengerDataConsumer.java) file.
-
-#### Starting the consumer thread
-
-As illustrated in the [SNIAndImmortalsVariableSizeExample.java](/ProducerConsumerUsingSNIAndImmortals/src/main/java/com/microej/examples/java2c/SNIAndImmortalsVariableSizeExample.java) source file, once a **QueueService** is available, it is passed on to a **MessengerDataConsumer** instance constructor that can then use it as a means  to retrieve data from the queue while running its own thread.
-
-------------
 # C design
 
 
 Since the actual data production is more likely to originate from a device with a driver implemented in C, an implementation of the producer written in C is provided.
 
 The source code is available in the following files :
-* [sni-producer.h](/ProducerConsumerUsingSNIAndImmortals/src/main/c/sni-producer.h)
-* [sni-producer.c](/ProducerConsumerUsingSNIAndImmortals/src/main/c/sni-producer.c)
 * [sni-producer-accelerometer.h](/ProducerConsumerUsingSNIAndImmortals/src/main/c/sni-producer-accelerometer.h)
 * [sni-producer-accelerometer.c](/ProducerConsumerUsingSNIAndImmortals/src/main/c/sni-producer-accelerometer.c)
-* [sni-producer-messenger.h](/ProducerConsumerUsingSNIAndImmortals/src/main/c/sni-producer-messenger.h)
-* [sni-producer-messenger.c](/ProducerConsumerUsingSNIAndImmortals/src/main/c/sni-producer-messenger.c)
 
-Note that the partitioning between sp-producer and sp-producer-accelerometer files is done so as to abstract the production task mechanism and associated creation and synchronization (factored out in sp-producer) from the business domain logic (specialized in sp-producer-accelerometer) as much as possible.
 
 ## C "abstract" producer
 
@@ -168,10 +148,8 @@ The source code is available in the following files.
 
 # Testing
 	
-## For fixed size example
-
-* Run the [SNI_And_Immortals_Fixed_Size_Example_Build.launch](/ProducerConsumerUsingSNIAndImmortals/launches/SNI_And_Immortals_Fixed_Size_Example_Build.launch) launch configuration
-* Uncomment the call to `	SNI_PRODUCER_init_factory_accelerometer()` in the [main.c](/STM32F429IDISCO-SNI_SP_FreeRTOS-CM4_ARMCC-bsp/Project/MicroEJ/src/main.c) source file
+* Run the [ProducerConsumerUsingQueues_Build.launch](/ProducerConsumerUsingQueues/launches/ProducerConsumerUsingQueues_Build_429.launch) launch configuration
+* Uncomment the call to `	SNI_PRODUCER_init_factory()` in the [main.c](/STM32F429IDISCO-SNI_SP_FreeRTOS-CM4_ARMCC-bsp/Project/MicroEJ/src/main.c) source file
 * After flashing the board, set up a terminal on the board serial port and press the reset input. You shall get an output similar to the one below :
 
 		-ID : 1 {x : -24, y : 27, z : -101}
@@ -203,61 +181,3 @@ The source code is available in the following files.
 * The '-' prefix indicates data consumption
 * The '+' prefix indicates data production
 * The number right after the ID indicates which sensor or sender the data originates from. The 3 different IDs in the trace {{1,2} : C Accelerometers, 3 : Java Accelerometer} show us that data from our 3 different producers gets produced and consumed.
-
-## Testing for variable size example
-
-* Run the [SNI_And_Immortals_Variable_Size_Example_Build.launch](/ProducerConsumerUsingSNIAndImmortals/launches/SNI_And_Immortals_Variable_Size_Example_Build.launch) launch configuration
-* Uncomment the call to `	SNI_PRODUCER_init_factory_messenger()` in the [main.c](/STM32F429IDISCO-SNI_SP_FreeRTOS-CM4_ARMCC-bsp/Project/MicroEJ/src/main.c) source file
-* After flashing the board, set up a terminal on the board serial port and press the reset input. You shall get an output similar to the one below :
-
-		VM START
-		+ID : 11 {ID : 11.1. This i1 {1.1. Ths the firstis is the  line}
-		first line}
-		+ID : 22 {ID : 22.1. File #2 {2.1. Fi2 has diffele #2 has rent lines,different  some of whlines, somich are lone of whichger}
-		 are longer}
-		+ID : 11 {-ID : 1.2. This i11 {1.2. Ts the next his is the line}
-		next line}
-		+ID : 11 {-ID : 1.3. This i11 {1.3. Ts the finalhis is the  line}
-		final line}
-		+ID : 22 {ID : 22.2. But it2 {2.2. Bu only has tt it only wo lines}
-		has two lines}
-		+ID : 11 {-ID : 2.1. File #11 {2.1. F2 has diffeile #2 hasrent lines, different some of wh lines, soich are lonme of whicger}
-		h are longer}
-		+ID : 11 {ID : 12.2. But it1 {2.2. Bu only has tt it only wo lines}
-		has two lines}
-		+ID : 22 {1.1. This i-ID : 22s the firs {1.1. Thist line}
-		 is the first line}
-		+ID : 11 {-ID : 1.1. This i11 {1.1. Ts the firsthis is the  line}
-		first line}
-		+ID : 22 {-ID : 1.2. This i22 {1.2. Ts the next his is theline}
-		 next line}
-		+ID : 11 {-ID : 1.2. This i11 {1.2. Ts the next his is the line}
-		next line}
-		+ID : 11 {-ID : 1.3. This i11 {1.3. Ts the finalhis is the line}
-		 final line}
-		+ID : 22 {-ID : 1.3. This i22 {1.3. Ts the finalhis is the line}
-		 final line}
-		+ID : 11 {2.1. File #-ID : 112 has diffe {2.1. Filrent lines,e #2 has d some of whifferent lich are lonines, someger}
-		 of which are longer}
-		+ID : 11 {ID : 12.2. But it1 {2.2. Bu only has t it only htwo lines}as two line
-		s}
-		+ID : 22 {ID : 22.1. File #2 {2.1. Fi2 has diffele #2 has rent lines,different  some of whlines, somich are loe of which nger}
-		are longer}
-		+ID : 22 {ID : 22.2. But it2 {2.2. Bu only has tt it only wo lines}
-		has two lines}
-		+ID : 11 {ID : 11.1. This i1 {1.1. Ths the firstis is the  line}
-		first line}
-		+ID : 11 {-ID : 1.2. This i11 {1.2. Ths the nextis is the  line}
-		next line}
-		+ID : 11 {-ID : 1.3. This i11 {1.3. Ts the finalhis is the line}
-		 final line}
-		+ID : 11 {2.1. File #-ID : 112 has diffe {2.1. Filrent lines,e #2 has d some of whifferent lich are lonines, someger}
-		 of which are longer}
-		+ID : 22 {ID : 21.1. This i2 {1.1. Ths the firstis is the  line}
-		first line}
-		+ID : 11 {ID : 12.2. But it1 {2.2. Bu
-
-
-Note that the trace for long messages from both producer and consumer do get mixed up in the output because the producer outputs after successfully posting the data, not before. Therefore, between the posting time and the flushing of the producer trace, the consumer has time to output some trace of its own on the shared output stream.
-
-* The number right after the ID indicates which sensor or sender the data originates from. The 2 different IDs in the trace {{11,22} : C Messengers} show us that data from our 2 different producers gets produced and consumed.
