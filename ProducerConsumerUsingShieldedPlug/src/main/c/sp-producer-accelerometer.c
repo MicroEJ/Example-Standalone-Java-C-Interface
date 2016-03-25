@@ -28,7 +28,8 @@
 
 //==== "private" method(s) declaration
 void _SP_PRODUCER_taskBody(void* arg);
-
+void _SP_PRODUCER_accelerometer_configure(SP_PRODUCER_accelerometer_t* pProducer);
+void _SP_PRODUCER_accelerometer_produce(SP_PRODUCER_accelerometer_t* pProducer);
 
 //== constructor
 void SP_PRODUCER_accelerometer_init(SP_PRODUCER_accelerometer_t* pAccelerometer)
@@ -62,13 +63,13 @@ void _SP_PRODUCER_taskBody(void* arg)
 
 		const portTickType xDelay = pProducer->productionPeriodInMS / portTICK_RATE_MS;
 
-		SP_PRODUCER_accelerometer_configure(pProducer);
+		_SP_PRODUCER_accelerometer_configure(pProducer);
 
 		portTickType xLastWakeTime = xTaskGetTickCount ();
 		for(;;)
 		{
 			vTaskDelayUntil(&xLastWakeTime,xDelay);
-			SP_PRODUCER_accelerometer_produce(pProducer);
+			_SP_PRODUCER_accelerometer_produce(pProducer);
 		}
 	}
 	else
@@ -77,7 +78,7 @@ void _SP_PRODUCER_taskBody(void* arg)
 	}
 }
 
-void SP_PRODUCER_accelerometer_configure(SP_PRODUCER_accelerometer_t* pProducer)
+void _SP_PRODUCER_accelerometer_configure(SP_PRODUCER_accelerometer_t* pProducer)
 {
 	//ShieldedPlug is a typedef to void*, so the database will outlive the scope of the function
 	ShieldedPlug database = SP_getDatabase(pProducer->shieldedPlugDatabaseId);
@@ -89,7 +90,7 @@ void SP_PRODUCER_accelerometer_configure(SP_PRODUCER_accelerometer_t* pProducer)
 	printf("%s SP_block_length_accelerometer %d\n",__PRETTY_FUNCTION__,SP_block_length_accelerometer);
 }
 
-void SP_PRODUCER_accelerometer_produce(SP_PRODUCER_accelerometer_t* pProducer)
+void _SP_PRODUCER_accelerometer_produce(SP_PRODUCER_accelerometer_t* pProducer)
 {
 	ShieldedPlug* pDatabase = pProducer->pDatabase;
 	if ( NULL != pDatabase )

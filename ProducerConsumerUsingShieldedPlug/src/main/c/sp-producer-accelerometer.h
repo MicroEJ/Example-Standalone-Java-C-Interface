@@ -28,8 +28,4 @@ typedef struct SP_PRODUCER_accelerometer_t{
 //== constructor
 void SP_PRODUCER_accelerometer_init(SP_PRODUCER_accelerometer_t* accelerometer);
 
-//== functions implementations
-void SP_PRODUCER_accelerometer_configure(SP_PRODUCER_accelerometer_t* pProducer);
-void SP_PRODUCER_accelerometer_produce(SP_PRODUCER_accelerometer_t* pProducer);
-
 #endif // SP_PRODUCER_ACCELEROMETER_H
