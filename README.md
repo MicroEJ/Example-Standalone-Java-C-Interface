@@ -5,7 +5,7 @@
 
 Although MicroEJ lets you leverage Java in an embedded context, there are still some cases where your Java threads need to synchronize and exchange data with OS tasks written in C/C++.
 
-This repository contains examples showing how to enable communication between programs written in C and programs written in Java using MicroEJ APIs
+This repository contains examples showing how to enable communication between programs written in C and programs written in Java using MicroEJ APIs.
 
 ## Available examples
 
@@ -16,8 +16,8 @@ For data exchange issues between tasks/threads, MicroEJ provides a few options:
 
 The following examples, most of them based on the consumer/producer problem, illustrate how to use those APIs :
 * [Making synchronous C functions calls from Java](/CallingCFromJava) using SNI
-* [Producer Consumer problem with ShieldedPlug](/ProducerConsumerUsingShieldedPlug) using Shielded Plug API as the delivery mechanism
-* [Producer Consumer problem with SNI and Immortals](/ProducerConsumerUsingSNIAndImmortals) using SNI and Immortals APIs to wrap the native FreeRTOS message queue API as the delivery mechanism
+* [Producer Consumer with ShieldedPlug](/ProducerConsumerUsingShieldedPlug) using Shielded Plug API as the delivery mechanism
+* [Producer Consumer with SNI and Immortals](/ProducerConsumerUsingQueues) using SNI and Immortals APIs to wrap the native FreeRTOS message queue API as the delivery mechanism
 
 ## API Selection Criteria
 
@@ -33,8 +33,8 @@ In summary, for simple use cases, Shielded Plug shall suffice, but for more inte
 ## Additional references
 
 Additional examples can be found at the following locations:
-* [Java/C Data Sharing Using SNI](http://www.microej.com/download/application_notes/TLT-0709-AN-MICROEJ-DataSharing-A.zip) application note on www.microej.com.
-* [Synchronizing a Java thread with C task(s)](http://www.microej.com/download/application_notes/TLT-0633-AN-MICROEJ-JavaCSync-B.zip) application note on www.microej.com.
+* Java/C Data Sharing Using SNI application note on www.microej.com.
+* Synchronizing a Java thread with C task(s) application note on www.microej.com.
 
 ### B-ON Library Specification
 
