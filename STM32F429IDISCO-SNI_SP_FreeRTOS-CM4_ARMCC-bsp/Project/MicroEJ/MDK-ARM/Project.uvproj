@@ -793,11 +793,6 @@
               <FilePath>..\..\..\..\ProducerConsumerData\src\main\c\accelerometer-data.c</FilePath>
             </File>
             <File>
-              <FileName>messenger-data.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\..\ProducerConsumerData\src\main\c\messenger-data.c</FilePath>
-            </File>
-            <File>
               <FileName>sp-producer-accelerometer.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\..\..\ProducerConsumerUsingShieldedPlug\src\main\c\sp-producer-accelerometer.c</FilePath>
@@ -808,11 +803,6 @@
               <FilePath>..\..\..\..\ProducerConsumerUsingShieldedPlug\src\main\c\sp-producer-factory.c</FilePath>
             </File>
             <File>
-              <FileName>sni-producer.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\..\ProducerConsumerUsingQueues\src\main\c\sni-producer.c</FilePath>
-            </File>
-            <File>
               <FileName>sni-producer-accelerometer.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\..\..\ProducerConsumerUsingQueues\src\main\c\sni-producer-accelerometer.c</FilePath>
@@ -821,11 +811,6 @@
               <FileName>sni-producer-factory.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\..\..\ProducerConsumerUsingQueues\src\main\c\sni-producer-factory.c</FilePath>
-            </File>
-            <File>
-              <FileName>sni-producer-messenger.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\..\ProducerConsumerUsingQueues\src\main\c\sni-producer-messenger.c</FilePath>
             </File>
           </Files>
         </Group>
