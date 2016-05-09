@@ -23,10 +23,17 @@ The following examples, most of them based on the consumer/producer problem, ill
 
 Here are a few things to consider when choosing between Shielded Plug and an SNI and Immortals based solution
 
-* Generally speaking, Shielded Plug will copy data from/to a database block and will therefore take more memory than an SNI-based solution relying on a shared memory area with less data copying.
-* Besides, Shielded Plug requires that you describe your data in an xml based configuration file.
-* However, the synchronization API is somewhat simpler
-* Using SNI and Immortals, it is easier to pass data directly to/from C native functions
+* Performance
+	* Generally speaking, Shielded Plug (SP for short) will copy data from/to a database block and will therefore take more processing time and memory than an SNI-based solution relying on a shared memory area with less data copying.
+	* SP is more suitable for asynchronous (post) processing of published data
+
+* Data Integrity
+	* Given that with SP there is no buffering of data, it makes it more suitable for sampling scenarios where losing a value once in a while is not critical .
+
+* API convenience
+	* SP requires that you describe your data in an xml based configuration file.
+	* However, the SP synchronization API is quite simple
+	* Using SNI and Immortals, it is easier to pass data directly to/from C native functions
 
 In summary, for simple use cases, Shielded Plug shall suffice, but for more intensive and more constrained environments, SNI and Immortals may be a better fit.
 
