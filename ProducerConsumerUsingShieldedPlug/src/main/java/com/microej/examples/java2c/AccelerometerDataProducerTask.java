@@ -11,7 +11,7 @@ package com.microej.examples.java2c;
 
 import java.util.TimerTask;
 
-import com.is2t.sp.ShieldedPlug;
+import ej.sp.ShieldedPlug;
 
 public class AccelerometerDataProducerTask extends TimerTask {
 

@@ -7,9 +7,9 @@
  */
 package com.microej.examples.java2c;
 
-import com.is2t.sp.EmptyBlockException;
-import com.is2t.sp.SPReader;
-import com.is2t.sp.ShieldedPlug;
+import ej.sp.EmptyBlockException;
+import ej.sp.SPReader;
+import ej.sp.ShieldedPlug;
 
 /**
  * An {@link AccelerometerDataUnmarshaller} deserializes {@link ShieldedPlug} block data into newly created {@link AccelerometerData} objects.

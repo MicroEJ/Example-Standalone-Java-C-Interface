@@ -9,13 +9,13 @@
  */
 package com.microej.examples.java2c;
 
-import com.is2t.sp.EmptyBlockException;
-import com.is2t.sp.ShieldedPlug;
+import ej.sp.EmptyBlockException;
+import ej.sp.ShieldedPlug;
 
 public class AccelerometerDataConsumer implements Runnable{
 
-	private int accelerometerID;
-	
+	private final int accelerometerID;
+
 	public AccelerometerDataConsumer(int accelerometerID) {
 		super();
 		this.accelerometerID = accelerometerID;
