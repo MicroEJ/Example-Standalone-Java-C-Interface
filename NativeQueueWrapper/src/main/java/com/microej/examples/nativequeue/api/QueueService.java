@@ -30,7 +30,7 @@ public class QueueService {
 
 	synchronized public int getItemSize() throws IOException{
 		int result = NativeQueueService.getItemSize(this.queuePtr);
-		if( result != NativeQueueService.QUEUE_SERVICE_OK ) {
+		if( result < 0 ) {
 			throw new IOException(NativeQueueService.toStringError(result));
 		}
 		return result;
@@ -38,7 +38,7 @@ public class QueueService {
 
 	synchronized public int getMaxItems() throws IOException{
 		int result = NativeQueueService.getMaxItems(this.queuePtr);
-		if( result != NativeQueueService.QUEUE_SERVICE_OK ) {
+		if( result < 0 ) {
 			throw new IOException(NativeQueueService.toStringError(result));
 		}
 		return result;
