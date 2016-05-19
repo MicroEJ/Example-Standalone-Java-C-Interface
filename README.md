@@ -96,3 +96,8 @@ To access the document from MicroEJ:
 
 * Select **Help > MicroEJ Resource Center** menu item
 	* Select **Manual > Platform Architecture - User Manual**
+	
+# Requirements
+
+* MicroEJ SDK 4.0.0 or later
+* Keil MicroVisiob v5.0 or later
