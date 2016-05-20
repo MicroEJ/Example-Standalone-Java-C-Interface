@@ -19,7 +19,7 @@ Here, we shall briefly list the projects and libraries required for building thi
 		* In the "Libraries" tag, the following MicroEJ APIs are listed as required using variables:
 			* EDC-1.2
 			* SP-1.0
-			* SNI-1.2.0
+			* SNI-1.2
 
 ## Producers/Consumers interaction
 There is one consumer (written in Java) and three producers (one written in Java, two written in C).
