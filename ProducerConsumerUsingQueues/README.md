@@ -56,7 +56,7 @@ In pseudocode, the thread body roughly looks like this
 
 #### Starting the producer thread
 
-As illustrated in the [SNIAndImmortalsFixedSizeExample.java](/ProducerConsumerUsingSNIAndImmortals/src/main/java/com/microej/examples/java2c/SNIAndImmortalsFixedSizeExample.java) source file, once a **QueueService** is available, it is passed on to an **AccelerometerDataProducer** instance constructor that can then use it as a means to deliver its production while running its own thread.
+As illustrated in the [ProducerConsumerExample.java](/ProducerConsumerUsingSNIAndImmortals/src/main/java/com/microej/examples/java2c/ProducerConsumerExample.java) source file, once a **QueueService** is available, it is passed on to an **AccelerometerDataProducer** instance constructor that can then use it as a means to deliver its production while running its own thread.
 
 ### Java consumer class
 
@@ -77,7 +77,7 @@ The source code is in the following file:
 
 #### Starting the consumer thread
 
-As illustrated in the [SNIAndImmortalsFixedSizeExample.java](/ProducerConsumerUsingSNIAndImmortals/src/main/java/com/microej/examples/java2c/SNIAndImmortalsFixedSizeExample.java) source file, once a **QueueService** is available, it is passed on to an **AccelerometerDataConsumer** instance constructor that can then use it as a means to retrieve data from the queue while running its own thread, which is quite similar to the way the producer thread is started.
+As illustrated in the [ProducerConsumerExample.java](/ProducerConsumerUsingSNIAndImmortals/src/main/java/com/microej/examples/java2c/ProducerConsumerExample.java) source file, once a **QueueService** is available, it is passed on to an **AccelerometerDataConsumer** instance constructor that can then use it as a means to retrieve data from the queue while running its own thread, which is quite similar to the way the producer thread is started.
 
 # C design
 
@@ -89,9 +89,9 @@ The source code is available in the following files :
 * [sni-producer-accelerometer.c](/ProducerConsumerUsingSNIAndImmortals/src/main/c/sni-producer-accelerometer.c)
 
 
-## C "abstract" producer
+## C producer
 
-In this section, we shall describe in more details the design of the **sni-producer** source files.
+In this section, we shall describe in more details the design of the **sni-producer-accelerometer** source files.
 
 A producer is viewed as a task that must periodically call a produce function, which contents are actually domain specific.
 
@@ -99,43 +99,12 @@ This leads to a producer "class" with the following contents:
 
 * attributes (will be set by the domain-specific producer)
 	* production period
-	* pointer to production function (with pointer to producer argument so as to be able to associate produced data with producer)
+	* sensor_ID (useful for tracing from which sensor the data comes from)
+producer)
 * methods
 	* initialisation method (will start the production task)
 	* taskbody (calls the production function at every production period expiration)
 
-Although the design is to some extent object-oriented, the implementation in this example is in C, not in C++.
-
-## C "concrete" producer
-
-In this section, we shall describe in more details the design of the **sni-producer-accelerometer** and **sni-producer-messenger** source files.
-
-This leads to:
-* an accelerometer "class" with the following contents:
-	* attributes
-		* sensor_ID (useful for tracing from which sensor the data comes from)
-		* "parent" producer member (so as to reuse Domain-agnostic producer code)
-	* methods
-		* initialisation method (will propagate initialisation to "parent")
-		* adapter configuration function
-			* with signature matching the one of the pointer to production function in the domain-agnostic producer struct
-			* used as an adapter method to call a more specialized configuration function that can set implementation-specific info (such as creating the relevant message queue)
-		* adapter production function
-			* with signature matching the one of the pointer to production function in the domain-agnostic producer struct
-			* used as an adapter method to call a more specialized production function that can use domain-specific producer info (such as sensor_ID)
-			
-* a messenger "class" with the following contents:
-	* attributes
-		* sender_ID (useful for tracing from who the message comes from)
-		* "parent" producer member (so as to reuse Domain-agnostic producer code)
-	* methods
-		* initialisation method (will propagate initialisation to "parent")
-		* adapter configuration function
-			* with signature matching the one of the pointer to production function in the domain-agnostic producer struct
-			* used as an adapter method to call a more specialized configuration function that can set implementation-specific info (such as creating the relevant message queue)
-		* adapter production function
-			* with signature matching the one of the pointer to production function in the domain-agnostic producer struct
-			* used as an adapter method to call a more specialized production function that can use domain-specific producer info (such as sender_ID)
 
 ### Instantiation code
 
@@ -148,8 +117,8 @@ The source code is available in the following files.
 
 # Testing
 	
-* Run the [ProducerConsumerUsingQueues_Build.launch](/ProducerConsumerUsingQueues/launches/ProducerConsumerUsingQueues_Build_429.launch) launch configuration
-* Uncomment the call to `	SNI_PRODUCER_init_factory()` in the [main.c](/STM32F429IDISCO-SNI_SP_FreeRTOS-CM4_ARMCC-bsp/Project/MicroEJ/src/main.c) source file
+* Run the [ProducerConsumerUsingQueues_Build.launch](/ProducerConsumerUsingQueues/launches/ProducerConsumerUsingQueues_Build_746_Eval.launch) launch configuration
+* Uncomment the call to `SNI_PRODUCER_init_factory()` in the [main.c](/STM32F746GDISCO-SNI_SP-CM7_ARMCC-FreeRTOS-bsp/Projects/STM32746G-Discovery/Applications/MicroEJ/src/main.c) source file
 * After flashing the board, set up a terminal on the board serial port and press the reset input. You shall get an output similar to the one below :
 
 		-ID : 1 {x : -24, y : 27, z : -101}
