@@ -19,6 +19,12 @@ The following examples, most of them based on the consumer/producer problem, ill
 * [Producer Consumer with ShieldedPlug](/ProducerConsumerUsingShieldedPlug) using Shielded Plug API as the delivery mechanism
 * [Producer Consumer with SNI and Immortals](/ProducerConsumerUsingQueues) using SNI and Immortals APIs to wrap the native FreeRTOS message queue API as the delivery mechanism
 
+Each example comes with a launch configuration. These launch configurations require that the target platform (common to each configuration) is built.
+
+To build the platform :
+* Open the [full.platform]([/STM32F746GDISCO-SNI_SP-CM7_ARMCC-FreeRTOS-configuration/full.platform]) file
+* Click on the **Build Platform** hyperlink in the **Build** frame
+
 ## API Selection Criteria
 
 Here are a few things to consider when choosing between Shielded Plug and an SNI and Immortals based solution
