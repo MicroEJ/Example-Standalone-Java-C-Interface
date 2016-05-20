@@ -1,0 +1,23 @@
+
+<!--
+	XML
+	
+	Copyright 2015 IS2T. All rights reserved.
+	IS2T PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
+-->
+<microui>
+	
+	<eventgenerators>
+		<eventgenerator name="WADAPPS" class="ej.wadapps.platform.EventGenerator"/>
+		<command name="COMMANDS"/>
+		<buttons name="BUTTONS"/>
+		<touch name="TOUCH" display="DISPLAY"/>
+	</eventgenerators>
+	
+	<display name="DISPLAY"/>
+
+	<fonts>
+		<font file="resources/fonts/microej_system_font.ejf"/>
+	</fonts>
+	
+</microui>
