@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<platform hardwarePartNumber="STM32F746GDISCO" name="SNI_SP" version="2.1.1" provider="MicroEJ" vendorUrl="http://developer.microej.com/4.0/sdk/license" workbenchMinVersion="1.7.0">
+    <environment architecture="CM7" baseline="14" hardwarePartNumber="M7F7J" toolchain="CM7hardfp_ARMCC5" name="flopi7A21f7j" techVersion="1.6" version="6.1.1" level="eval" provider="MicroEJ" licenseTag="IS2T_J8F5C"/>
+    <group name="extensible"/>
+</platform>

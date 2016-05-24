@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+	ANT
+	
+	Copyright 2013-2014 IS2T. All rights reserved.
+	Modification and distribution is permitted under certain conditions.
+	IS2T PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
+-->
+<project name="buildKeilUVisionProject">
+
+	<property name="keilUVisionProjectBuild.exec.dir" location="C:/Keil_v5/UV4"/>
+	
+	<macrodef name="microej.keilUVisionProjectBuild">
+		<attribute name="keilUVisionProjectBuild.exec.dir" default="${keilUVisionProjectBuild.exec.dir}" description="Keil UVision batch build tool directory"/>
+		<attribute name="keilUVisionProjectBuild.exec.name" default="Uv4.exe" description="Keil UVision batch build executable name"/>
+		<attribute name="keilUVisionProjectBuild.project.file" description="Keil UVision project (with *.uvproj extension) file path"/>
+		<attribute name="keilUVisionProjectBuild.failonerror" default="true" description="Keil UVision build fail on error policy"/>
+		<sequential>
+			<fail message="Keil uVision executable file does not exists (@{keilUVisionProjectBuild.exec.dir}${file.separator}@{keilUVisionProjectBuild.exec.name})">
+				<condition>
+					<not><available file="@{keilUVisionProjectBuild.exec.dir}${file.separator}@{keilUVisionProjectBuild.exec.name}"/></not>
+				</condition>
+			</fail>
+			
+			<echo message="Project file path=@{keilUVisionProjectBuild.project.file}"/>
+			<dirname  file="@{keilUVisionProjectBuild.project.file}" property="keilUVisionProjectBuild.project.file.dir"/>
+			<basename file="@{keilUVisionProjectBuild.project.file}" property="keilUVisionProjectBuild.project.file.basename"/>
+			<exec executable="@{keilUVisionProjectBuild.exec.dir}/@{keilUVisionProjectBuild.exec.name}" dir="${keilUVisionProjectBuild.project.file.dir}" failonerror="@{keilUVisionProjectBuild.failonerror}">
+			 	<arg value="-j0"/><!-- Hides the µVision GUI. Messages are suppressed. -->
+				<arg value="-b"/><!-- Builds the project and exits after the build process finished. -->
+				<arg value="${keilUVisionProjectBuild.project.file.basename}"/>
+				<!-- Sets targetname as the current target. If not specified, then the last known target is used.
+				<arg value="-t"/> 
+				<arg value=""/>
+				-->	
+				<!-- Specifies the output log file	-->
+				<arg value="-o"/> 
+				<arg value="log.txt"/>
+			</exec>
+			
+			<!-- echo compilation log -->
+			<concat>
+				<fileset file="${keilUVisionProjectBuild.project.file.dir}/log.txt"/>
+			</concat>
+			<delete file="${keilUVisionProjectBuild.project.file.dir}/log.txt"/>
+		</sequential>
+	</macrodef>
+	
+</project>

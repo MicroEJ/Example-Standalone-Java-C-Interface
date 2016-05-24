@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="var" path="EDC-1.2"/>
+	<classpathentry kind="src" path="src/main/java"/>
+	<classpathentry kind="src" path="src/main/resources"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/ProducerConsumerData"/>
+	<classpathentry kind="var" path="SP-2.0"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>

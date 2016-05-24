@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+	ANT
+	
+	Copyright 2012-2014 IS2T. All rights reserved.
+	Modification and distribution is permitted under certain conditions.
+	IS2T PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
+-->
+<project name="augmentKeilUVisionProject">
+
+	<fileset dir="." id="microej.augmentKeilUVisionProject.empty.files.id" excludes="**/*"/>
+		
+	<macrodef name="microej.augmentKeilUVisionProject" description="Generate a Keil UVision 4 project by adding new files (*.c,*.s, *.o, *.lib ... files) in a previously defined group">
+		<!-- ANT 1.7 compatible -->
+		<attribute name="augmentKeilUVisionProject.project.file" description="Project file to be modified (.uvproj)"/>
+		<attribute name="augmentKeilUVisionProject.group.name" description="Group name where to add files" default=""/>
+		<attribute name="augmentKeilUVisionProject.files.id" description="Files to be added (Path or Fileset id)" default="microej.augmentKeilUVisionProject.empty.files.id"/>
+		<sequential>
+			<antcall target="microej.augmentKeilUVisionProject.intern">
+				<param name="augmentKeilUVisionProject.project.file" value="@{augmentKeilUVisionProject.project.file}"/>
+				<param name="augmentKeilUVisionProject.group.name" value="@{augmentKeilUVisionProject.group.name}"/>
+				<reference refid="@{augmentKeilUVisionProject.files.id}" torefid="augmentKeilUVisionProject.files.id"/>
+			</antcall>
+		</sequential>
+	</macrodef>
+
+	<target name="microej.augmentKeilUVisionProject.intern">
+		<!-- Internal target for local context -->
+		<!-- 1) Generate XSL for files to be inserted -->
+		<pathconvert property="files.tmp" refid="augmentKeilUVisionProject.files.id" pathsep="">
+			<globmapper from="*" to="*${line.separator}" />
+		</pathconvert>
+
+		<tempfile property="augmentKeilUVisionProject.tmp.xsl" destdir="${java.io.tmpdir}"/>
+		<concat destfile="${augmentKeilUVisionProject.tmp.xsl}">
+			<header><![CDATA[<?xml version="1.0" encoding="UTF-8"?>
+				<!--
+						Copyright 2012 IS2T. All rights reserved.
+						IS2T PROPRIETARY. Use is subject to license terms.
+						
+						Bibliography:
+							[XSLTREC] XSL Transformations (XSLT), Version 1.0, W3C Recommendation 16 November 1999
+					-->
+				<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+					<!-- This is an XML to XML generator -->
+					<xsl:output	method="xml" indent="yes"/>
+
+					<!-- Well known identity transformation : see 7.5 in [XSLTREC] -->
+					<xsl:template match="node()|@*">
+						<xsl:copy>
+							<xsl:apply-templates select="node()|@*"/>
+						</xsl:copy>
+					</xsl:template>
+
+					<xsl:template match="Group[child::GroupName='${augmentKeilUVisionProject.group.name}']">
+						<xsl:copy>
+							<xsl:apply-templates select="node()|@*"/>
+							<xsl:element name="Files">
+]]>
+				</header>
+
+						<propertyresource name="files.tmp" />
+						<filterchain>
+							<TokenFilter delimOutput="${line.separator}">
+								<replaceregex pattern="^.*[\\/](.*\.(c))$" replace="&lt;xsl:element name=&quot;File&quot;&gt;&lt;xsl:element name=&quot;FileName&quot;&gt;\1&lt;/xsl:element&gt;&lt;xsl:element name=&quot;FileType&quot;&gt;1&lt;/xsl:element&gt;&lt;xsl:element name=&quot;FilePath&quot;&gt;\0&lt;/xsl:element&gt;&lt;/xsl:element&gt;" />
+								<replaceregex pattern="^.*[\\/](.*\.(s|asm))$" replace="&lt;xsl:element name=&quot;File&quot;&gt;&lt;xsl:element name=&quot;FileName&quot;&gt;\1&lt;/xsl:element&gt;&lt;xsl:element name=&quot;FileType&quot;&gt;2&lt;/xsl:element&gt;&lt;xsl:element name=&quot;FilePath&quot;&gt;\0&lt;/xsl:element&gt;&lt;/xsl:element&gt;" />
+								<replaceregex pattern="^.*[\\/](.*\.(o|obj|symdefs))$" replace="&lt;xsl:element name=&quot;File&quot;&gt;&lt;xsl:element name=&quot;FileName&quot;&gt;\1&lt;/xsl:element&gt;&lt;xsl:element name=&quot;FileType&quot;&gt;3&lt;/xsl:element&gt;&lt;xsl:element name=&quot;FilePath&quot;&gt;\0&lt;/xsl:element&gt;&lt;/xsl:element&gt;" />
+								<replaceregex pattern="^.*[\\/](.*\.(lib|a))$" replace="&lt;xsl:element name=&quot;File&quot;&gt;&lt;xsl:element name=&quot;FileName&quot;&gt;\1&lt;/xsl:element&gt;&lt;xsl:element name=&quot;FileType&quot;&gt;4&lt;/xsl:element&gt;&lt;xsl:element name=&quot;FilePath&quot;&gt;\0&lt;/xsl:element&gt;&lt;/xsl:element&gt;" />
+								<replaceregex pattern="^.*[\\/](.*\.(txt|h|inc))$" replace="&lt;xsl:element name=&quot;File&quot;&gt;&lt;xsl:element name=&quot;FileName&quot;&gt;\1&lt;/xsl:element&gt;&lt;xsl:element name=&quot;FileType&quot;&gt;5&lt;/xsl:element&gt;&lt;xsl:element name=&quot;FilePath&quot;&gt;\0&lt;/xsl:element&gt;&lt;/xsl:element&gt;" />
+							</TokenFilter>
+						</filterchain>
+
+						<footer>
+							<![CDATA[
+							</xsl:element>
+					</xsl:copy>
+						</xsl:template>
+					</xsl:stylesheet>
+					]]>
+				</footer>
+			</concat>
+
+			<!-- 2) Process XSL and generate ouput project  -->
+			<!-- XSLT MUST NOT process the same file in input and output => perform a copy -->
+			<tempfile property="augmentKeilUVisionProject.tmp.project" destdir="${java.io.tmpdir}"/>
+			<copy file="${augmentKeilUVisionProject.project.file}" tofile="${augmentKeilUVisionProject.tmp.project}"/>
+			<xslt 
+				style="${augmentKeilUVisionProject.tmp.xsl}" 
+			    in="${augmentKeilUVisionProject.tmp.project}"
+				out="${augmentKeilUVisionProject.project.file}"
+				force="true"
+			/>
+
+			<delete file="${augmentKeilUVisionProject.tmp.xsl}"/>
+			<delete file="${augmentKeilUVisionProject.tmp.project}"/>
+	</target>
+</project>
