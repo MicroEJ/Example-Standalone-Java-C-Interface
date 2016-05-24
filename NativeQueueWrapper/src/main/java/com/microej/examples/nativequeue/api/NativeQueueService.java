@@ -16,12 +16,16 @@ package com.microej.examples.nativequeue.api;
 class NativeQueueService {
 
 	//WARNING: keep these values synchronized with constants defined in LLNativeQueueService.h C header file.
-	public final static int QUEUE_SERVICE_OK = 0;
-	public final static int QUEUE_INVALID_QUEUE = -1;
-	public final static int QUEUE_READ_FAILED = -2;
-	public final static int QUEUE_WRITE_FAILED = -3;
+	public static final int QUEUE_SERVICE_OK = 0;
+	public static final int QUEUE_INVALID_QUEUE = -1;
+	public static final int QUEUE_READ_FAILED = -2;
+	public static final int QUEUE_WRITE_FAILED = -3;
 
-	static public String toStringError(int returnCode){
+	// No visible constructor for utility class
+	private NativeQueueService() {
+	}
+
+	public static String toStringError(int returnCode){
 		String result = "UNKNOWN_CODE";
 
 		if(returnCode >= 0){

@@ -11,9 +11,9 @@ package com.microej.examples.java2c;
 import java.util.Random;
 public class AccelerometerData {
 
-	private static Random Generator = new Random();
-
 	public static final int ACCELEROMETER_DATA_SIZE = 4;
+
+	private static Random Generator = new Random();
 
 	private final byte sensorID;
 	private final byte x;

@@ -11,6 +11,10 @@ package com.microej.examples.java2c;
 
 public class NativeCCallExample {
 
+	// No visible constructor for utility class
+	private NativeCCallExample() {
+	}
+
 	/**
 	 * @param args
 	 */

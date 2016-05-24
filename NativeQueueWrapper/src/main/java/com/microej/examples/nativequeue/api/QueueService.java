@@ -20,7 +20,7 @@ public class QueueService {
 		this.queuePtr = queuePtr;
 	}
 
-	synchronized public int getItemsCount() throws IOException{
+	public synchronized int getItemsCount() throws IOException{
 		int result = NativeQueueService.getItemsCount(this.queuePtr);
 		if( result < 0 ) {
 			throw new IOException(NativeQueueService.toStringError(result));
@@ -28,7 +28,7 @@ public class QueueService {
 		return result;
 	}
 
-	synchronized public int getItemSize() throws IOException{
+	public synchronized int getItemSize() throws IOException{
 		int result = NativeQueueService.getItemSize(this.queuePtr);
 		if( result < 0 ) {
 			throw new IOException(NativeQueueService.toStringError(result));
@@ -36,7 +36,7 @@ public class QueueService {
 		return result;
 	}
 
-	synchronized public int getMaxItems() throws IOException{
+	public synchronized int getMaxItems() throws IOException{
 		int result = NativeQueueService.getMaxItems(this.queuePtr);
 		if( result < 0 ) {
 			throw new IOException(NativeQueueService.toStringError(result));

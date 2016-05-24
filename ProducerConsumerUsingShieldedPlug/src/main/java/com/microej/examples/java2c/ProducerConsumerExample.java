@@ -20,6 +20,11 @@ public class ProducerConsumerExample {
 	public static final int DATABASE_FIELD_ID_ACCELEROMETER_2 = 1;
 	public static final int DATABASE_FIELD_ID_ACCELEROMETER_3 = 2;
 
+	// No visible constructor for Utility class
+	private ProducerConsumerExample()
+	{
+	}
+
 	/**
 	 * @param args
 	 */

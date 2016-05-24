@@ -13,6 +13,11 @@ import com.microej.examples.nativequeue.api.QueueService;
 
 public class ProducerConsumerExample {
 
+	// No visible constructor for Utility class
+	private ProducerConsumerExample()
+	{
+	}
+
 	/**
 	 * @param args
 	 */
@@ -28,5 +33,5 @@ public class ProducerConsumerExample {
 	}
 
 	//SNI related native - retrieves pointer to queue
-	native public static int getAccelerometerQueuePtr();
+	public static native int getAccelerometerQueuePtr();
 }
