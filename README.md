@@ -106,4 +106,4 @@ To access the document from MicroEJ:
 # Requirements
 
 * MicroEJ SDK 4.0.0 or later
-* Keil MicroVisiob v5.0 or later
+* Keil MicroVision v5.0 or later

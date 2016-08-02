@@ -20,7 +20,6 @@ typedef struct SP_PRODUCER_accelerometer_t{
 
 	//== "private" data
 	int8_t shieldedPlugDatabaseId;			//shielded plug database ID
-	int8_t shieldedPlugDatabaseFieldId;		//shielded plug database field ID
 	ShieldedPlug pDatabase;					//pointer to shielded plug database - set by SP_PRODUCER_accelerometer_init(...)
 
 }SP_PRODUCER_accelerometer_t;
