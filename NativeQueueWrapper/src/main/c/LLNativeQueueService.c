@@ -124,7 +124,7 @@ void _LLQueue_pauseCurrentJavaThread(queue_service_descriptor_t* fromQueue)
 		if ( NULL != currentQueue )
 		{
 			fromQueue->pendingJavaThreadId = SNI_getCurrentJavaThreadID();
-			SNI_suspendCurrentJavaThread(fromQueue->pendingJavaThreadId);
+			SNI_suspendCurrentJavaThread(0);
 		}
 	}
 }
