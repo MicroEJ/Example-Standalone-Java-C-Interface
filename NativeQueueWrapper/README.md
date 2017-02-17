@@ -1,5 +1,5 @@
 [](Markdown)
-[](Copyright 2016 IS2T. All rights reserved.)
+[](Copyright 2016-2017 IS2T. All rights reserved.)
 [](For demonstration purpose only.)
 [](IS2T PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.)
 # Overview
@@ -8,11 +8,13 @@ This project implements a SNI wrapper around OS native Queue service API.
 
 It currently supports FreeRTOS only.
 
-## Project Setup
+# Usage
+
+## Build path setup
 
 The project is made up of Java and C source files. Both need to be referenced from your application.
 
-### Java sources
+### Java build path setup
 
 Add this project to your project build Path :
 
@@ -22,9 +24,13 @@ Add this project to your project build Path :
 * Click on **Add** Button
 * Select **NativeQueueWrapper**
 * Click on **Ok**
-* Click on **Ok** 
+* Click on **Ok**
 
-### C sources
+Or add the following ivy dependency to your **module.ivy** file :
+
+        <dependency org="com.microej.example.java2c" name="NativeQueueWrapper" rev="1.1.1+" conf="default"/>
+
+### C build path setup
 
 * The files in [src/main/c](/NativeQueueWrapper/src/main/c) shall be added to your BSP project.
 
@@ -67,3 +73,21 @@ For sample API usage, refer to the following methods and functions :
 For sample API usage, refer to the **run** methods in :
 * [AccelerometerDataConsumer.java](/ProducerConsumerUsingQueues/src/main/java/com/microej/examples/java2c/AccelerometerDataConsumer.java)
 * [MessengerDataConsumer.java](/ProducerConsumerUsingQueues/src/main/java/com/microej/examples/java2c/MessengerDataConsumer.java)
+
+# Requirements
+
+* JRE 7 (or later) x86.
+* MicroEJ SDK 4.0 or later.
+* BSP specific toolchain (Keil MicroVision (&trade;) v5 or later.
+* A platform with at least:
+	* EDC-1.2.0 or higher
+
+# Dependencies
+
+_All dependencies are retrieved transitively by Ivy resolver_.
+
+# Source
+N/A
+
+# Restrictions
+None.
