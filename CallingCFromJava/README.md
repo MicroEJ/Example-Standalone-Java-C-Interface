@@ -97,7 +97,7 @@ The result of the previous step shall lead to this error message
 		
 		SUCCESS
 
-This is perfectly normal since in [NativeCCallExample.java](CallingCFromJava/src/main/java/com/microej/examples/java2C/NativeCCallExample.java) we declared **someCFunctionReturningTwiceAValue** as a native function, when running the simulator, the Hardware In the Loop (HIL) engines expects to find some Java implementation emulating the behavior of the native function. 
+This is perfectly normal since in [NativeCCallExample.java](CallingCFromJava/src/main/java/com/microej/examples/java2c/NativeCCallExample.java) we declared **someCFunctionReturningTwiceAValue** as a native function, when running the simulator, the Hardware In the Loop (HIL) engines expects to find some Java implementation emulating the behavior of the native function. 
 
 ## Adding a mock of the native function to the JPF
 Since our Java application relies on native C functions, on an embedded target, we would need to provide a C implementation. But given that we are running it on a Java simulator, we can emulate those functions using a Java mock.

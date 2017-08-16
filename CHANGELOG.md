@@ -5,6 +5,8 @@
 -->
 
 
+## 1.0.2 (2017-08-16)
+  - Fix readme.md in CallingCFromJava
 ## 1.0.1 (2016-08-02)
   - fixed incomplete initialisation of SP_PRODUCER_accelerometer_t struct in SP_PRODUCER_init_factory factory function
 ## 1.0.0 (2016-05-19)
