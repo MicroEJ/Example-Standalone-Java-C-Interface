@@ -130,7 +130,7 @@ void _SNI_PRODUCER_accelerometer_produce(SNI_PRODUCER_accelerometer_t* pProducer
 }
 
 //== SNI function
-jint Java_com_microej_examples_java2c_ProducerConsumerExample_getAccelerometerQueuePtr(void)
+jint Java_com_microej_example_java2c_ProducerConsumerExample_getAccelerometerQueuePtr(void)
 {
 	return (jint)&accelerometerQueue;
 }

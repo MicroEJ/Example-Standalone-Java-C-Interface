@@ -16,7 +16,7 @@ Here, we shall briefly list the projects and libraries required for building thi
 		* In the "Projects" tab:
 			* [ProducerConsumerData](/ProducerConsumerData) describes the data being exchanged
 			* [NativeQueueWrapper](/NativeQueueWrapper) provides the required data delivery infrastructure, based on message queues.
-		* In the "Libraries" tag, the following MicroEJ APIs are listed as required using variables:
+		* In the "Libraries" tab, the following required MicroEJ API libraries are listed :
 			* EDC-1.2
 			* SP-1.0
 			* SNI-1.2
@@ -114,6 +114,56 @@ The source code is available in the following files.
 * [sni-producer-factory.h](/ProducerConsumerUsingSNIAndImmortals/src/main/c/sni-producer-factory.h)
 * [sni-producer-factory.c](/ProducerConsumerUsingSNIAndImmortals/src/main/c/sni-producer-factory.c)
 
+# Updating the default BSP project
+## Adding the native source files to the BSP IDE project structure
+* Adding the .h files
+	* Right-click on the root node of your MicroVision project
+	* Go to the **C/C++** tab
+	* Click on the **...** button next to the **Include paths** field
+	* Click on the **New** button
+	* Click on the **...** button next to the newly created include path
+		* Browse to the [src/main/c](/NativeQueueWrapper/src/main/c) directory of the [/NativeQueueWrapper](/NativeQueueWrapper)  project
+		* Click **OK**
+		* Browse to the [src/main/c](/ProducerConsumerData/src/main/c) directory of the [/ProducerConsumerData](/ProducerConsumerData)  project
+		* Click **OK**
+		* Browse to the [src/main/c](/ProducerConsumerUsingQueues/src/main/c) directory of the  [/ProducerConsumerUsingQueues](/ProducerConsumerUsingQueues) project
+		* Click **OK**
+	* Click **OK**
+* Adding the .c files
+	* Select the root node of your project
+	* Right-Click and select **Add Group** this will add a group called "New Group"
+	* Select this group and hit **F2** key so as to rename it to "JavaNatives"
+	* Right-Click on the **JavaNatives** group and select **Add Existing Files to group 'JavaNatives'...**
+	* Move up the directory hierarchy until you get up to the parent folder of the [/NativeQueueWrapper](/NativeQueueWrapper) project
+	* Go to the [src/main/c](/NativeQueueWrapper/src/main/c) directory of the [/NativeQueueWrapper](/NativeQueueWrapper) project
+		* Select all the .c files
+		* Click **Add**
+		* Click **Close**
+	* Right-Click on the **JavaNatives** group and select **Add Existing Files to group 'JavaNatives'...**
+	* Move up the directory hierarchy until you get up to the parent folder of the [/ProducerConsumerData](/ProducerConsumerData) project
+	* Go to the [src/main/c](/ProducerConsumerData/src/main/c) directory of the [/ProducerConsumerData](/ProducerConsumerData) project
+		* Select all the .c files
+		* Click **Add**
+		* Click **Close**
+	* Right-Click on the **JavaNatives** group and select **Add Existing Files to group 'JavaNatives'...**
+	* Move up the directory hierarchy until you get up to the parent folder of the [ProducerConsumerUsingQueues](ProducerConsumerUsingQueues) project
+	* Go to the [src/main/c](/ProducerConsumerUsingQueues/src/main/c) directory of the [ProducerConsumerUsingQueues](ProducerConsumerUsingQueues) project
+		* Select all the .c files
+		* Click **Add**
+		* Click **Close**
+
+## Updating the main.c file
+* Add the following ```include``` statement at the start of the file :
+
+		#include "sni-producer-factory.h"
+
+* Insert the following function call
+
+		SNI_PRODUCER_init_factory();
+	
+	Before this line
+
+		xTaskCreate( xJavaTaskFunction, "MicroJvm", JAVA_TASK_STACK_SIZE, NULL, JAVA_TASK_PRIORITY, NULL );
 
 # Testing
 	

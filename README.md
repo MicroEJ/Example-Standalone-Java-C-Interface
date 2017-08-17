@@ -21,9 +21,31 @@ The following examples, most of them based on the consumer/producer problem, ill
 
 Each example comes with a launch configuration. These launch configurations require that the target platform (common to each configuration) is built.
 
-To build the platform :
-* Open the [full.platform]([/STM32F746GDISCO-SNI_SP-CM7_ARMCC-FreeRTOS-configuration/full.platform]) file
-* Click on the **Build Platform** hyperlink in the **Build** frame
+# Building the Java Platform (JPF)
+
+We need to generate and build a Java Platform (JPF), i.e. the set of object files and libraries required to execute Java code on the target platform linked by an executable C program.
+
+The following assumes that you have downloaded and imported the STM32F646-DISCO platform from [MicroEJ SDK Getting Started](http://developer.microej.com/getting-startetd-sdk.html) web page.
+
+### Creation (BSP Specific)
+
+* Select **File > New > Other... > MicroEJ > Platform** menu item
+	* Click **Browse** button next to the **Architecture** field and select **STMicroElectronics STM32F7J ARMCC**
+	* Check the **Create from a platform reference implementation** option
+		* Select **STM32F746-Disco > Standalone**
+	* Click **Next**
+		* Set the name field to "**SNI**"
+		* Set the version field to "**1.0.0**"
+	* Click **Finish**. This will lead to the generation of a few projects in our workspace :
+		* [STM32F746GDISCO-SNI-CM7hardfp_ARMCC5-bsp](STM32F746GDISCO-SNI-CM7hardfp_ARMCC5-bsp)
+		* [STM32F746GDISCO-SNI-CM7hardfp_ARMCC5-configuration](STM32F746GDISCO-SNI-CM7hardfp_ARMCC5-configuration)
+		* [STM32F746GDISCO-SNI-CM7hardfp_ARMCC5-fp](STM32F746GDISCO-SNI-CM7hardfp_ARMCC5-fp)
+
+### Build
+* From the **Overview** tab of the generated [full.platform](/STM32F746GDISCO-SNI-CM7hardfp_ARMCC5-configuration/full.platform) file
+	* Click on the **Build platform** hyperlink. This will generate the following project :
+		* [STM32F746GDISCO-SNI-CM7hardfp_ARMCC5-1.0.0](STM32F746GDISCO-SNI-CM7hardfp_ARMCC5-1.0.0)
+
 
 ## API Selection Criteria
 
@@ -45,10 +67,6 @@ In summary, for simple use cases, Shielded Plug shall suffice, but for more inte
 
 ## Additional references
 
-Additional examples can be found at the following locations:
-* Java/C Data Sharing Using SNI application note on www.microej.com.
-* Synchronizing a Java thread with C task(s) application note on www.microej.com.
-
 ### B-ON Library Specification
 
 Among other things, the **Beyond Profile Specification** document contains detailed information on:
@@ -57,10 +75,7 @@ Among other things, the **Beyond Profile Specification** document contains detai
 
 **immortal objects** : such objects are never garbage collected and keep the same physical memory location forever. This makes them useful for specifying shared memory areas between C and Java.
 
-To access the document from MicroEJ:
-
-* Select **Help > MicroEJ Resource Center** menu item
-	* Select **Library Specification > BON 1.2**
+The document can be downloaded from [www.e-s-r.net/specifications/index.html](www.e-s-r.net/specifications/index.html)
 
 ### SNI Library Specification
 
@@ -72,10 +87,7 @@ The **Simple Native Interface for GreenThread Context Profile Specification** do
 * sharing memory areas between Java and C/C++ using **immortal objects**
 * controlling (as in suspend and resume) Java Thread execution from C code
 
-To access the document from MicroEJ:
-
-* Select **Help > MicroEJ Resource Center** menu item
-	* Select **Library Specification > SNI_GT 1.2**
+The document can be downloaded from [www.e-s-r.net/specifications/index.html](www.e-s-r.net/specifications/index.html)
 	
 ### Shielded Plug Library Specification
 
@@ -86,14 +98,11 @@ The **Shielded Plug Profile Specification** document contains detailed informati
 * how to create dedicated readers/writers that can translate Shielded Plug Blocks into Java Objects
 * the reference API for both C and Java languages
 
-To access the document from MicroEJ:
-
-* Select **Help > MicroEJ Resource Center** menu item
-	* Select **Library Specification > SP 1.0**
+The document can be downloaded from [www.e-s-r.net/specifications/index.html](www.e-s-r.net/specifications/index.html)
 	
 ### Simulation
 
-The **Simulation** section of the **platform architecture manual** document contains useful info for :
+The **Simulation** section of the **Device Developer's Guide** document contains useful info for :
 
 * creating Java mocks simulating native code using the same naming conventions as SNI
 * using the Hardware In the Loop (HIL) engine as a replacement for the SNI/GreenThread interface used on target environments
@@ -101,7 +110,7 @@ The **Simulation** section of the **platform architecture manual** document cont
 To access the document from MicroEJ:
 
 * Select **Help > MicroEJ Resource Center** menu item
-	* Select **Manual > Platform Architecture - User Manual**
+	* Select **Manual > Device Developer's Guide**
 	
 # Requirements
 
