@@ -12,16 +12,13 @@ The following steps will be taken :
 * Running the application on simulator
 * Running the application on target
 
-## Requirements
-* JRE 7 (or later) x86.
-* MicroEJ 4.0 or later.
-* BSP specific toolchain (Keil MicroVision (&trade;) v5 or later.
+# Usage
 
-# Running the application on simulator
+## Running the application on simulator
 
 Using MicroEJ, you may deploy and run your application on an embedded target (if the hardware and related BSP are available) or you may run your application on a Java simulator mimicking the behavior of your embedded target.
 
-## Building for the simulator
+### Building for the simulator
 Here, we will launch a MicroEJ "Run Configuration" that will compile the Java code from the CallingCFromJava project for the JPF we created previously.
 
 * Select **Run > Run Configurations...** menu item
@@ -34,7 +31,7 @@ Here, we will launch a MicroEJ "Run Configuration" that will compile the Java co
 			* Notice that "Execute on SimJPF" radio button option is checked
 	* Click on "Run"
 
-## Getting a java.lang.UnsatisfiedLinkError exception
+### Getting a java.lang.UnsatisfiedLinkError exception
 
 The result of the previous step shall lead to this error message
 	
@@ -56,10 +53,12 @@ The result of the previous step shall lead to this error message
 
 This is perfectly normal since in [NativeCCallExample.java](CallingCFromJava/src/main/java/com/microej/example/java2C/NativeCCallExample.java) we declared **someCFunctionReturningTwiceAValue** as a native function, when running the simulator, the Hardware In the Loop (HIL) engines expects to find some Java implementation emulating the behavior of the native function. 
 
-## Adding a mock of the native function to the JPF
+### Adding a mock of the native function to the JPF
 Since our Java application relies on native C functions, on an embedded target, we would need to provide a C implementation. But given that we are running it on a Java simulator, we can emulate those functions using a Java mock.
 
 The [CallingCFromJavaMock](CallingCFromJavaMock) project provides the mocks required for running the Java application on simulator (see [/CallingCFromJavaMock/.../NativeCCallExample.java](/CallingCFromJavaMock/src/main/java/com/microej/example/java2c/NativeCCallExample.java)).
+
+Note that the mock method in [/CallingCFromJavaMock/.../NativeCCallExample.java](/CallingCFromJavaMock/src/main/java/com/microej/example/java2c/NativeCCallExample.java) has the same fully qualified name (package-name.class-name.method-name) as the one declaring the native in [/.../NativeCCallExample.java](/CallingCFromJava/src/main/java/com/microej/example/java2c/NativeCCallExample.java). This allows the linker to find which method simulates the native function.
 
 * Open the [CallingCFromJavaMock.jardesc](/CallingCFromJavaMock/CallingCFromJavaMock.jardesc) jar description file
 * Update the export destination file so that it has the following value
@@ -76,9 +75,9 @@ The [CallingCFromJavaMock](CallingCFromJavaMock) project provides the mocks requ
 		SUCCESS
 
 
-# Running the application on target
+## Running the application on target
 
-## Building for the target
+### Building for the target
 Here, we will launch a MicroEJ "Run Configuration" that will compile the Java code from the CallingCFromJava project for the JPF we created previously
 
 * Select **Run > Run Configurations...** menu item
@@ -91,12 +90,12 @@ Here, we will launch a MicroEJ "Run Configuration" that will compile the Java co
 			* Notice that "Execute on EmbJPF" radio button option is checked
 	* Click on "Run"
 
-## Opening the generated C project (BSP specific)
+### Opening the generated C project (BSP specific)
 * From the **Project Explorer** view
 	* Navigate to the [/STM32F746GDISCO-SNI-CM7hardfp_ARMCC5-bsp/Projects/STM32746G-Discovery/Applications/MicroEJ/MDK-ARM](/STM32F746GDISCO-SNI-CM7hardfp_ARMCC5-bsp/Projects/STM32746G-Discovery/Applications/MicroEJ/MDK-ARM) folder
 	* Double-click on the [Project.uvprojx](/STM32F746GDISCO-SNI-CM7hardfp_ARMCC5-bsp/Projects/STM32746G-Discovery/Applications/MicroEJ/MDK-ARM/Project.uvprojx) file (this will open the BSP project in the MicroVision IDE)
 
-## Getting a linker error (BSP specific)
+### Getting a linker error (BSP specific)
 * From the MicroVision IDE
 	* Select **Project > Build Target** menu item (or press F7 keyboard shortcut)
 	* A linker error message shall appear :
@@ -106,8 +105,8 @@ Here, we will launch a MicroEJ "Run Configuration" that will compile the Java co
 
 This is perfectly normal since in [NativeCCallExample.java](CallingCFromJava/src/main/java/com/microej/examples/java2C/NativeCCallExample.java) we declared **someCFunctionReturningTwiceAValue** as a native function, when building the MicroEJ project, the generated linker configuration file expects to find a C function definition matching the qualified name of the function. 
 
-## Fixing the linker error
-### C Native function implementation
+### Fixing the linker error
+#### C Native function implementation
 * From the **Package Explorer** view
 	* Select the [NativeCCallExample.c](CallingCFromJava/src/main/c/com/microej/examples/java2c/NativeCCallExample.c) file.
 	* Double-click on the file
@@ -122,7 +121,7 @@ This is perfectly normal since in [NativeCCallExample.java](CallingCFromJava/src
 	* Select **Properties** context menu item
 	* Copy the value of the **Resource > Location** field into the clipboard.
 
-### Adding the C file to the BSP IDE project structure (BSP specific)
+#### Adding the C file to the BSP IDE project structure (BSP specific)
 * Select the root node of your project
 	* Right-Click and select **Add Group** this will add a group called "New Group"
 	* Select this group and hit **F2** key so as to rename it to "JavaNatives"
@@ -132,7 +131,7 @@ This is perfectly normal since in [NativeCCallExample.java](CallingCFromJava/src
 	* Click **Close**
 		* The absolute path of the [NativeCCallExample.c](CallingCFromJava/src/main/c/com/microej/examples/java2c/NativeCCallExample.c) file will be converted to a path relative to the BSP project file.
 
-### Getting a clean link (BSP specific)
+#### Getting a clean link (BSP specific)
 * Select **Project > Build Target** menu item (or press F7 keyboard shortcut)
 	
 		*** Using Compiler 'V5.06 update 1 (build 61)', folder: 'C:\Keil_v5\ARM\ARMCC\Bin'
@@ -164,3 +163,19 @@ This is perfectly normal since in [NativeCCallExample.java](CallingCFromJava/src
 The Use Case shown in this document only covers a most basic usage of the Java to C interface feature provided by SNI. The native C function is invoked synchronously, meaning the all the Java threads managed by the MicroEJ Virtual Machine are suspended until the C function returns.
 
 Shall you need a more elaborate example of how to use SNI in an asynchronous context, you may refer to the [ProducerConsumerUsingQueues](/ProducerConsumerUsingQueues) example project.
+
+# Requirements
+* JRE 7 (or later) x86.
+* MicroEJ SDK 4.0 or later.
+* BSP specific toolchain (Keil MicroVision (&trade;) v5 or later.
+* A platform with at least:
+	* EDC-1.2.0 or higher
+
+# Dependencies
+_All dependencies are retrieved transitively by Ivy resolver_.
+
+# Source
+N/A
+
+# Restrictions
+None.

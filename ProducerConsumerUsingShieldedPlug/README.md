@@ -1,26 +1,13 @@
 [](Markdown)
-[](Copyright 2016 IS2T. All rights reserved.)
+[](Copyright 2016-2017 IS2T. All rights reserved.)
 [](For demonstration purpose only.)
 [](IS2T PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.)
 
 # Overview
 
-This example shows an implementation of the producer consumer pattern.
+This example shows an implementation of the producer consumer pattern using Shielded Plug API as the delivery mechanism.
 
-## Dependencies
-
-It relies on the following project:
-- [ProducerConsumerData](/ProducerConsumerData) describes the data being exchanged
-
-Here, we shall briefly list the projects and libraries required for building this example:
-
-* Right-click on the project from MicroEJ.
-	* Go to "Properties > Java Build Path", this will give us access to the project's build path dependencies
-		* In the "Projects" tab:
-			* [ProducerConsumerData](/ProducerConsumerData) describes the data being exchanged
-		* In the "Libraries" tab, the following required MicroEJ API libraries are listed :
-			* EDC-1.2
-			* SP-1.0
+# Usage
 
 ## Producers/Consumers interaction
 There are one consumer (written in Java) and three producers (one written in Java, two written in C).
@@ -30,9 +17,9 @@ Data is exchanged via a shared in-memory database using the Shielded Plug API.
 * The producers overwrite data at a fixed period without checking if data has been consumed by any other task.
 * The consumer gets new data from the database as soon as it is available.
 
-# Java design
+## Java design
 
-## Java producer class
+### Java producer class
 
 Each producer runs on a dedicated thread. In pseudocode, the thread body roughly looks like this
 
@@ -46,7 +33,7 @@ Each producer runs on a dedicated thread. In pseudocode, the thread body roughly
 Because of the fixed periodic nature of the task and of its short execution time, a producer implementation based on Timer and TimerTask API is proposed in the [AccelerometerDataProducerTask.java](/ProducerConsumerUsingShieldedPlug/src/main/java/com/microej/examples/java2c/AccelerometerDataProducerTask.java) file.
 
 
-## Java consumer class
+### Java consumer class
 
 Each consumer runs on a dedicated thread. In pseudocode, the thread body roughly looks like this
 
@@ -59,11 +46,11 @@ The source code is available in the following files:
 * [AccelerometerDataConsumer.java](/ProducerConsumerUsingShieldedPlug/src/main/java/com/microej/examples/java2c/AccelerometerDataConsumer.java)
 * [AccelerometerDataUnmarshaller.java](/ProducerConsumerUsingShieldedPlug/src/main/java/com/microej/examples/java2c/AccelerometerDataUnmarshaller.java) (helper class for easy conversion from a shielded plug data block to a readily usable application domain object via a copy of byte array elements into a Java object )
 
-## Starting the Java threads
+### Starting the Java threads
 
 As illustrated in the [ProducerConsumerExample.java](/ProducerConsumerUsingShieldedPlug/src/main/java/com/microej/examples/java2c/ProducerConsumerExample.java) source file, the Java producer and consumer Threads start-up is straightforward.
 
-# C design
+## C design
 
 Since the actual data production is more likely to originate from a device with a driver implemented in C, an implementation of the producer written in C is provided.
 
@@ -72,7 +59,7 @@ The source code is available in the following files:
 * [sp-producer-accelerometer.c](/ProducerConsumerUsingShieldedPlug/src/main/c/sp-producer-accelerometer.c)
 
 
-## C producer
+### C producer
 
 In this section, we shall describe in more details the design of the **sp-producer-accelerometer** source files.
 
@@ -87,7 +74,7 @@ producer)
 	* taskbody (calls the production function at every production period expiration)
 
 
-## Instantiation code
+### Instantiation code
 
 The `SP_PRODUCER_init_factory` function instantiates two producers with different IDs and production periods
 
@@ -96,9 +83,9 @@ The source code is available in the following files:
 * [sp-producer-factory.c](/ProducerConsumerUsingShieldedPlug/src/main/c/sp-producer-factory.c)
 
 
-# Launch configuration parameters
+## Launch configuration parameters
 
-## Shielded Plug database definition
+### Shielded Plug database definition
 
 One requirement of the Shielded Plug API is that you define the database schema via a configuration file.
 
@@ -118,8 +105,8 @@ This configuration file is a required parameter of the MicroEJ Application launc
 * Select the **Shielded Plug** node
 * You shall see that the **Database definition** field is pointing to the [database-definition.xml](/ProducerConsumerUsingShieldedPlug/src/main/resources/database-definition.xml) file
 
-# Updating the default BSP project
-## Adding the native source files to the BSP IDE project structure
+## Updating the default BSP project
+### Adding the native source files to the BSP IDE project structure
 * Adding the .h files
 	* Right-click on the root node of your MicroVision project
 	* Go to the **C/C++** tab
@@ -148,20 +135,20 @@ This configuration file is a required parameter of the MicroEJ Application launc
 		* Click **Add**
 		* Click **Close**
 
-## Updating the main.c file
+### Updating the main.c file
 * Add the following ```include``` statement at the start of the file :
 
 		#include "sp-producer-factory.h"
 
-* Insert the following function call
+* Insert the following function call :
 
 		SP_PRODUCER_init_factory();
-	
-	Before this line
+
+	Before this line :
 
 		xTaskCreate( xJavaTaskFunction, "MicroJvm", JAVA_TASK_STACK_SIZE, NULL, JAVA_TASK_PRIORITY, NULL );
 
-# Testing
+## Testing
 
 * Run the [ProducerConsumerUsingShieldedPlug_Build.launch](/ProducerConsumerUsingQueues/launches/ProducerConsumerUsingQueues_Build.launch) launch configuration
 * Uncomment the call to `SP_PRODUCER_init_factory` in the [main.c](/STM32F746GDISCO-SNI_SP-CM7_ARMCC-FreeRTOS-bsp/Projects/STM32746G-Discovery/Applications/MicroEJ/src/main.c) source file
@@ -193,4 +180,30 @@ This configuration file is a required parameter of the MicroEJ Application launc
 
 * The '-' prefix indicates data consumption
 * The '+' prefix indicates data production
-* The number right after the ID indicates which sensor the data originates from. The 4 different IDs in the trace show us that data from our 3 different producers get consumed.
+* The number right after the ID indicates which sensor the data originates from. The 3 different IDs in the trace show us that data from our 3 different producers get consumed.
+
+# Requirements
+
+* JRE 7 (or later) x86.
+* MicroEJ SDK 4.0 or later.
+* BSP specific toolchain (Keil MicroVision (&trade;) v5 or later.
+* A platform with at least:
+	* EDC-1.2.0 or higher
+
+# Dependencies
+
+_All dependencies are retrieved transitively by Ivy resolver_.
+
+The example depends on the following project :
+
+* [ProducerConsumerData](/ProducerConsumerData) describes the data being exchanged
+
+The project depends on the following MicroEJ libraries :
+* EDC-1.2
+* SP-2.0
+
+# Source
+N/A
+
+# Restrictions
+None.

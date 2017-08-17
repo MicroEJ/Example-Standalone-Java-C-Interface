@@ -9,15 +9,20 @@ This repository contains examples showing how to enable communication between pr
 
 ## Available examples
 
-For tasks/threads synchronisation via function calls and callbacks, MicroEJ provides the SNI API.
+For calling C functions from a Java class, MicroEJ provides the SNI API. The following examples illustrate how to use this API :
+* [CallingCFromJava](/CallingCFromJava) provides an example of invocation of a C function from a Java method
+* [CallingCFromJava](/CallingCFromJavaMock) is a helper project required in order to be able to run the Java application on simulator
+
+The SNI library also provides APIs for tasks/threads synchronisation via function calls and callbacks.
+
 For data exchange issues between tasks/threads, MicroEJ provides a few options:
 * Shielded Plug API (suitable for sharing structured data, with built-in wait/release synchronisation APIs)
 * Immortals API and SNI API (suitable for sharing access to raw data, but you need to provide your own synchronisation mechanism)
 
-The following examples, most of them based on the consumer/producer problem, illustrate how to use those APIs :
-* [Making synchronous C functions calls from Java](/CallingCFromJava) using SNI
+The following examples, based on the consumer/producer problem, illustrate how to use those APIs :
+
 * [Producer Consumer with ShieldedPlug](/ProducerConsumerUsingShieldedPlug) using Shielded Plug API as the delivery mechanism
-* [Producer Consumer with SNI and Immortals](/ProducerConsumerUsingQueues) using SNI and Immortals APIs to wrap the native FreeRTOS message queue API as the delivery mechanism
+* [Producer Consumer with SNI and Immortals](/ProducerConsumerUsingQueues) using SNI and Immortals APIs to wrap the native FreeRTOS message queue API as the underlying delivery mechanism
 
 Each example comes with a launch configuration. These launch configurations require that the target platform (common to each configuration) is built.
 
@@ -27,7 +32,7 @@ We need to generate and build a Java Platform (JPF), i.e. the set of object file
 
 The following assumes that you have downloaded and imported the STM32F646-DISCO platform from [MicroEJ SDK Getting Started](http://developer.microej.com/getting-startetd-sdk.html) web page.
 
-### Creation (BSP Specific)
+### Creation
 
 * Select **File > New > Other... > MicroEJ > Platform** menu item
 	* Click **Browse** button next to the **Architecture** field and select **STMicroElectronics STM32F7J ARMCC**

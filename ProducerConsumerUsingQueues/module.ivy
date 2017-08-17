@@ -5,7 +5,7 @@
 	Use is subject to license terms.
 -->
 <ivy-module version="2.0" xmlns:ea="http://www.easyant.org" xmlns:m="http://ant.apache.org/ivy/extra"> 
-	<info organisation="com.microej.example.java2c" module="ProducerConsumerUsingQueues" status="integration" revision="1.1.0">
+	<info organisation="com.microej.example.java2c" module="ProducerConsumerUsingQueues" status="integration" revision="1.1.1">
 		<ea:build organisation="com.is2t.easyant.buildtypes" module="build-microej-javalib" revision="3.+">
 		</ea:build>
 	</info>
@@ -27,5 +27,7 @@
 		<dependency org="ej.api" name="bon" rev="[1.2.0,2.0.0[" conf="provided->*" />
 		<dependency org="ej.api" name="edc" rev="[1.2.0,2.0.0[" conf="provided->*" />
 		<dependency org="ej.api" name="sni" rev="[1.2.0,2.0.0[" conf="provided->*" />
+		<dependency org="com.microej.example.java2c" name="NativeQueueWrapper" rev="1.1.1+" conf="default"/>
+		<dependency org="com.microej.example.java2c" name="ProducerConsumerData" rev="1.1+" conf="default" />
 	</dependencies>
 </ivy-module>
