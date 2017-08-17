@@ -124,7 +124,7 @@ void _LLQueue_pauseCurrentJavaThread(queue_service_descriptor_t* fromQueue)
 		if ( NULL != currentQueue )
 		{
 			fromQueue->pendingJavaThreadId = SNI_getCurrentJavaThreadID();
-			SNI_suspendCurrentJavaThread(fromQueue->pendingJavaThreadId);
+			SNI_suspendCurrentJavaThread(0);
 		}
 	}
 }
@@ -175,6 +175,8 @@ jint _LLQueue_read(queue_service_descriptor_t* fromQueue, volatile jbyte* itemDa
 					if(!dataReceived){
 						if ( JTRUE == fromJava )
 						{
+							//the Java Thread waiting for data will be paused right after the end of this native method
+							//it will be woken up when data is available
 							_LLQueue_pauseCurrentJavaThread(fromQueue);
 						}
 					}
@@ -221,13 +223,14 @@ jint _LLQueue_write(const queue_service_descriptor_t* toQueue, volatile jbyte* i
 					}
 				}
 			}
+		//wake up any pending Java Thread (if any)
 		_LLQueue_resumePendingJavaThread(toQueue);
 	}
 	return result;
 }
 
 //== SNI wrappers
-jint Java_com_microej_examples_nativequeue_api_NativeQueueService_getItemSize(const jint queueId)
+jint Java_com_microej_example_nativequeue_api_NativeQueueService_getItemSize(const jint queueId)
 {
 	jint result;
 	jint size;
@@ -240,7 +243,7 @@ jint Java_com_microej_examples_nativequeue_api_NativeQueueService_getItemSize(co
 	}
 }
 
-jint Java_com_microej_examples_nativequeue_api_NativeQueueService_getItemsCount(const jint queueId)
+jint Java_com_microej_example_nativequeue_api_NativeQueueService_getItemsCount(const jint queueId)
 {
 	jint result;
 	jint count;
@@ -253,7 +256,7 @@ jint Java_com_microej_examples_nativequeue_api_NativeQueueService_getItemsCount(
 	}
 }
 
-jint Java_com_microej_examples_nativequeue_api_NativeQueueService_getMaxItems(const jint queueId)
+jint Java_com_microej_example_nativequeue_api_NativeQueueService_getMaxItems(const jint queueId)
 {
 	jint result;
 	jint maxItems;
@@ -266,12 +269,12 @@ jint Java_com_microej_examples_nativequeue_api_NativeQueueService_getMaxItems(co
 	}
 }
 
-jint Java_com_microej_examples_nativequeue_api_NativeQueueService_read(const jint fromQueueId, volatile jbyte* itemDataAsByteArray)
+jint Java_com_microej_example_nativequeue_api_NativeQueueService_read(const jint fromQueueId, volatile jbyte* itemDataAsByteArray)
 {	
 	return _LLQueue_read((queue_service_descriptor_t*)fromQueueId,itemDataAsByteArray,JTRUE);
 }
 
-jint Java_com_microej_examples_nativequeue_api_NativeQueueService_write(const jint toQueueId, volatile jbyte* itemDataAsByteArray)
+jint Java_com_microej_example_nativequeue_api_NativeQueueService_write(const jint toQueueId, volatile jbyte* itemDataAsByteArray)
 {
 	return _LLQueue_write((queue_service_descriptor_t*)toQueueId,itemDataAsByteArray,JTRUE);
 }

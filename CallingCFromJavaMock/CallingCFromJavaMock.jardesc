@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <jardesc>
-    <jar path="STM32F429IDISCO-CallingCFromJava-CM4_ARMCC-1.0.0/source/mocks/dropins/CallingCFromJavaMock.jar"/>
+    <jar path="STM32F746GDISCO-SNI-CM7hardfp_ARMCC5-1.0.0/source/mocks/dropins/CallingCFromJavaMock.jar"/>
     <options buildIfNeeded="true" compress="true" descriptionLocation="/CallingCFromJavaMock/CallingCFromJavaMock.jardesc" exportErrors="true" exportWarnings="true" includeDirectoryEntries="false" overwrite="false" saveDescription="true" storeRefactorings="false" useSourceFolders="false"/>
     <storedRefactorings deprecationInfo="true" structuralOnly="false"/>
     <selectedProjects/>

@@ -1,0 +1,8 @@
+**/bin
+**/.bin
+**/soar
+**/*.o
+**/*.map
+.metadata
+.microej
+#  test hook
