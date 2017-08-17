@@ -25,6 +25,6 @@ jboolean SNI_PRODUCER_accelerometer_queue_init(void);
 void SNI_PRODUCER_accelerometer_init(SNI_PRODUCER_accelerometer_t* accelerometer);
 
 //== SNI function
-jint Java_com_microej_examples_java2c_ProducerConsumerExample_getAccelerometerQueuePtr(void);
+jint Java_com_microej_example_java2c_ProducerConsumerExample_getAccelerometerQueuePtr(void);
 
 #endif // SP_PRODUCER_ACCELEROMETER_H
