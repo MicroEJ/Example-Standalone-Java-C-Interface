@@ -42,10 +42,10 @@ jint LLQueue_write(const queue_service_descriptor_t* toQueue, volatile jbyte* it
 
 
 //== SNI wrappers
-jint Java_com_microej_examples_nativequeue_api_NativeQueueService_getItemSize(const jint queueId);
-jint Java_com_microej_examples_nativequeue_api_NativeQueueService_getItemsCount(const jint queueId);
-jint Java_com_microej_examples_nativequeue_api_NativeQueueService_getMaxItems(const jint queueId);
-jint Java_com_microej_examples_nativequeue_api_NativeQueueService_read(const jint fromQueueId, volatile jbyte* itemDataAsByteArray);
-jint Java_com_microej_examples_nativequeue_api_NativeQueueService_write(const jint toQueueId, volatile jbyte* itemDataAsByteArray);
+jint Java_com_microej_example_nativequeue_api_NativeQueueService_getItemSize(const jint queueId);
+jint Java_com_microej_example_nativequeue_api_NativeQueueService_getItemsCount(const jint queueId);
+jint Java_com_microej_example_nativequeue_api_NativeQueueService_getMaxItems(const jint queueId);
+jint Java_com_microej_example_nativequeue_api_NativeQueueService_read(const jint fromQueueId, volatile jbyte* itemDataAsByteArray);
+jint Java_com_microej_example_nativequeue_api_NativeQueueService_write(const jint toQueueId, volatile jbyte* itemDataAsByteArray);
 
 #endif // LL_NATIVE_QUEUE_SERVICE_H
