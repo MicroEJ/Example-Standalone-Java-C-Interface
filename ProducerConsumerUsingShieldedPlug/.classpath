@@ -4,6 +4,5 @@
 	<classpathentry kind="src" path="src/main/resources"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/ProducerConsumerData"/>
 	<classpathentry kind="con" path="org.apache.ivyde.eclipse.cpcontainer.IVYDE_CONTAINER/?project=ProducerConsumerUsingShieldedPlug&amp;ivyXmlPath=module.ivy&amp;confs=*"/>
-	<classpathentry kind="var" path="SP-2.0"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
