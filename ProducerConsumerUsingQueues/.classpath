@@ -4,8 +4,5 @@
 	<classpathentry combineaccessrules="false" kind="src" path="/ProducerConsumerData"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/NativeQueueWrapper"/>
 	<classpathentry kind="con" path="org.apache.ivyde.eclipse.cpcontainer.IVYDE_CONTAINER/?project=ProducerConsumerUsingQueues&amp;ivyXmlPath=module.ivy&amp;confs=*"/>
-	<classpathentry kind="var" path="BON-1.2"/>
-	<classpathentry kind="var" path="EDC-1.2"/>
-	<classpathentry kind="var" path="SNI-1.2"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
