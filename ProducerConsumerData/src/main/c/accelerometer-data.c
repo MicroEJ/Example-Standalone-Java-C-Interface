@@ -1,7 +1,7 @@
 /*
  * C
  *
- * Copyright 2016-2019 MicroEJ Corp. All rights reserved.
+ * Copyright 2016-2020 MicroEJ Corp. All rights reserved.
  * Use of this source code is governed by a BSD-style license that can be found with this software.
  *
  */
@@ -37,7 +37,7 @@ void Accelerometer_data_toString(const Accelerometer_data_t* data, char * output
 	}
 	else
 	{
-		snprintf(output,(unsigned)strlen(""),"");
+		strcpy(output, "");
 		printf("%s error : pointer to data is NULL !\n",__PRETTY_FUNCTION__);
 	}
 }
