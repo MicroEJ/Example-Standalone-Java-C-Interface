@@ -69,11 +69,11 @@ void SNI_PRODUCER_accelerometer_init(SNI_PRODUCER_accelerometer_t* pProducer)
 {
 	if ( NULL != pProducer )
 	{
-		printf("%s sensor_ID : %d\n",__PRETTY_FUNCTION__,pProducer->sensor_ID);
+		printf("%s sensor_ID : %d\n", __PRETTY_FUNCTION__, pProducer->sensor_ID);
 		// create the PRODUCER task		
 		xTaskHandle xHandle = NULL;
 		portBASE_TYPE xReturn;
-		xReturn = xTaskCreate(_SNI_PRODUCER_accelerometer_taskBody, NULL, SNI_PRODUCER_TASK_STACK_SIZE, (void*) pProducer, SNI_PRODUCER_TASK_PRIORITY, xHandle);
+		xReturn = xTaskCreate(_SNI_PRODUCER_accelerometer_taskBody, "SNI PRODUCER", SNI_PRODUCER_TASK_STACK_SIZE, (void*) pProducer, SNI_PRODUCER_TASK_PRIORITY, xHandle);
 		if( xReturn != pdPASS )
 		{
 			printf("%s error : unable to create task for %s\n",__PRETTY_FUNCTION__, pProducer->name);
