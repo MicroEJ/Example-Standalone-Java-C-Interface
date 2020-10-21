@@ -4,7 +4,11 @@
 Overview
 ========
 
-This project provides a mock implementation for the native declared in the `CallingCFromJava <../CallingCFromJava>`__. It is required to run the `NativeCCallExample <../CallingCFromJava/src/main/java/com/microej/example/java2c/NativeCCallExample.java>`__ using the MicroEJ platform simulator
+This project provides a mock implementation for the native declared in the
+`CallingCFromJava <../CallingCFromJava>`__. It is required to run the
+`NativeCCallExample
+<../CallingCFromJava/src/main/java/com/microej/example/java2c/NativeCCallExample.java>`__
+using the MicroEJ platform simulator
 
 Usage
 =====

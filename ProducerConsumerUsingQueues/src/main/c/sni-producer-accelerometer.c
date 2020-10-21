@@ -23,7 +23,9 @@
 #include <string.h>
 
 #define SNI_PRODUCER_TASK_PRIORITY      ( 3 ) /** Should be > tskIDLE_PRIORITY & < configTIMER_TASK_PRIORITY */
-#define SNI_PRODUCER_TASK_STACK_SIZE    128
+
+#define SNI_PRODUCER_STACK_SIZE 1024
+#define SNI_PRODUCER_TASK_STACK_SIZE    SNI_PRODUCER_STACK_SIZE/4
 
 #define PRODUCER_ACCELEROMETER_QUEUE_MAX_ITEMS 	20
 #define PRODUCER_ACCELEROMETER_QUEUE_ITEM_SIZE 	4
@@ -69,11 +71,11 @@ void SNI_PRODUCER_accelerometer_init(SNI_PRODUCER_accelerometer_t* pProducer)
 {
 	if ( NULL != pProducer )
 	{
-		printf("%s sensor_ID : %d\n",__PRETTY_FUNCTION__,pProducer->sensor_ID);
+		printf("%s sensor_ID : %d\n", __PRETTY_FUNCTION__, pProducer->sensor_ID);
 		// create the PRODUCER task		
 		xTaskHandle xHandle = NULL;
 		portBASE_TYPE xReturn;
-		xReturn = xTaskCreate(_SNI_PRODUCER_accelerometer_taskBody, NULL, SNI_PRODUCER_TASK_STACK_SIZE, (void*) pProducer, SNI_PRODUCER_TASK_PRIORITY, xHandle);
+		xReturn = xTaskCreate(_SNI_PRODUCER_accelerometer_taskBody, "SNI PRODUCER", SNI_PRODUCER_TASK_STACK_SIZE, (void*) pProducer, SNI_PRODUCER_TASK_PRIORITY, xHandle);
 		if( xReturn != pdPASS )
 		{
 			printf("%s error : unable to create task for %s\n",__PRETTY_FUNCTION__, pProducer->name);

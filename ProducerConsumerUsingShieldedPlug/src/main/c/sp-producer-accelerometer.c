@@ -39,9 +39,9 @@ void SP_PRODUCER_accelerometer_init(SP_PRODUCER_accelerometer_t* pAccelerometer)
 		printf("%s productionPeriodInMS : %d\n",__PRETTY_FUNCTION__,pAccelerometer->productionPeriodInMS);
 		printf("%s sensor_ID : %d\n",__PRETTY_FUNCTION__,pAccelerometer->sensor_ID);
 
-		xTaskHandle xHandle;
+		xTaskHandle xHandle = NULL;
 		portBASE_TYPE xReturn;
-		xReturn = xTaskCreate(_SP_PRODUCER_taskBody, NULL, SP_PRODUCER_TASK_STACK_SIZE, (void*) pAccelerometer, SP_PRODUCER_TASK_PRIORITY, xHandle);
+		xReturn = xTaskCreate(_SP_PRODUCER_taskBody, "SP PRODUCER", SP_PRODUCER_STACK_SIZE, (void*) pAccelerometer, SP_PRODUCER_TASK_PRIORITY, xHandle);
 		if( xReturn != pdPASS )
 		{
 			printf("%s error : unable to create task for %s\n",__PRETTY_FUNCTION__, pAccelerometer->name);
